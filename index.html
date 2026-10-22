@@ -56,6 +56,11 @@
     border: 0; border-radius: 0.5rem; background: var(--accent); color: #fff;
   }
   button:disabled { opacity: 0.6; cursor: default; }
+  .lesson { width: 100%; max-width: 26rem; text-align: left; margin-bottom: 2.25rem; }
+  .lesson h2 { font-size: 1.25rem; font-weight: 700; text-align: center; margin-bottom: 0.75rem; }
+  .lesson ul { list-style: none; }
+  .lesson li { padding: 0.5rem 0; border-top: 1px solid #e5e7eb; color: #374151; }
+  .lesson li strong { color: var(--ink); }
   .fine { font-size: 0.875rem; color: var(--muted); margin-top: 0.75rem; }
   .msg { font-weight: 600; margin-top: 1rem; min-height: 1.5rem; }
   .msg.ok { color: #15803d; }
@@ -72,13 +77,23 @@
   <h1>Dadiosity</h1>
   <p class="tagline">Stay curious. She's only three once.</p>
   <p class="sub">One small dad lesson each day, for dads of little kids.</p>
+  <section class="lesson" aria-label="What each daily lesson includes">
+    <h2>Each lesson has four parts.</h2>
+    <ul>
+      <li><strong>The idea:</strong> one dad skill, in small steps.</li>
+      <li><strong>Tonight's move:</strong> one move for a real moment.</li>
+      <li><strong>Tonight's play:</strong> one short game with your kid.</li>
+      <li><strong>Why it works:</strong> one clear and honest reason.</li>
+    </ul>
+  </section>
   <form id="signup" novalidate>
-    <label for="email">Get the first note when it opens.</label>
+    <label for="email">Get daily lessons by email.</label>
     <div class="row">
       <input type="email" id="email" name="email" placeholder="you@email.com" autocomplete="email" required>
-      <button type="submit" id="go">Tell me</button>
+      <button type="submit" id="go">Join</button>
     </div>
-    <p class="fine">One note at launch. No spam. No ads.</p>
+    <p class="fine">First lesson at launch, then one a day.</p>
+    <p class="fine">No spam. No ads. We never sell your email.</p>
     <p class="msg" id="msg" role="status" aria-live="polite"></p>
   </form>
 </main>
