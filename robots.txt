@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://dadiosity.com/sitemap.xml
