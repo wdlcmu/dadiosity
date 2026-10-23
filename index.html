@@ -118,8 +118,14 @@
         msg.textContent = "You're in. Watch your inbox.";
         msg.className = 'msg ok';
         form.reset();
-      } else {
+      } else if (d && d.reason === 'rate-limited') {
+        msg.textContent = 'Too many tries. Try again later.';
+        msg.className = 'msg err';
+      } else if (d && (d.reason === 'bad-email' || d.reason === 'bad-body')) {
         msg.textContent = 'That email looks off. Try again.';
+        msg.className = 'msg err';
+      } else {
+        msg.textContent = 'That did not go through. Try again.';
         msg.className = 'msg err';
       }
     }).catch(function () {
