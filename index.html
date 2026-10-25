@@ -4,86 +4,165 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dadiosity · Coming soon</title>
-<meta name="description" content="Dadiosity: one small dad lesson each day, for dads of little kids. Stay curious. She's only three once.">
+<meta name="description" content="Dadiosity: one small lesson each day, for dads of little kids. Stay curious. She's only three once.">
 <link rel="canonical" href="https://dadiosity.com/">
+<link rel="icon" href="/assets/mark.svg" type="image/svg+xml">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Dadiosity">
 <meta property="og:title" content="Dadiosity">
-<meta property="og:description" content="One small dad lesson each day, for dads of little kids. Stay curious. She's only three once.">
+<meta property="og:description" content="One small lesson each day, for dads of little kids. Stay curious. She's only three once.">
 <meta property="og:url" content="https://dadiosity.com/">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://dadiosity.com/assets/og-card.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A dad reads a picture book to his toddler in bed.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dadiosity.com/assets/og-card.jpg">
 <meta name="twitter:title" content="Dadiosity">
-<meta name="twitter:description" content="One small dad lesson each day, for dads of little kids. Stay curious. She's only three once.">
+<meta name="twitter:description" content="One small lesson each day, for dads of little kids. Stay curious. She's only three once.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "Dadiosity",
   "url": "https://dadiosity.com/",
-  "description": "One small dad lesson each day, for dads of little kids."
+  "description": "One small lesson each day, for dads of little kids."
 }
 </script>
 <style>
-  :root { --accent: #2563eb; --ink: #1a1a1a; --muted: #6b7280; }
+  :root { --accent: #b45309; --amber: #d97706; --ink: #2b2118; --body: #4a3f35; --muted: #6f6154; --paper: #fff8ec; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    color: var(--ink); background: #fffdf8; line-height: 1.5;
+    color: var(--ink); background: var(--paper); line-height: 1.5;
     display: flex; flex-direction: column; min-height: 100vh;
     -webkit-font-smoothing: antialiased;
   }
   main {
     display: flex; flex-direction: column; justify-content: flex-start; align-items: center;
-    text-align: center; padding: 4rem 1.5rem 3.5rem; max-width: 42rem; margin: 0 auto; width: 100%;
+    text-align: center; padding: 2rem 1.5rem 3.5rem; max-width: 42rem; margin: 0 auto; width: 100%;
+  }
+  .hero {
+    width: 100%; border-radius: 1.5rem; padding: 2.75rem 1.5rem 2rem; margin-bottom: 2.5rem;
+    background: linear-gradient(155deg, #3a2818, #241708);
+    box-shadow: 0 10px 30px rgba(43, 33, 24, 0.20);
+  }
+  .hero .mark { display: block; width: 76px; height: 76px; margin: 0 auto 1rem; }
+  .hero h1 { color: #fff8ec; }
+  .hero .tagline { color: #f0dfba; }
+  .hero .sub { color: #e6d7bf; margin-left: auto; margin-right: auto; }
+  .hero img.photo {
+    display: block; width: 100%; height: auto; border-radius: 1rem; margin-top: 0.5rem;
+    border: 3px solid rgba(255, 248, 236, 0.85); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
   }
   .kicker {
     display: inline-block; font-size: 0.875rem; font-weight: 600; letter-spacing: 0.08em;
     text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem;
     border: 1px solid var(--accent); border-radius: 999px; padding: 0.35rem 1rem;
   }
-  h1 { font-size: clamp(2.5rem, 8vw, 4rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 1rem; }
-  .tagline { font-size: clamp(1.25rem, 4vw, 1.625rem); font-weight: 600; color: #374151; margin-bottom: 0.75rem; }
+  .hero .kicker { color: #f5c877; border-color: #f5c877; }
+  h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 1rem; }
+  @media (min-width: 40rem) { h1 { font-size: 4rem; } }
+  .tagline { font-size: 1.25rem; font-weight: 600; color: #374151; margin-bottom: 0.75rem; }
+  @media (min-width: 40rem) { .tagline { font-size: 1.625rem; } }
   .sub { font-size: 1.0625rem; color: #374151; max-width: 30rem; margin-bottom: 2.25rem; }
+  .hero .sub { margin-bottom: 1.5rem; }
   form { width: 100%; max-width: 26rem; }
   form label { display: block; font-weight: 600; margin-bottom: 0.75rem; }
   .row { display: flex; gap: 0.5rem; }
   input[type="email"] {
-    flex: 1; min-width: 0; font-size: 1rem; padding: 0.75rem 1rem;
-    border: 1px solid #d1d5db; border-radius: 0.5rem; background: #fff; color: var(--ink);
+    flex: 3 1 0; min-width: 0; font-size: 1rem; padding: 0.75rem 1rem; min-height: 48px;
+    border: 1px solid #e0d3bd; border-radius: 0.5rem; background: #fff; color: var(--ink);
   }
   button {
-    font-size: 1rem; font-weight: 700; padding: 0.75rem 1.25rem; cursor: pointer;
+    flex: 1 1 0; font-size: 1rem; font-weight: 700; padding: 0.75rem 1.25rem; cursor: pointer; min-height: 48px;
     border: 0; border-radius: 0.5rem; background: var(--accent); color: #fff;
   }
   button:disabled { opacity: 0.6; cursor: default; }
+  button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
   .lesson { width: 100%; max-width: 26rem; text-align: left; margin-bottom: 2.25rem; }
   .lesson h2 { font-size: 1.25rem; font-weight: 700; text-align: center; margin-bottom: 0.75rem; }
   .lesson ul { list-style: none; }
-  .lesson li { padding: 0.5rem 0; border-top: 1px solid #e5e7eb; color: #374151; }
+  .lesson li { padding: 0.5rem 0; border-top: 1px solid #eee0c8; color: var(--body); }
   .lesson li strong { color: var(--ink); }
+  .moments { width: 100%; max-width: 42rem; margin-top: 2.75rem; }
+  .moments h2 { font-size: 1.25rem; font-weight: 700; text-align: center; margin-bottom: 1rem; }
+  .moments .strip { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+  .moments figure { flex: 3 1 0; min-width: 0; }
+  .moments img { display: block; width: 100%; height: 11rem; object-fit: cover; border-radius: 1rem; }
+  .moments figcaption { text-align: center; font-weight: 600; color: var(--body); margin-top: 0.5rem; }
+  .sample { width: 100%; max-width: 26rem; text-align: left; margin-top: 2.75rem; }
+  .sample .sample-label {
+    font-size: 0.875rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #b45309; text-align: center; margin-bottom: 0.5rem;
+  }
+  .sample .sample-sub { text-align: center; color: var(--body); margin-bottom: 1rem; }
+  .card {
+    background: #fffaf0; border: 1px solid #f0dfba; border-radius: 1rem;
+    padding: 1.5rem 1.25rem; box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+  }
+  .card .card-head { font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #b45309; margin-bottom: 0.375rem; }
+  .card h3 { font-size: 1.375rem; font-weight: 800; letter-spacing: -0.01em; margin-bottom: 1rem; }
+  .card p { color: var(--body); margin-bottom: 0.875rem; }
+  .card p:last-child { margin-bottom: 0; }
+  .card p strong { color: var(--ink); }
+  .share { text-align: center; margin-top: 1.25rem; }
+  #sharemsg { font-size: 0.875rem; color: var(--muted); }
+  #sharemsg:not(:empty) { margin-top: 0.5rem; }
   .fine { font-size: 0.875rem; color: var(--muted); margin-top: 0.75rem; }
   .msg { font-weight: 600; margin-top: 1rem; min-height: 1.5rem; }
   .msg.ok { color: #15803d; }
   .msg.err { color: #b91c1c; }
+  .confirm {
+    width: 100%; max-width: 26rem; text-align: center; margin-top: 1.5rem;
+    background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 1rem; padding: 1.25rem;
+  }
+  .confirm[hidden] { display: none; }
+  .confirm h2 { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem; }
+  .confirm p { color: var(--body); margin-bottom: 0.5rem; }
+  .confirm a {
+    color: var(--accent); font-weight: 700; text-decoration: none;
+    display: inline-block; padding: 12px 6px; min-height: 44px;
+  }
+  .confirm a:hover { text-decoration: underline; }
   footer {
-    margin-top: auto; text-align: center; padding: 2rem 1.5rem; border-top: 1px solid #e5e7eb;
+    margin-top: auto; text-align: center; padding: 2rem 1.5rem; border-top: 1px solid #eee0c8;
     font-size: 0.9375rem; color: var(--muted);
   }
+  footer p { margin-bottom: 0.5rem; }
+  footer a { color: var(--accent); font-weight: 600; text-decoration: none; display: inline-block; padding: 12px 6px; min-height: 44px; }
+  footer a:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
 <main>
-  <span class="kicker">Coming soon</span>
-  <h1>Dadiosity</h1>
-  <p class="tagline">Stay curious. She's only three once.</p>
-  <p class="sub">One small dad lesson each day, for dads of little kids.</p>
+  <section class="hero">
+    <svg class="mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+      <circle cx="32" cy="32" r="30" fill="#b45309"/>
+      <g stroke="#fff8ec" stroke-width="3.4" stroke-linecap="round" fill="none">
+        <path d="M23 28 v13"/><path d="M23 41 l-5 9"/><path d="M23 41 l5 9"/>
+        <path d="M23 32 q7 4 11 2"/>
+        <path d="M41 34 v9"/><path d="M41 43 l-3.5 7"/><path d="M41 43 l3.5 7"/>
+        <path d="M41 37 q-4 -1 -7 -3"/>
+      </g>
+      <circle cx="23" cy="21" r="5.5" fill="#fff8ec"/>
+      <circle cx="41" cy="29" r="4.2" fill="#fff8ec"/>
+      <path d="M14 54 h36" stroke="#fff8ec" stroke-width="2.4" stroke-linecap="round" opacity="0.55"/>
+    </svg>
+    <span class="kicker">Coming soon</span>
+    <h1>Dadiosity</h1>
+    <p class="tagline">Stay curious. She's only three once.</p>
+    <p class="sub">One small lesson each day, for dads of little kids.</p>
+    <img class="photo" src="/assets/hero-reading.jpg" width="1200" height="801" alt="A dad reads a picture book to his toddler in bed.">
+  </section>
   <section class="lesson" aria-label="What each daily lesson includes">
-    <h2>Each lesson has four parts.</h2>
+    <h2>Each lesson: four parts.</h2>
     <ul>
-      <li><strong>The idea:</strong> one dad skill, in small steps.</li>
-      <li><strong>Tonight's move:</strong> one move for a real moment.</li>
-      <li><strong>Tonight's play:</strong> one short game with your kid.</li>
-      <li><strong>Why it works:</strong> one clear and honest reason.</li>
+      <li><strong>The idea:</strong> dad skill, small steps.</li>
+      <li><strong>Tonight's move:</strong> one real moment.</li>
+      <li><strong>Tonight's play:</strong> short game.</li>
+      <li><strong>Why it works:</strong> clear, honest reason.</li>
     </ul>
   </section>
   <form id="signup" novalidate>
@@ -96,18 +175,58 @@
     <p class="fine">No spam. No ads. We never sell your email.</p>
     <p class="msg" id="msg" role="status" aria-live="polite"></p>
   </form>
+  <section class="confirm" id="confirm" hidden role="status" aria-live="polite" aria-label="Signup confirmation">
+    <h2>You are in.</h2>
+    <p>We saved your email.</p>
+    <p>No email is sent today.</p>
+    <p>First lesson comes at launch.</p>
+    <p>Then one lesson each day.</p>
+    <p><a href="#sample">Read the sample lesson</a></p>
+  </section>
+  <section class="moments" aria-label="Small moments from dad life">
+    <h2>Small moments, every night.</h2>
+    <div class="strip">
+      <figure>
+        <img src="/assets/play-blocks.jpg" width="900" height="600" loading="lazy" alt="A dad plays with wooden blocks beside his toddler.">
+        <figcaption>Floor time</figcaption>
+      </figure>
+      <figure>
+        <img src="/assets/table-meal.jpg" width="600" height="400" loading="lazy" alt="A dad shares a meal with his toddler at the table.">
+        <figcaption>Table time</figcaption>
+      </figure>
+    </div>
+  </section>
+  <section class="sample" id="sample" aria-label="A sample daily lesson">
+    <p class="sample-label">A sample lesson</p>
+    <p class="sample-sub">One real lesson from the founder's nightly sequence. Email lessons start at launch.</p>
+    <article class="card">
+      <p class="card-head">Dadiosity Daily, Lesson 13: Restaurants</p>
+      <h3>Make the wait part of the meal</h3>
+      <p><strong>The idea:</strong> A restaurant meal is mostly waiting. And waiting is the hard part. So the wait is not the gap before the meal. The wait is part of the meal.</p>
+      <p><strong>Tonight's move:</strong> Before the wait starts. Give her one real choice about dinner. One small pick that is truly hers. A kid with a choice is a host. Not a prisoner of the chair.</p>
+      <p><strong>Tonight's play:</strong> At home, build a tiny pretend restaurant. Blocks for tables, a blanket over the door. She seats the stuffed animals. She takes your order in scribbles. She brings one pretend dish at a time. Pay with counted thank-yous and a big tip.</p>
+      <p><strong>Why it works:</strong> Waiting feels long. When nothing in it is yours. A choice and a small job make the minutes hers. And time she owns moves faster.</p>
+    </article>
+    <div class="share">
+      <button type="button" id="sharebtn">Share this lesson</button>
+      <p id="sharemsg" role="status" aria-live="polite"></p>
+    </div>
+  </section>
 </main>
 <footer>
   <p>Built with Muse.</p>
+  <p><a href="/privacy">Privacy</a> <a href="/terms">Terms</a></p>
 </footer>
 <script>
   var form = document.getElementById('signup');
   var msg = document.getElementById('msg');
   var btn = document.getElementById('go');
+  var confirmPanel = document.getElementById('confirm');
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     var email = document.getElementById('email').value.trim();
     msg.textContent = ''; msg.className = 'msg';
+    confirmPanel.hidden = true;
     btn.disabled = true;
     fetch('/signup', {
       method: 'POST',
@@ -115,8 +234,9 @@
       body: JSON.stringify({ email: email })
     }).then(function (r) { return r.json(); }).then(function (d) {
       if (d && d.ok) {
-        msg.textContent = "You're in. First lesson at launch.";
-        msg.className = 'msg ok';
+        msg.textContent = '';
+        msg.className = 'msg';
+        confirmPanel.hidden = false;
         form.reset();
       } else if (d && d.reason === 'rate-limited') {
         msg.textContent = 'Too many tries. Try again later.';
@@ -133,6 +253,25 @@
       msg.className = 'msg err';
     }).finally(function () { btn.disabled = false; });
   });
+</script>
+<script>
+  var shareBtn = document.getElementById('sharebtn');
+  var shareMsg = document.getElementById('sharemsg');
+  if (shareBtn) {
+    shareBtn.addEventListener('click', function () {
+      var url = 'https://dadiosity.com/#sample';
+      var data = { title: 'Dadiosity Daily, Lesson 13: Restaurants', text: 'Make the wait part of the meal. A sample Dadiosity lesson.', url: url };
+      if (navigator.share) {
+        navigator.share(data).catch(function () {});
+      } else if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(function () {
+          shareMsg.textContent = 'Link copied. Send it to a dad.';
+        }, function () { shareMsg.textContent = url; });
+      } else {
+        shareMsg.textContent = url;
+      }
+    });
+  }
 </script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "22eddfa2caf24f2cb9534384671bc630"}'></script>
 </body>
