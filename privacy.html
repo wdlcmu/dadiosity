@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy · Dadiosity</title>
+<meta name="description" content="Dadiosity privacy: what the email signup collects, what it does not, and what is not set yet.">
+<link rel="canonical" href="https://dadiosity.com/privacy">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Dadiosity">
+<meta property="og:title" content="Privacy · Dadiosity">
+<meta property="og:description" content="What the email signup collects, what it does not, and what is not set yet.">
+<meta property="og:url" content="https://dadiosity.com/privacy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Privacy · Dadiosity">
+<meta name="twitter:description" content="What the email signup collects, what it does not, and what is not set yet.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Dadiosity",
+  "url": "https://dadiosity.com/",
+  "description": "One small dad lesson each day, for dads of little kids."
+}
+</script>
+<style>
+  :root { --accent: #2563eb; --ink: #1a1a1a; --muted: #6b7280; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--ink); background: #fffdf8; line-height: 1.5;
+    display: flex; flex-direction: column; min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  main {
+    display: flex; flex-direction: column; justify-content: flex-start; align-items: center;
+    padding: 4rem 1.5rem 3.5rem; max-width: 42rem; margin: 0 auto; width: 100%;
+  }
+  .brand { align-self: flex-start; font-weight: 800; color: var(--accent); text-decoration: none; margin-bottom: 2rem; }
+  .text { width: 100%; text-align: left; }
+  h1 { font-size: clamp(2rem, 6vw, 3rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 1rem; }
+  h2 { font-size: 1.25rem; font-weight: 700; margin: 1.75rem 0 0.5rem; }
+  p { color: #374151; margin-bottom: 0.5rem; }
+  p strong { color: var(--ink); }
+  footer {
+    margin-top: auto; text-align: center; padding: 2rem 1.5rem; border-top: 1px solid #e5e7eb;
+    font-size: 0.9375rem; color: var(--muted);
+  }
+  footer p { margin-bottom: 0.5rem; }
+  footer a { color: var(--accent); font-weight: 600; text-decoration: none; display: inline-block; padding: 12px 6px; min-height: 44px; }
+  footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<main>
+  <a class="brand" href="/">Dadiosity</a>
+  <div class="text">
+    <h1>Privacy</h1>
+    <p><strong>The short version:</strong> Joining collects only your email address. Nothing is sent now.</p>
+
+    <h2>What joining collects</h2>
+    <p>The signup form sends only your email address.</p>
+    <p>The save code adds the join time.</p>
+    <p>It also adds one source label: holding-page.</p>
+    <p>Your address is the key for that record.</p>
+
+    <h2>Where it is saved</h2>
+    <p>The save code writes to Cloudflare KV.</p>
+    <p>If that store is not connected, no signup is saved.</p>
+    <p>No set end date is in the signup code.</p>
+    <p>Your network address only limits signup tries.</p>
+    <p>It is not saved in the signup record.</p>
+
+    <h2>What it is for</h2>
+    <p>Your address is for daily lessons by email.</p>
+    <p>First lesson at launch, then one a day.</p>
+    <p>Nothing is sent from the signup code.</p>
+    <p>No lesson email is sent now.</p>
+
+    <h2>What we do not collect</h2>
+    <p>The form asks for no name.</p>
+    <p>It asks for no phone or payment data.</p>
+    <p>The home page says: no spam, no ads.</p>
+    <p>We never sell your email.</p>
+
+    <h2>Site counts</h2>
+    <p>This site carries a Cloudflare Web Analytics beacon.</p>
+    <p>A beacon is a small counting script.</p>
+    <p>That tag is not set up for this site yet.</p>
+
+    <h2>Leaving and removal</h2>
+    <p>There is no leave link yet.</p>
+    <p>No sending system exists yet.</p>
+    <p>Ask for removal here: [CONTACT BEFORE SHIP].</p>
+    <p>This page must update before lessons launch.</p>
+
+    <h2>Contact</h2>
+    <p>No contact address is live yet.</p>
+    <p>Contact: [CONTACT BEFORE SHIP].</p>
+
+    <h2>Changes</h2>
+    <p>Changes will appear on this page.</p>
+  </div>
+</main>
+<footer>
+  <p>Built with Muse.</p>
+  <p><a href="/">Home</a> <a href="/terms">Terms</a></p>
+</footer>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "22eddfa2caf24f2cb9534384671bc630"}'></script>
+</body>
+</html>
