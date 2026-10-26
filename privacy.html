@@ -6,12 +6,19 @@
 <title>Privacy · Dadiosity</title>
 <meta name="description" content="Dadiosity privacy: what the email signup collects, what it does not, and what is not set yet.">
 <link rel="canonical" href="https://dadiosity.com/privacy">
+<link rel="icon" href="/assets/mark.svg" type="image/svg+xml">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Dadiosity">
 <meta property="og:title" content="Privacy · Dadiosity">
 <meta property="og:description" content="What the email signup collects, what it does not, and what is not set yet.">
 <meta property="og:url" content="https://dadiosity.com/privacy">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://dadiosity.com/assets/og-card.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A dad reads a picture book to his toddler in bed.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dadiosity.com/assets/og-card.jpg">
 <meta name="twitter:title" content="Privacy · Dadiosity">
 <meta name="twitter:description" content="What the email signup collects, what it does not, and what is not set yet.">
 <script type="application/ld+json">
@@ -24,11 +31,11 @@
 }
 </script>
 <style>
-  :root { --accent: #2563eb; --ink: #1a1a1a; --muted: #6b7280; }
+  :root { --accent: #b45309; --amber: #d97706; --ink: #2b2118; --body: #4a3f35; --muted: #6f6154; --paper: #fff8ec; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    color: var(--ink); background: #fffdf8; line-height: 1.5;
+    color: var(--ink); background: var(--paper); line-height: 1.5;
     display: flex; flex-direction: column; min-height: 100vh;
     -webkit-font-smoothing: antialiased;
   }
@@ -36,24 +43,26 @@
     display: flex; flex-direction: column; justify-content: flex-start; align-items: center;
     padding: 4rem 1.5rem 3.5rem; max-width: 42rem; margin: 0 auto; width: 100%;
   }
-  .brand { align-self: flex-start; font-weight: 800; color: var(--accent); text-decoration: none; margin-bottom: 2rem; }
+  .brand { align-self: flex-start; display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 800; color: var(--accent); text-decoration: none; margin-bottom: 2rem; padding: 10px 6px; min-height: 44px; }
+  .brand-mark { width: 32px; height: 32px; display: block; }
   .text { width: 100%; text-align: left; }
   h1 { font-size: clamp(2rem, 6vw, 3rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 1rem; }
   h2 { font-size: 1.25rem; font-weight: 700; margin: 1.75rem 0 0.5rem; }
-  p { color: #374151; margin-bottom: 0.5rem; }
+  p { color: var(--body); margin-bottom: 0.5rem; }
   p strong { color: var(--ink); }
   footer {
-    margin-top: auto; text-align: center; padding: 2rem 1.5rem; border-top: 1px solid #e5e7eb;
+    margin-top: auto; text-align: center; padding: 2rem 1.5rem; border-top: 1px solid #eee0c8;
     font-size: 0.9375rem; color: var(--muted);
   }
   footer p { margin-bottom: 0.5rem; }
   footer a { color: var(--accent); font-weight: 600; text-decoration: none; display: inline-block; padding: 12px 6px; min-height: 44px; }
   footer a:hover { text-decoration: underline; }
+  a:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
 </style>
 </head>
 <body>
 <main>
-  <a class="brand" href="/">Dadiosity</a>
+  <a class="brand" href="/"><img class="brand-mark" src="/assets/mark.svg" width="32" height="32" alt="">Dadiosity</a>
   <div class="text">
     <h1>Privacy</h1>
     <p><strong>The short version:</strong> Joining collects only your email address. Nothing is sent now.</p>
