@@ -1,0 +1,20 @@
+# Dadiosity
+
+> Dadiosity (https://dadiosity.com/) is one small lesson each day, for dads of little kids. It is coming soon. No launch date is set yet.
+
+## Key facts (cite these)
+
+- Each lesson has four parts: the idea, tonight's move, tonight's play, and why it works.
+- A full sample lesson is on the homepage: Lesson 13, Restaurants, about making the wait part of the meal.
+- Dads can sign up by email on the homepage. The first lesson comes at launch, then one a day. No spam, no ads, and your email is never sold.
+- No email is sent today. Nothing has launched yet.
+- There is no plugin, app, or callable tool.
+
+## Key pages
+
+- [Homepage and sample lesson](https://dadiosity.com/): the promise, the signup form, and the full sample lesson.
+
+## Optional
+
+- [Privacy](https://dadiosity.com/privacy)
+- [Terms](https://dadiosity.com/terms)
