@@ -250,6 +250,10 @@
     e.preventDefault();
     if (sending) return;
     var email = document.getElementById('email').value.trim();
+    if (!email) {
+      if (!confirmPanel.hidden) return;
+      try { if (window.localStorage.getItem('dadiosity_joined_v1')) return; } catch (e) {}
+    }
     msg.textContent = ''; msg.className = 'msg';
     confirmPanel.hidden = true;
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
