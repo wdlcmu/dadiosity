@@ -118,6 +118,9 @@
   .card p:last-child { margin-bottom: 0; }
   .card p strong { color: var(--ink); }
   .share { text-align: center; margin-top: 1.25rem; }
+  .join-next { text-align: center; margin-top: 0.75rem; }
+  .join-next a { color: var(--accent); font-weight: 700; text-decoration: none; display: inline-block; padding: 12px 6px; min-height: 44px; }
+  .join-next a:hover { text-decoration: underline; }
   #sharemsg { font-size: 0.875rem; color: var(--muted); }
   #sharemsg:not(:empty) { margin-top: 0.5rem; }
   .fine { font-size: 0.875rem; color: var(--muted); margin-top: 0.75rem; }
@@ -165,7 +168,7 @@
     <p class="tagline">Dads get one lesson each day.</p>
     <p class="sub">For dads of little kids. Free. A minute to read.</p>
     <p class="fine"><a class="sample-first" href="#sample">Read a sample lesson.</a></p>
-    <form id="signup" novalidate>
+    <form id="signup" method="post" action="/signup" novalidate>
       <label for="email">Sign up for daily lessons.</label>
       <div class="row">
         <input type="email" id="email" name="email" placeholder="you@email.com" autocomplete="email" required>
@@ -204,6 +207,7 @@
       <button type="button" id="sharebtn">Share this lesson</button>
       <p id="sharemsg" role="status" aria-live="polite"></p>
     </div>
+    <p class="join-next"><a href="#email">Join for daily lessons</a></p>
   </section>
   <section class="lesson" aria-label="What each daily lesson includes">
     <h2>Each lesson: four parts.</h2>
@@ -238,8 +242,13 @@
   var msg = document.getElementById('msg');
   var btn = document.getElementById('go');
   var confirmPanel = document.getElementById('confirm');
+  var sending = false;
+  try {
+    if (window.localStorage.getItem('dadiosity_joined_v1')) confirmPanel.hidden = false;
+  } catch (e) {}
   form.addEventListener('submit', function (e) {
     e.preventDefault();
+    if (sending) return;
     var email = document.getElementById('email').value.trim();
     msg.textContent = ''; msg.className = 'msg';
     confirmPanel.hidden = true;
@@ -248,22 +257,28 @@
       msg.className = 'msg err';
       return;
     }
+    sending = true;
     btn.disabled = true;
     fetch('/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email })
     }).then(function (r) { return r.json(); }).then(function (d) {
+      var reason = (d && (d.reason || d.error)) || '';
       if (d && d.ok) {
-        msg.textContent = '';
-        msg.className = 'msg';
+        msg.textContent = d.duplicate ? 'You already joined. You are in.' : '';
+        msg.className = d.duplicate ? 'msg ok' : 'msg';
         confirmPanel.hidden = false;
         form.reset();
-      } else if (d && d.reason === 'rate-limited') {
+        try { confirmPanel.scrollIntoView({ block: 'nearest' }); } catch (e) {}
+      } else if (reason === 'rate-limited') {
         msg.textContent = 'Too many tries. Try again later.';
         msg.className = 'msg err';
-      } else if (d && (d.reason === 'bad-email' || d.reason === 'bad-body')) {
+      } else if (reason === 'bad-email' || reason === 'bad-body') {
         msg.textContent = 'That email looks off. Try again.';
+        msg.className = 'msg err';
+      } else if (reason === 'unconfigured') {
+        msg.textContent = 'Signups are paused. Try again later.';
         msg.className = 'msg err';
       } else {
         msg.textContent = 'That did not go through. Try again.';
@@ -272,7 +287,7 @@
     }).catch(function () {
       msg.textContent = 'That did not go through. Try again.';
       msg.className = 'msg err';
-    }).finally(function () { btn.disabled = false; });
+    }).finally(function () { sending = false; btn.disabled = false; });
   });
 </script>
 <script>
@@ -327,6 +342,7 @@ function fleetSessionMarks(){
     }
   } catch (e) {}
 }
+fleetSessionMarks();
 (function(){
   var s = document.createElement("script");
   s.async = true;
