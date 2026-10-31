@@ -16,5 +16,6 @@
 
 ## Optional
 
+- [Full page text](https://dadiosity.com/llms-full.txt): the complete text of every page, for readers that prefer one file.
 - [Privacy](https://dadiosity.com/privacy)
 - [Terms](https://dadiosity.com/terms)

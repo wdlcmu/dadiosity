@@ -1,0 +1,151 @@
+# Dadiosity: full page text
+
+> Complete text of dadiosity.com: the homepage, privacy, and terms.
+> Dadiosity is one small lesson each day, for dads of little kids. It is coming soon.
+> No launch date is set yet.
+> Text captured from the live pages, 2026-10-31.
+
+## Homepage (https://dadiosity.com/)
+
+Coming soon
+Dadiosity
+Dads get one lesson each day.
+For dads of little kids. Free. A minute to read.
+Read a sample lesson.
+Sign up for daily lessons.
+Join
+First lesson at launch, then daily.
+No launch date is set yet. The first 31 lessons are written.
+No spam. No ads. We never sell your email.
+You are in.
+We saved your email.
+No email is sent today.
+First lesson comes at launch.
+Then one lesson each day.
+Read the sample lesson
+What we don't do
+We don't send the daily emails yet. Sending is built, but it has not started.
+We don't ask for your name, phone number, or payment details. The form takes an email address and nothing else.
+We don't sell anything here. The lessons are free.
+We don't send courses, ebooks, or long reads. One short lesson a day is the whole product.
+Our guarantees
+We never sell your email address.
+No ads and no spam.
+You can get off the list. Email hello@dadiosity.com today, and every lesson will carry a stop link.
+A sample lesson
+A real lesson.
+Dadiosity Daily, Lesson 13: Restaurants
+Make the wait part of the meal
+The idea: A restaurant meal is mostly waiting. And waiting is the hard part. So the wait is not the gap before the meal. The wait is part of the meal.
+Tonight's move: Before the wait starts. Give her one real choice about dinner. One small pick that is truly hers. A kid with a choice is a host. Not a prisoner of the chair.
+Tonight's play: At home, build a tiny pretend restaurant. Blocks for tables, a blanket over the door. She seats the stuffed animals. She takes your order in scribbles. She brings one pretend dish at a time. Pay with counted thank-yous and a big tip.
+Why it works: Waiting feels long. When nothing in it is yours. A choice and a small job make the minutes hers. And time she owns moves faster.
+Share this lesson
+Join for daily lessons
+Each lesson: five parts.
+- The idea: one dad skill, in small steps.
+- Tonight's move: one real moment.
+- Tonight's play: short game.
+- Why it works: clear, honest reason.
+- Core move: one line to keep.
+Small moments.
+Floor time
+Table time
+Built with Muse.
+Privacy Terms
+More family tools: Pick My Costume · The Present Picker
+
+## Privacy (https://dadiosity.com/privacy)
+
+Dadiosity
+Privacy
+The short version: We collect your email for daily lessons.
+What joining collects
+The signup form sends only your email address.
+The save code adds the join time.
+It also adds one source label: holding-page.
+Your address is the key for that record.
+Where it is saved
+The save code writes to Cloudflare KV.
+If it is not connected, nothing is saved.
+The signup list also sits in Resend.
+Resend is the email tool built for lessons.
+Once its key is set, signups go there.
+It tracks which lesson comes next.
+The signup code sets no end date.
+Your network address only limits signup tries.
+That try count is kept for one hour.
+It is not saved in the signup record.
+What it is for
+Your email joins the Dadiosity signup list.
+The list is for one lesson each day.
+Each lesson comes by email.
+Sending is built, but has not started.
+No spam. No ads. We never sell your email.
+What we do not collect
+The form asks for no name.
+It asks for no phone or payment data.
+What we count
+This site runs two counting scripts.
+PostHog counts views, shares, joins, and form starts.
+Cloudflare counts visits in browsers and servers.
+PostHog keeps an anonymous ID for counting.
+The ID sits in a cookie and storage.
+This site keeps two small marks too.
+One notes a share arrival.
+One notes that you joined.
+None holds your email address.
+Your email is never sent to PostHog.
+It does not record your screen.
+Leaving and removal
+There is no leave link yet.
+Ask for removal here: hello@dadiosity.com.
+Each lesson will carry a stop link.
+Contact
+Contact: hello@dadiosity.com.
+Changes
+Changes will appear on this page.
+Built with Muse.
+Home Terms
+
+## Terms (https://dadiosity.com/terms)
+
+Dadiosity
+Terms
+The short version: Dadiosity sends one daily lesson by email. Sending has not started yet.
+What Dadiosity is
+Dadiosity is for daily dad lessons by email.
+It is for dads of little kids.
+Lessons have not started yet.
+First lesson at launch, then one a day.
+What lessons are
+Lessons give general ideas for parents.
+Lessons are not medical advice.
+Lessons are not mental health advice.
+Lessons are not safety advice.
+They are not advice for one specific child.
+Use your own judgment with your child.
+Joining by email
+The signup form sends only your email address.
+The save code adds the join time.
+It also adds one source label: holding-page.
+Your address is the key for that record.
+The save code writes to Cloudflare KV.
+If that store is not connected, no signup is saved.
+On success, joining shows: You are in.
+It also shows: First lesson comes at launch.
+Nothing is sent from the signup code.
+No lesson email is sent now.
+Launch timing
+No launch date is set.
+We make no guarantee about launch timing.
+Leaving and removal
+There is no leave link yet.
+Sending has not started yet.
+Ask for removal here: hello@dadiosity.com.
+Contact
+Contact: hello@dadiosity.com.
+Changes
+Changes will appear on this page.
+Built with Muse.
+Home Privacy
