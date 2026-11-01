@@ -161,15 +161,18 @@ function dadStem(w) {
   else if (w.length > 3 && w.slice(-1) === "s" && w.slice(-2) !== "ss") w = w.slice(0, -1);
   return w;
 }
-function dadTokens(s) {
+function dadTokenPairs(s) {
   var out = [], seen = {};
   dadNorm(s).split(" ").forEach(function (w) {
     if (!w || DADIO_STOP[w]) return;
     var st = dadStem(w);
     if (st.length < 2 || seen[st]) return;
-    seen[st] = 1; out.push(st);
+    seen[st] = 1; out.push({ raw: w.replace(/'/g, ""), stem: st });
   });
   return out;
+}
+function dadTokens(s) {
+  return dadTokenPairs(s).map(function (p) { return p.stem; });
 }
 /* SPEC-DADIO-ASK-TIE-1 scoring: a query word earns its best single
    source, never a stack of them. A lesson's own topics (the words the
@@ -205,13 +208,17 @@ var DADIO_SYN = { scream: "cry", nightmare: "fight", nitemare: "fight", dawdle: 
 var DADIO_VOCAB = null;
 function dadVocab() {
   if (DADIO_VOCAB) return DADIO_VOCAB;
-  var tt = {}, all = {};
+  var tt = {}, all = {}, rawTT = [], rawSeen = {};
   (window.DADIO_LESSONS || []).forEach(function (lesson) {
-    (lesson.topics || []).forEach(function (t) { dadTokens(t).forEach(function (w) { tt[w] = 1; all[w] = 1; }); });
+    (lesson.topics || []).forEach(function (t) {
+      dadTokens(t).forEach(function (w) { tt[w] = 1; all[w] = 1; });
+      dadTokenPairs(t).forEach(function (p) { if (!rawSeen[p.raw]) { rawSeen[p.raw] = 1; rawTT.push(p); } });
+    });
     dadTokens(lesson.title).forEach(function (w) { tt[w] = 1; all[w] = 1; });
+    dadTokenPairs(lesson.title).forEach(function (p) { if (!rawSeen[p.raw]) { rawSeen[p.raw] = 1; rawTT.push(p); } });
     dadTokens(lesson.idea + " " + lesson.move + " " + lesson.play + " " + lesson.why + " " + lesson.core).forEach(function (w) { all[w] = 1; });
   });
-  DADIO_VOCAB = { tt: Object.keys(tt), all: all };
+  DADIO_VOCAB = { tt: Object.keys(tt), ttSet: tt, all: all, rawTT: rawTT };
   return DADIO_VOCAB;
 }
 function dadEdit1(a, b) {
@@ -224,24 +231,74 @@ function dadEdit1(a, b) {
   }
   return d[a.length][b.length] === 1;
 }
-function dadCanon(toks) {
+/* SPEC-DADIO-ASK-STEM-1: the FUZZ-1 correction above compares the
+   STEMMED typed word with the STEMMED bank, so a word one edit from
+   the unstemmed bank word sits two edits from its stem and never
+   corrects ("mornin" vs stem "morn", "shoutng" vs stem "shout").
+   Two narrow additions, same fences (5+ letters, same first letter,
+   exactly one hit): when the stemmed comparison finds nothing, the
+   typed word's raw form is compared with the bank's unstemmed
+   topic/title words and a unique hit is taken as that word's stem;
+   and a base form whose silent-e drop is itself a topic/title stem
+   is taken as that stem ("leave" -> "leav", the stem of the topic
+   "leaving"). The raw comparison keeps the FUZZ-1 guard that a word
+   matching anything in the bank is never rewritten, so a real bank
+   word ("share") can never be hijacked to a neighbour ("shake");
+   the e-drop check is the one exception, and it can only land on a
+   stem the bank itself files a lesson under. */
+function dadCanonPairs(pairs) {
   var vocab = dadVocab();
-  var out = [], seen = {};
-  toks.forEach(function (t) {
+  return pairs.map(function (p) {
+    var t = p.stem;
     var w = DADIO_SYN[t] || t;
-    if (w === t && t.length >= 5 && !vocab.all[t] && !DADIO_NEUTRAL[t]) {
+    if (w !== t) return w;
+    var corrected = null;
+    if (t.length >= 5 && !vocab.all[t] && !DADIO_NEUTRAL[t]) {
       var hits = vocab.tt.filter(function (v) { return v.length >= 4 && v.charAt(0) === t.charAt(0) && dadEdit1(t, v); });
-      if (hits.length === 1) w = hits[0];
+      if (hits.length === 1) corrected = hits[0];
+      else if (hits.length === 0 && p.raw.length >= 5) {
+        var stems = {}, list = [];
+        vocab.rawTT.forEach(function (e) {
+          if (e.raw.length >= 4 && e.raw.charAt(0) === p.raw.charAt(0) && dadEdit1(p.raw, e.raw) && !stems[e.stem]) { stems[e.stem] = 1; list.push(e.stem); }
+        });
+        if (list.length === 1) corrected = list[0];
+      }
     }
-    if (!seen[w]) { seen[w] = 1; out.push(w); }
+    if (!corrected && t.length >= 5 && t.slice(-1) === "e" && !vocab.ttSet[t] && !DADIO_NEUTRAL[t]) {
+      var variant = t.slice(0, -1);
+      if (vocab.ttSet[variant]) corrected = variant;
+    }
+    return corrected || t;
   });
+}
+function dadCanon(pairs) {
+  var out = [], seen = {};
+  dadCanonPairs(pairs).forEach(function (w) { if (!seen[w]) { seen[w] = 1; out.push(w); } });
   return out;
 }
 function dadScore(lesson, query) {
   var qn = " " + dadNorm(query) + " ";
-  var qToks = dadCanon(dadTokens(query));
+  var qPairs = dadTokenPairs(query);
+  var qCorr = dadCanonPairs(qPairs);
+  var qToks = [], qSeen = {};
+  qCorr.forEach(function (t) { if (!qSeen[t]) { qSeen[t] = 1; qToks.push(t); } });
   var qSet = {}; qToks.forEach(function (t) { qSet[t] = 1; });
   var qSquash = qn.replace(/ /g, "");
+  /* STEM-1: a second squash with each corrected word swapped for its
+     correction, so a corrected one-word spelling of a two-word topic
+     ("meltown" -> "meltdown", the topic "melt down" squashed) passes
+     the same surface-phrase check the correct spelling passes. Only
+     words the canon actually corrected are swapped; all other words
+     stand as typed, in place. */
+  var qCorrByStem = {};
+  qPairs.forEach(function (p, i) { qCorrByStem[p.stem] = qCorr[i]; });
+  var qCanonSquash = dadNorm(query).split(" ").map(function (w) {
+    var raw = w.replace(/'/g, "");
+    if (!w || DADIO_STOP[w]) return raw;
+    var st = dadStem(w);
+    var c = qCorrByStem[st];
+    return (c && c !== st) ? c : raw;
+  }).join("");
   var titleSet = {};
   dadTokens(lesson.title).forEach(function (t) { titleSet[t] = 1; });
   var bodySet = {};
@@ -252,7 +309,8 @@ function dadScore(lesson, query) {
     var tn = dadNorm(topic);
     if (tn.indexOf(" ") >= 0) {
       var tSquash = tn.replace(/ /g, "");
-      if (qn.indexOf(" " + tn + " ") >= 0 || (tSquash.length >= 6 && qSquash.indexOf(tSquash) >= 0)) surfacePhrase = true;
+      var tCanonSquash = tn.replace(/'/g, "").replace(/ /g, "");
+      if (qn.indexOf(" " + tn + " ") >= 0 || (tSquash.length >= 6 && qSquash.indexOf(tSquash) >= 0) || (tCanonSquash.length >= 6 && qCanonSquash.indexOf(tCanonSquash) >= 0)) surfacePhrase = true;
     }
     var tt = dadTokens(topic);
     if (!tt.length) return;
