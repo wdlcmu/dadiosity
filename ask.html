@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ask Dadiosity · Dealing with something tonight?</title>
+<meta name="description" content="Say tonight's hard part in your own words. Dadiosity matches your words to one of its 31 written lessons, right on this page. Nothing you type is sent or saved.">
+<link rel="canonical" href="https://dadiosity.com/ask">
+<link rel="icon" href="/assets/mark.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Dadiosity">
+<meta property="og:title" content="Ask Dadiosity">
+<meta property="og:description" content="Dealing with something tonight? Say it in your own words. Get the written lesson that fits.">
+<meta property="og:url" content="https://dadiosity.com/ask">
+<meta property="og:image" content="https://dadiosity.com/assets/og-card.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A dad reads a picture book to his toddler in bed.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dadiosity.com/assets/og-card.jpg">
+<meta name="twitter:image:alt" content="A dad reads a picture book to his toddler in bed.">
+<meta name="twitter:title" content="Ask Dadiosity">
+<meta name="twitter:description" content="Dealing with something tonight? Say it in your own words. Get the written lesson that fits.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Ask Dadiosity",
+  "url": "https://dadiosity.com/ask",
+  "description": "Say tonight's hard part in your own words. Dadiosity matches your words to one of its 31 written lessons, right on this page.",
+  "isPartOf": { "@type": "WebSite", "name": "Dadiosity", "url": "https://dadiosity.com/" }
+}
+</script>
+<style>
+  :root { --accent: #b45309; --amber: #d97706; --ink: #2b2118; --body: #4a3f35; --muted: #6f6154; --paper: #fff8ec; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--ink); background: var(--paper); line-height: 1.5;
+    display: flex; flex-direction: column; min-height: 100vh;
+    -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%;
+  }
+  main {
+    display: flex; flex-direction: column; justify-content: flex-start; align-items: center;
+    text-align: center; padding: 2rem 1.5rem 3.5rem; max-width: 42rem; margin: 0 auto; width: 100%;
+  }
+  .brand { font-weight: 800; font-size: 1.125rem; align-self: flex-start; }
+  .brand a { color: var(--ink); text-decoration: none; display: inline-block; padding: 12px 8px; margin: -12px -8px; min-height: 44px; }
+  h1 { font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; margin: 0.5rem 0 0.75rem; }
+  @media (min-width: 40rem) { h1 { font-size: 2.75rem; } }
+  .lead { font-size: 1.0625rem; color: var(--body); max-width: 30rem; margin-bottom: 1.5rem; }
+  .askbox { width: 100%; max-width: 26rem; text-align: left; }
+  .askbox label { display: block; font-weight: 600; margin-bottom: 0.5rem; text-align: center; }
+  textarea {
+    width: 100%; font-size: 1rem; font-family: inherit; padding: 0.75rem 1rem; min-height: 76px;
+    border: 1px solid #e0d3bd; border-radius: 0.5rem; background: #fff; color: var(--ink); resize: vertical;
+  }
+  button {
+    font-size: 1rem; font-weight: 700; padding: 0.75rem 1.25rem; cursor: pointer; min-height: 48px;
+    border: 0; border-radius: 0.5rem; background: var(--accent); color: #fff;
+  }
+  button:focus-visible, textarea:focus-visible, a:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+  #askbtn { width: 100%; margin-top: 0.5rem; }
+  .ortap { text-align: center; color: var(--muted); margin: 1.25rem 0 0.5rem; font-size: 0.9375rem; }
+  .chips { display: flex; flex-direction: column; gap: 0.5rem; width: 100%; max-width: 26rem; }
+  .chip {
+    min-height: 48px; padding: 10px 16px; font-size: 1rem; font-weight: 600; text-align: left;
+    border: 2px solid #e0d3bd; border-radius: 1rem; background: #fff; color: var(--ink); cursor: pointer;
+  }
+  .chip:active { transform: scale(.99); }
+  #hint { color: #b91c1c; font-weight: 600; min-height: 1.5rem; margin-top: 0.75rem; text-align: center; }
+  #answer { width: 100%; max-width: 26rem; text-align: left; margin-top: 1rem; }
+  .answer-label {
+    font-size: 0.875rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--accent); text-align: center; margin: 1rem 0 0.5rem;
+  }
+  .card {
+    background: #fffaf0; border: 1px solid #f0dfba; border-radius: 1rem;
+    padding: 1.5rem 1.25rem; box-shadow: 0 2px 10px rgba(0,0,0,0.04); margin-bottom: 1rem;
+    animation: qin .5s ease both;
+  }
+  #answer .card:nth-of-type(2) { animation-delay: .08s; }
+  #answer .card:nth-of-type(3) { animation-delay: .16s; }
+  @keyframes qin { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .card { animation: none; } }
+  .card .card-head { font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #b45309; margin-bottom: 0.75rem; }
+  .card p { color: var(--body); margin-bottom: 0.875rem; }
+  .card p:last-child { margin-bottom: 0; }
+  .card p strong { color: var(--ink); }
+  .nomatch {
+    background: #fffaf0; border: 1px solid #f0dfba; border-radius: 1rem; padding: 1.5rem 1.25rem;
+  }
+  .nomatch p { color: var(--body); margin-bottom: 0.875rem; }
+  .nomatch p strong { color: var(--ink); }
+  .howbox { width: 100%; max-width: 26rem; text-align: left; margin-top: 2.25rem; }
+  .howbox h2 { font-size: 1.25rem; font-weight: 700; text-align: center; margin-bottom: 0.75rem; }
+  .howbox p { padding: 0.5rem 0; border-top: 1px solid #eee0c8; color: var(--body); }
+  .howbox p strong { color: var(--ink); }
+  .joinline { text-align: center; margin-top: 1.5rem; }
+  .joinline a { color: var(--accent); font-weight: 700; text-decoration: none; display: inline-block; padding: 12px 6px; min-height: 44px; }
+  .joinline a:hover { text-decoration: underline; }
+  footer {
+    margin-top: auto; text-align: center; padding: 2rem 1.5rem; border-top: 1px solid #eee0c8;
+    font-size: 0.9375rem; color: var(--muted);
+  }
+  footer p { margin-bottom: 0.5rem; }
+  footer a { color: var(--accent); font-weight: 600; text-decoration: none; display: inline-block; padding: 12px 6px; min-height: 44px; }
+  footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<main>
+  <p class="brand"><a href="/">Dadiosity</a></p>
+  <h1>Dealing with something tonight?</h1>
+  <p class="lead">Ask here. Say tonight's hard part in your own words. We match your words to one of the 31 written lessons, right on this page. Nothing you type is sent or saved. No email needed.</p>
+  <div class="askbox">
+    <label for="q">Tonight's hard part, in your words</label>
+    <textarea id="q" rows="3" placeholder="Bedtime is a fight every night."></textarea>
+    <button id="askbtn" type="button">Find my lesson</button>
+    <p id="hint" role="alert"></p>
+  </div>
+  <p class="ortap">Or tap an example:</p>
+  <div class="chips" role="group" aria-label="Example questions">
+    <button type="button" class="chip" data-q="Bedtime is a fight every night.">Bedtime is a fight every night</button>
+    <button type="button" class="chip" data-q="She won't eat at restaurants.">She won't eat at restaurants</button>
+    <button type="button" class="chip" data-q="She won't listen to me.">She won't listen to me</button>
+    <button type="button" class="chip" data-q="I yelled at her and I feel awful.">I yelled at her and I feel awful</button>
+    <button type="button" class="chip" data-q="How do I play with her?">How do I play with her?</button>
+  </div>
+  <section id="answer" aria-live="polite"></section>
+  <section class="howbox" aria-label="How this works">
+    <h2>How this works</h2>
+    <p><strong>Your words stay here.</strong> The match runs on this page, on your device. Nothing is sent or saved.</p>
+    <p><strong>Real lessons only.</strong> Each answer is one of the 31 written lessons, word for word. Nothing is made up.</p>
+    <p><strong>No match, said plain.</strong> If no lesson fits your words, this page says so. It does not guess.</p>
+  </section>
+  <p class="joinline"><a href="/#sample">Read the sample lesson</a> &middot; <a href="/#email">Join for daily lessons</a></p>
+</main>
+<footer>
+  <p>Built with Muse.</p>
+  <p><a href="/privacy">Privacy</a> <a href="/terms">Terms</a></p>
+</footer>
+<script src="/lessons.js"></script>
+<script>
+"use strict";
+/* Dadiosity ask matcher (SPEC-DADIO-ASK-1): deterministic, client-side only.
+   Scores the visitor's words against each lesson's topics, title, and own
+   text, then serves the best lessons verbatim from window.DADIO_LESSONS.
+   No network call carries the words; nothing is sent or saved. */
+var DADIO_STOP = {};
+("a an the is it to of and or i my me she he her him we you your yours our at on in for with so do does did what how why when will would can could am are was were be been being have has had not no yes if but as by from this that these those there here just very really tonight today every each one two three about into over under again more most other some any all").split(" ").forEach(function (w) { DADIO_STOP[w] = 1; });
+function dadNorm(s) {
+  return String(s || "").toLowerCase().replace(/[\u2019\u2018]/g, "'").replace(/[^a-z0-9' ]/g, " ").replace(/\s+/g, " ").trim();
+}
+function dadStem(w) {
+  w = w.replace(/'s$/, "");
+  if (w.length > 5 && w.slice(-3) === "ing") w = w.slice(0, -3);
+  else if (w.length > 4 && w.slice(-2) === "ed") w = w.slice(0, -2);
+  else if (w.length > 3 && w.slice(-1) === "s" && w.slice(-2) !== "ss") w = w.slice(0, -1);
+  return w;
+}
+function dadTokens(s) {
+  var out = [], seen = {};
+  dadNorm(s).split(" ").forEach(function (w) {
+    if (!w || DADIO_STOP[w]) return;
+    var st = dadStem(w);
+    if (st.length < 2 || seen[st]) return;
+    seen[st] = 1; out.push(st);
+  });
+  return out;
+}
+function dadScore(lesson, query) {
+  var qn = " " + dadNorm(query) + " ";
+  var qToks = dadTokens(query);
+  var qSet = {}; qToks.forEach(function (t) { qSet[t] = 1; });
+  var score = 0;
+  var qSquash = qn.replace(/ /g, "");
+  (lesson.topics || []).forEach(function (topic) {
+    var tn = dadNorm(topic);
+    if (tn.indexOf(" ") >= 0) {
+      var tSquash = tn.replace(/ /g, "");
+      if (qn.indexOf(" " + tn + " ") >= 0 || (tSquash.length >= 6 && qSquash.indexOf(tSquash) >= 0)) score += 6;
+    } else if (qSet[dadStem(tn)]) {
+      score += 3;
+    }
+  });
+  dadTokens(lesson.title).forEach(function (t) { if (qSet[t]) score += 3; });
+  var body = {};
+  dadTokens(lesson.idea + " " + lesson.move + " " + lesson.play + " " + lesson.why + " " + lesson.core).forEach(function (t) { body[t] = 1; });
+  var bodyHits = 0;
+  qToks.forEach(function (t) { if (body[t]) bodyHits += 1; });
+  score += Math.min(bodyHits, 8);
+  return score;
+}
+function dadRank(query) {
+  var bank = window.DADIO_LESSONS || [];
+  var scored = bank.map(function (lesson) { return { lesson: lesson, score: dadScore(lesson, query) }; });
+  scored = scored.filter(function (r) { return r.score > 0; });
+  scored.sort(function (a, b) { return (b.score - a.score) || (a.lesson.n - b.lesson.n); });
+  return scored;
+}
+window.DADIO_MATCH = { score: dadScore, rank: dadRank, THRESHOLD: 4 };
+var DADIO_THRESHOLD = 4;
+function dadCard(lesson) {
+  var art = document.createElement("article");
+  art.className = "card";
+  var head = document.createElement("p");
+  head.className = "card-head";
+  head.textContent = lesson.heading;
+  art.appendChild(head);
+  [["The idea:", lesson.idea], ["Tonight's move:", lesson.move], ["Tonight's play:", lesson.play], ["Why it works:", lesson.why], ["Core move:", lesson.core]].forEach(function (part) {
+    var p = document.createElement("p");
+    var strong = document.createElement("strong");
+    strong.textContent = part[0];
+    p.appendChild(strong);
+    p.appendChild(document.createTextNode(" " + part[1]));
+    art.appendChild(p);
+  });
+  return art;
+}
+function dadLabel(text) {
+  var p = document.createElement("p");
+  p.className = "answer-label";
+  p.textContent = text;
+  return p;
+}
+function dadAsk() {
+  var q = document.getElementById("q").value;
+  var hint = document.getElementById("hint");
+  var answer = document.getElementById("answer");
+  hint.textContent = "";
+  answer.innerHTML = "";
+  if (!dadNorm(q)) {
+    hint.textContent = "Say the hard part in a few words first.";
+    document.getElementById("q").focus();
+    return;
+  }
+  var ranked = dadRank(q);
+  var top = ranked.length ? ranked[0] : null;
+  if (!top || top.score < DADIO_THRESHOLD) {
+    var box = document.createElement("div");
+    box.className = "nomatch";
+    var p1 = document.createElement("p");
+    var s1 = document.createElement("strong");
+    s1.textContent = "No written lesson fits those words yet.";
+    p1.appendChild(s1);
+    var p2 = document.createElement("p");
+    p2.textContent = "The 31 lessons cover bedtime, play, food, feelings, mornings, and hard moments. Try a few plain words for the hard part, or tap an example above.";
+    box.appendChild(p1); box.appendChild(p2);
+    answer.appendChild(box);
+    try { fleetTrack("ask_no_match", { tool: "dad-ask" }); } catch (e) {}
+    return;
+  }
+  answer.appendChild(dadLabel("Closest lesson for tonight"));
+  answer.appendChild(dadCard(top.lesson));
+  var rest = ranked.slice(1, 3).filter(function (r) { return r.score >= 3; });
+  if (rest.length) {
+    answer.appendChild(dadLabel("Also close"));
+    rest.forEach(function (r) { answer.appendChild(dadCard(r.lesson)); });
+  }
+  try { fleetTrack("ask_answered", { tool: "dad-ask", lesson: top.lesson.n }); } catch (e) {}
+  var first = answer.querySelector(".card");
+  if (first) { try { first.scrollIntoView({ block: "nearest" }); } catch (e) {} }
+}
+document.getElementById("askbtn").addEventListener("click", dadAsk);
+document.getElementById("q").addEventListener("keydown", function (e) {
+  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); dadAsk(); }
+});
+document.querySelectorAll(".chip").forEach(function (ch) {
+  ch.addEventListener("click", function () {
+    document.getElementById("q").value = ch.getAttribute("data-q") || "";
+    dadAsk();
+  });
+});
+</script>
+<script>
+"use strict";
+/* Fleet analytics, same posture as the homepage: counts and enums only,
+   never the words typed here. PostHog project 624507, autocapture off,
+   session recording off, no identify(). */
+var _fleetQ = [];
+function fleetTrack(name, props){
+  try {
+    if (window.posthog && posthog.capture) posthog.capture(name, props || {});
+    else _fleetQ.push([name, props || {}]);
+  } catch (e) {}
+}
+(function(){
+  var s = document.createElement("script");
+  s.async = true;
+  s.src = "https://us.i.posthog.com/static/array.js";
+  s.onload = function(){
+    try {
+      if (window.posthog && posthog.init){
+        posthog.init("phc_t9dkHXAZR5VEjPFm3K5JDzGKFsNNxKcwSxxcEBEeLbS7", {api_host: "https://us.i.posthog.com", autocapture: false, capture_pageview: true, disable_session_recording: true});
+        posthog.register({site_id: "dadiosity", site_name: "Dadiosity"});
+        _fleetQ.splice(0).forEach(function(e){ try { posthog.capture(e[0], e[1]); } catch (x) {} });
+      }
+    } catch (e) {}
+  };
+  document.head.appendChild(s);
+})();
+</script>
+</body>
+</html>

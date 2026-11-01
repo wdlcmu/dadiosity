@@ -1,6 +1,6 @@
 # Dadiosity: full page text
 
-> Complete text of dadiosity.com: the homepage, six question pages, privacy, and terms.
+> Complete text of dadiosity.com: the homepage, the ask page, the question pages, privacy, and terms.
 > Dadiosity is one small lesson each day, for dads of little kids. It is coming soon.
 > A small pilot group starts first.
 > Text captured from the live pages, 2026-10-31.
@@ -55,6 +55,10 @@ Why it works: Waiting feels long. When nothing in it is yours. A choice and a sm
 Core move: Give her one real choice about dinner. One small pick that is truly hers.
 Share this lesson
 Join for daily lessons
+Dealing with something tonight?
+Ask here. Say it in your own words. Get the written lesson that fits.
+Ask here
+No email needed. Nothing you type is sent or saved.
 Each lesson: five parts.
 - 1. The idea: one dad skill, in small steps.
 - 2. Tonight's move: one real moment.
@@ -67,6 +71,28 @@ Table time
 Built with Muse.
 Privacy Terms
 More family tools: Pick My Costume · The Present Picker
+
+## Ask Dadiosity (https://dadiosity.com/ask)
+
+Dadiosity
+Dealing with something tonight?
+Ask here. Say tonight's hard part in your own words. We match your words to one of the 31 written lessons, right on this page. Nothing you type is sent or saved. No email needed.
+Tonight's hard part, in your words
+Find my lesson
+Or tap an example:
+Bedtime is a fight every night
+She won't eat at restaurants
+She won't listen to me
+I yelled at her and I feel awful
+How do I play with her?
+How this works
+Your words stay here. The match runs on this page, on your device. Nothing is sent or saved.
+Real lessons only. Each answer is one of the 31 written lessons, word for word. Nothing is made up.
+No match, said plain. If no lesson fits your words, this page says so. It does not guess.
+Read the sample lesson
+Join for daily lessons
+Built with Muse.
+Privacy Terms
 
 ## Privacy (https://dadiosity.com/privacy)
 
@@ -100,7 +126,7 @@ The form asks for no name.
 It asks for no phone or payment data.
 What we count
 This site runs two counting scripts.
-PostHog counts views, shares, joins, and form starts.
+PostHog counts views, shares, joins, asks, and form starts.
 Cloudflare counts visits in browsers and servers.
 PostHog keeps an anonymous ID for counting.
 The ID sits in a cookie and storage.
@@ -109,6 +135,7 @@ One notes a share arrival.
 One notes that you joined.
 None holds your email address.
 Your email is never sent to PostHog.
+Words typed on the ask page are never sent or saved.
 It does not record your screen.
 Leaving and removal
 There is no leave link yet.

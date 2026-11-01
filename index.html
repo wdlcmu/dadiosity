@@ -143,6 +143,13 @@
   .arrive button { flex: 0 1 auto; }
   #sharemsg2 { font-size: 0.875rem; color: var(--muted); }
   #sharemsg2:not(:empty) { margin-top: 0.5rem; }
+  .askdoor { width: 100%; max-width: 26rem; text-align: center; margin-top: 2.75rem; }
+  .askdoor h2 { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .askdoor p { color: var(--body); margin-bottom: 0.75rem; }
+  .askdoor a.askbtn {
+    display: inline-block; font-size: 1rem; font-weight: 700; padding: 0.75rem 1.5rem; min-height: 48px;
+    border-radius: 0.5rem; background: var(--accent); color: #fff; text-decoration: none;
+  }
   .join-next { text-align: center; margin-top: 0.75rem; }
   .join-next a { color: var(--accent); font-weight: 700; text-decoration: none; display: inline-block; padding: 12px 6px; min-height: 44px; }
   .join-next a:hover { text-decoration: underline; }
@@ -266,6 +273,12 @@
       <p id="sharemsg" role="status" aria-live="polite"></p>
     </div>
     <p class="join-next"><a href="#email">Join for daily lessons</a></p>
+  </section>
+  <section class="askdoor" aria-label="Ask for a lesson that fits tonight">
+    <h2>Dealing with something tonight?</h2>
+    <p>Ask here. Say it in your own words. Get the written lesson that fits.</p>
+    <p><a class="askbtn" href="/ask">Ask here</a></p>
+    <p class="fine">No email needed. Nothing you type is sent or saved.</p>
   </section>
   <section class="lesson" aria-label="What each daily lesson includes">
     <h2>Each lesson: five parts.</h2>
