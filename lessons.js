@@ -157,7 +157,7 @@ window.DADIO_LESSONS = [
    "choice",
    "power struggle",
    "control",
-   "won't",
+   "won't pick",
    "pick",
    "order",
    "say in her day"
