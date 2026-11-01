@@ -179,6 +179,7 @@
   .tonight .t-moment { font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.25rem; }
   .tonight .t-title { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.01em; margin-bottom: 0.5rem; }
   .tonight .t-move { font-size: 1.25rem; font-weight: 600; color: var(--ink); line-height: 1.4; margin-bottom: 1rem; }
+  .tonight .t-why { font-size: 1rem; color: var(--body); line-height: 1.45; margin-bottom: 1rem; }
   .tonight .t-link {
     display: inline-block; font-size: 1rem; font-weight: 700; padding: 0.75rem 1.25rem;
     min-height: 48px; border-radius: 0.5rem; background: var(--accent); color: #fff; text-decoration: none;
@@ -224,21 +225,22 @@
     <p class="t-moment" id="t-moment"></p>
     <h2 class="t-title" id="t-title"></h2>
     <p class="t-move" id="t-move"></p>
+    <p class="t-why" id="t-why"></p>
     <p><a class="t-link" id="t-link" href="/this-week">Read the full lesson</a></p>
     <p class="t-tomorrow" id="t-tomorrow" hidden>Tomorrow: <a id="t-tomorrow-link" href="/this-week"></a></p>
   </section>
   <script>
   (function () {
     var WEEK = {
-      "2026-11-01": { n: 3, moment: "Swim, gym, and every switch", title: "Warn Before the Switch", move: "Warn two times before a change, then follow through." },
-      "2026-11-02": { n: 27, moment: "For the people coming and going", title: "Make a Gift for Someone", move: "Help her make one small gift for a real person, then give it to that person." },
-      "2026-11-03": { n: 27, moment: "For the people coming and going", title: "Make a Gift for Someone", move: "Help her make one small gift for a real person, then give it to that person." },
-      "2026-11-04": { n: 21, moment: "When Grandma arrives", title: "Make Hello a Big Deal", move: "Greet her first when you reunite, before bags, phone, or other talk." },
-      "2026-11-05": { n: 31, moment: "Before the goodbye", title: "Look Ahead to the Hard Part", move: "Before a hard part, scan food, rest, bathroom, and the plan, then fix the one need you can." },
-      "2026-11-06": { n: 2, moment: "When she is sad someone left", title: "Name It First", move: "Name the feeling before you fix the problem.", photo: true },
-      "2026-11-07": { n: 25, moment: "While Grandma is here", title: "When You Were Small", move: "Tell her one short true story from when you were her age, with a feeling in it." },
-      "2026-11-08": { n: 25, moment: "While Grandma is here", title: "When You Were Small", move: "Tell her one short true story from when you were her age, with a feeling in it." },
-      "2026-11-09": { n: 12, moment: "Dad's first morning back at work", title: "Start the Morning Slow", move: "Sit with her for the first five minutes of the day and ask for nothing yet." }
+      "2026-11-01": { n: 3, moment: "Swim, gym, and every switch", title: "Warn Before the Switch", move: "Warn two times before a change, then follow through.", why: "Swim day is switch after switch, and a switch she sees coming lands softer." },
+      "2026-11-02": { n: 27, moment: "For the people coming and going", title: "Make a Gift for Someone", move: "Help her make one small gift for a real person, then give it to that person.", why: "People come and go all this week, so a gift she makes now has a real person waiting for it." },
+      "2026-11-03": { n: 27, moment: "For the people coming and going", title: "Make a Gift for Someone", move: "Help her make one small gift for a real person, then give it to that person.", why: "People come and go all this week, so a gift she makes now has a real person waiting for it." },
+      "2026-11-04": { n: 21, moment: "When Grandma arrives", title: "Make Hello a Big Deal", move: "Greet her first when you reunite, before bags, phone, or other talk.", why: "Grandma arrives today, and the first hello sets the tone for her whole visit." },
+      "2026-11-05": { n: 31, moment: "Before the goodbye", title: "Look Ahead to the Hard Part", move: "Before a hard part, scan food, rest, bathroom, and the plan, then fix the one need you can.", why: "The goodbye is the hard part at the end of this week, and tonight you can still see it coming." },
+      "2026-11-06": { n: 2, moment: "When she is sad someone left", title: "Name It First", move: "Name the feeling before you fix the problem.", photo: true, why: "Someone she loves just left, so tonight the feeling gets named before anything gets fixed." },
+      "2026-11-07": { n: 25, moment: "While Grandma is here", title: "When You Were Small", move: "Tell her one short true story from when you were her age, with a feeling in it.", why: "Grandma is here this weekend, and nobody remembers your small days the way she does." },
+      "2026-11-08": { n: 25, moment: "While Grandma is here", title: "When You Were Small", move: "Tell her one short true story from when you were her age, with a feeling in it.", why: "Grandma is here this weekend, and nobody remembers your small days the way she does." },
+      "2026-11-09": { n: 12, moment: "Dad's first morning back at work", title: "Start the Morning Slow", move: "Sit with her for the first five minutes of the day and ask for nothing yet.", why: "Work mornings start again today, so five slow minutes keep the change small for her." }
     };
     function key(d) {
       return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
@@ -253,6 +255,7 @@
     document.getElementById("t-moment").textContent = today.moment;
     document.getElementById("t-title").textContent = today.title;
     document.getElementById("t-move").textContent = today.move;
+    document.getElementById("t-why").textContent = today.why;
     document.getElementById("t-link").href = "/this-week#l" + today.n;
     if (today.photo) document.getElementById("t-photo").hidden = false;
     var next = WEEK[key(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1))];
