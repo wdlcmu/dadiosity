@@ -2,7 +2,7 @@
 
 > Complete text of dadiosity.com: the homepage, six question pages, privacy, and terms.
 > Dadiosity is one small lesson each day, for dads of little kids. It is coming soon.
-> No launch date is set yet.
+> A small pilot group starts first.
 > Text captured from the live pages, 2026-10-31.
 
 ## Homepage (https://dadiosity.com/)
@@ -14,19 +14,19 @@ For dads of little kids. Free. A minute to read.
 Read a sample lesson.
 Sign up for daily lessons.
 Join
-First lesson at launch, then daily.
-No launch date is set yet. The first 31 lessons are written.
+A small pilot group starts first. Then daily.
+Pilot spots come from this list. The first 31 lessons are written.
 No spam. No ads. We never sell your email.
 You are in.
 We saved your email.
 No email is sent today.
-First lesson comes at launch.
+First lessons go to a small pilot group.
 Then one lesson each day.
 Read the sample lesson
 How it works
 1. Join: Add your email. Nothing else.
-2. Wait: No launch date is set yet.
-3. Start: First lesson comes at launch.
+2. Pilot: A small group of dads starts first.
+3. Start: Your first lesson comes at the full launch, or sooner in the pilot.
 4. Read daily: One short lesson. A minute each.
 What we don't do
 Not sending yet. Daily emails have not started.
@@ -146,7 +146,7 @@ Your address is the key for that record.
 The save code writes to Cloudflare KV.
 If that store is not connected, no signup is saved.
 On success, joining shows: You are in.
-It also shows: First lesson comes at launch.
+It also shows: First lessons go to a small pilot group.
 Nothing is sent from the signup code.
 No lesson email is sent now.
 Launch timing
@@ -191,8 +191,8 @@ Tonight's move: Pick three steps tonight and keep the order fixed. Bath, book, t
 Tonight's play: Put a stuffed bear to bed before her turn comes. A bath in a toy tub, one short book, one short song. Use the same order you will use for her.
 Why it works: A known order feels safe at night. Safe kids settle with less fight in them. She can rest because she knows the road home to sleep.
 Core move: Keep the same three bedtime steps in the same order.
-One short lesson a day, at launch
-Dadiosity is a daily email of one short lesson for dads of little kids. It has not launched yet, and no launch date is set. Join the list now, and your first lesson comes at launch. The first 31 lessons are written.
+One short lesson a day, starting small
+Dadiosity is a daily email of one short lesson for dads of little kids. It starts with a small pilot group before the full launch. Join the list now: the pilot group is picked from this list, and everyone else gets their first lesson at the full launch. The first 31 lessons are written.
 Join the list
 Stay curious. She's only three once.
 More questions dads ask
@@ -225,8 +225,8 @@ You do not need a plan or new toys. Pick one thing below and give it ten minutes
 - Dance like the floor is hot. Put on one fast song and dance. Freeze when it stops, fall down laughing, then get up and go again till the song ends.
 The one rule that makes all of these work
 Let her lead. Follow her play idea for ten minutes without leading or fixing it. Ask what happens next, then do that. Her game, her pace. That is the whole trick, and it is a full Dadiosity lesson on how to play with a toddler.
-One short lesson a day, at launch
-Dadiosity is a daily email of one short lesson for dads of little kids. It has not launched yet, and no launch date is set. Join the list now, and your first lesson comes at launch. The first 31 lessons are written.
+One short lesson a day, starting small
+Dadiosity is a daily email of one short lesson for dads of little kids. It starts with a small pilot group before the full launch. Join the list now: the pilot group is picked from this list, and everyone else gets their first lesson at the full launch. The first 31 lessons are written.
 Join the list
 Stay curious. She's only three once.
 More questions dads ask
@@ -273,8 +273,8 @@ Tonight's move: Tonight, when she tells you a story, let her get to the end. Kee
 Tonight's play: Let her tell you the plot of a book you both know. Sit back and hear the whole tale. Ask one thing at the end about a part she liked best.
 Why it works: Being heard all the way out tells her her words count. She talks more when she feels heard. You learn more about her day than a quick guess can give you.
 Core move: Let her finish her whole story before you reply, with no jump in.
-One short lesson a day, at launch
-Dadiosity is a daily email of one short lesson for dads of little kids. It has not launched yet, and no launch date is set. Join the list now, and your first lesson comes at launch. The first 31 lessons are written.
+One short lesson a day, starting small
+Dadiosity is a daily email of one short lesson for dads of little kids. It starts with a small pilot group before the full launch. Join the list now: the pilot group is picked from this list, and everyone else gets their first lesson at the full launch. The first 31 lessons are written.
 Join the list
 Stay curious. She's only three once.
 More questions dads ask
@@ -318,8 +318,8 @@ Why it works: A named good thing gives hope a handle she can hold. She falls asl
 Core move: At bedtime, let her pick one small thing to look forward to tomorrow.
 When she will not settle
 Get low and breathe out slow with her. Blow out long, like cooling soup. Count each out breath on your fingers. Do three rounds before you use words. A long out breath helps a body let go, and doing it with you makes it safe to copy.
-One short lesson a day, at launch
-Dadiosity is a daily email of one short lesson for dads of little kids. It has not launched yet, and no launch date is set. Join the list now, and your first lesson comes at launch. The first 31 lessons are written.
+One short lesson a day, starting small
+Dadiosity is a daily email of one short lesson for dads of little kids. It starts with a small pilot group before the full launch. Join the list now: the pilot group is picked from this list, and everyone else gets their first lesson at the full launch. The first 31 lessons are written.
 Join the list
 Stay curious. She's only three once.
 More questions dads ask
@@ -362,8 +362,8 @@ Core move: Stop for one thing she finds on a walk and look at it with her for a 
 Two more small ones
 Start the morning slow. The first minutes set the tone for the home. Lay out clothes and cups the night before. When she wakes, sit with her for five minutes. Hold her, talk soft, and ask for nothing yet. A calm first five minutes can save a hard hour.
 Tell her a story from when you were small. Keep it short and true, with a feeling in it. Name how you felt, what went wrong, and who helped you feel safe again. Hearing dad was small once makes her own fears feel less alone.
-One short lesson a day, at launch
-Dadiosity is a daily email of one short lesson for dads of little kids. It has not launched yet, and no launch date is set. Join the list now, and your first lesson comes at launch. The first 31 lessons are written.
+One short lesson a day, starting small
+Dadiosity is a daily email of one short lesson for dads of little kids. It starts with a small pilot group before the full launch. Join the list now: the pilot group is picked from this list, and everyone else gets their first lesson at the full launch. The first 31 lessons are written.
 Join the list
 Stay curious. She's only three once.
 More questions dads ask
@@ -408,8 +408,8 @@ Name the feeling first. When feelings get big, she has no words for them yet. Na
 Say no once, and stay close. A limit is not a fight. Say no one time, short and kind. No more sweets tonight. Then stay near her and let the sad pass. She learns the line will hold, and love holds too.
 When she is stuck on one want, turn her eyes. More words can keep her stuck. Point to a new thing and name it with wonder. A red leaf. A loud truck. Put a safe small thing in her hands. The no still holds, but her mind has moved on.
 Before the next hard part, scan the stack. Hunger, a tired body, a long wait, and a sudden switch stack up. Before a trip out, check food, rest, bathroom, and what comes next. Fix the one need you can fix, then name the plan in one short line.
-One short lesson a day, at launch
-Dadiosity is a daily email of one short lesson for dads of little kids. It has not launched yet, and no launch date is set. Join the list now, and your first lesson comes at launch. The first 31 lessons are written.
+One short lesson a day, starting small
+Dadiosity is a daily email of one short lesson for dads of little kids. It starts with a small pilot group before the full launch. Join the list now: the pilot group is picked from this list, and everyone else gets their first lesson at the full launch. The first 31 lessons are written.
 Join the list
 Stay curious. She's only three once.
 More questions dads ask
