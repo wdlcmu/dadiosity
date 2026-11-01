@@ -170,27 +170,81 @@ function dadTokens(s) {
   });
   return out;
 }
+/* SPEC-DADIO-ASK-TIE-1 scoring: a query word earns its best single
+   source, never a stack of them. A lesson's own topics (the words the
+   bank itself files the lesson under) weigh most: a full topic match
+   pays 4 per word, a word from a partly matched topic pays 3 (capped
+   at 3 per lesson), a title word pays 2, and a word found only in the
+   lesson text pays 1 (capped at 5). Each extra topic entry the words
+   touch adds 1, up to 2, so a lesson filed under a word three ways
+   beats one that merely mentions it. The no-match promise is kept by
+   a plain-words gate, not a higher bar: a lesson only clears the bar
+   when the match rests on more than one real word, on one full topic
+   phrase, or on the query's only content word — so a single stray
+   word ("tomorrow" in "weather tomorrow", "fix" in "fix my car")
+   caps the score at 3, under the bar, while a one-word designed
+   topic ("play") still answers. Setting and filler words (grocery,
+   store, toddler, time, much, too) name the scene, not the hard
+   part, so they never count for or against the gate. */
+var DADIO_NEUTRAL = {};
+("grocery store toddler time much too").split(" ").forEach(function (w) { DADIO_NEUTRAL[w] = 1; });
+var DADIO_LIGHT = {};
+("get take make go come keep give let put try help want").split(" ").forEach(function (w) { DADIO_LIGHT[w] = 1; });
 function dadScore(lesson, query) {
   var qn = " " + dadNorm(query) + " ";
   var qToks = dadTokens(query);
   var qSet = {}; qToks.forEach(function (t) { qSet[t] = 1; });
-  var score = 0;
   var qSquash = qn.replace(/ /g, "");
+  var titleSet = {};
+  dadTokens(lesson.title).forEach(function (t) { titleSet[t] = 1; });
+  var bodySet = {};
+  dadTokens(lesson.idea + " " + lesson.move + " " + lesson.play + " " + lesson.why + " " + lesson.core).forEach(function (t) { bodySet[t] = 1; });
+  var full = {}, partial = {};
+  var entriesHit = 0, phraseFull = false, surfacePhrase = false;
   (lesson.topics || []).forEach(function (topic) {
     var tn = dadNorm(topic);
     if (tn.indexOf(" ") >= 0) {
       var tSquash = tn.replace(/ /g, "");
-      if (qn.indexOf(" " + tn + " ") >= 0 || (tSquash.length >= 6 && qSquash.indexOf(tSquash) >= 0)) score += 6;
-    } else if (qSet[dadStem(tn)]) {
-      score += 3;
+      if (qn.indexOf(" " + tn + " ") >= 0 || (tSquash.length >= 6 && qSquash.indexOf(tSquash) >= 0)) surfacePhrase = true;
+    }
+    var tt = dadTokens(topic);
+    if (!tt.length) return;
+    var matched = tt.filter(function (t) { return qSet[t]; });
+    if (matched.length === tt.length) {
+      matched.forEach(function (t) { full[t] = 1; });
+      entriesHit += 1;
+      if (tt.length >= 2) phraseFull = true;
+    } else if (matched.length) {
+      matched.forEach(function (t) { partial[t] = 1; });
+      entriesHit += 1;
     }
   });
-  dadTokens(lesson.title).forEach(function (t) { if (qSet[t]) score += 3; });
-  var body = {};
-  dadTokens(lesson.idea + " " + lesson.move + " " + lesson.play + " " + lesson.why + " " + lesson.core).forEach(function (t) { body[t] = 1; });
-  var bodyHits = 0;
-  qToks.forEach(function (t) { if (body[t]) bodyHits += 1; });
-  score += Math.min(bodyHits, 8);
+  var fullSum = 0, titleSum = 0, partialSum = 0, bodySum = 0;
+  var np = {}, fullNP = {};
+  qToks.forEach(function (t) {
+    if (!DADIO_NEUTRAL[t]) {
+      if (full[t] || titleSet[t] || bodySet[t]) np[t] = 1;
+      if (full[t]) fullNP[t] = 1;
+    }
+    if (full[t]) fullSum += 4;
+    else if (partial[t]) partialSum += 3;
+    else if (titleSet[t]) titleSum += 2;
+    else if (bodySet[t]) bodySum += 1;
+  });
+  if (partialSum > 3) partialSum = 3;
+  if (bodySum > 5) bodySum = 5;
+  var score = fullSum + titleSum + partialSum + bodySum + Math.min(Math.max(entriesHit - 1, 0), 2);
+  var denomToks = qToks.filter(function (t) { return !DADIO_NEUTRAL[t]; });
+  var npCount = Object.keys(np).length, fullNPCount = Object.keys(fullNP).length;
+  var unmatched = denomToks.filter(function (t) { return !np[t]; });
+  var pass = false;
+  if (phraseFull || surfacePhrase) pass = true;
+  else if (denomToks.length === 1 && fullNPCount === 1) pass = true;
+  else if (npCount >= 2 && fullNPCount >= 1) pass = true;
+  else if (npCount >= 3 && denomToks.some(function (t) { return partial[t]; })) pass = true;
+  else if (denomToks.length > 0 && unmatched.length === 0 && npCount >= 1) pass = true;
+  else if (unmatched.length === 1 && DADIO_LIGHT[unmatched[0]] && fullNPCount >= 1) pass = true;
+  if (!pass && score > 3) score = 3;
   return score;
 }
 function dadRank(query) {
