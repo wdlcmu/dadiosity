@@ -127,6 +127,16 @@
   .card p:last-child { margin-bottom: 0; }
   .card p strong { color: var(--ink); }
   .share { text-align: center; margin-top: 1.25rem; }
+  .arrive { background: #fffaf0; border: 1px solid #f0dfba; border-radius: 1rem; padding: 1rem 1.25rem; margin-bottom: 1rem; text-align: center; }
+  .arrive[hidden] { display: none; }
+  .arrive p { color: var(--body); margin-bottom: 0.5rem; }
+  .arrive p strong { color: var(--ink); }
+  .arrive .arrive-actions { display: flex; gap: 0.5rem; justify-content: center; align-items: center; flex-wrap: wrap; }
+  .arrive a { color: var(--accent); font-weight: 700; text-decoration: none; display: inline-block; padding: 12px 6px; min-height: 44px; }
+  .arrive a:hover { text-decoration: underline; }
+  .arrive button { flex: 0 1 auto; }
+  #sharemsg2 { font-size: 0.875rem; color: var(--muted); }
+  #sharemsg2:not(:empty) { margin-top: 0.5rem; }
   .join-next { text-align: center; margin-top: 0.75rem; }
   .join-next a { color: var(--accent); font-weight: 700; text-decoration: none; display: inline-block; padding: 12px 6px; min-height: 44px; }
   .join-next a:hover { text-decoration: underline; }
@@ -227,6 +237,15 @@
   <section class="sample" id="sample" aria-label="A sample daily lesson">
     <p class="sample-label">A sample lesson</p>
     <p class="sample-sub">A real lesson.</p>
+    <div class="arrive" id="arrive" hidden>
+      <p><strong>A dad sent you this lesson.</strong></p>
+      <p>Dadiosity is one short lesson a day by email. For dads of little kids. Free.</p>
+      <div class="arrive-actions">
+        <a href="#email">Join for daily lessons</a>
+        <button type="button" id="sharebtn2">Share this lesson</button>
+      </div>
+      <p id="sharemsg2" role="status" aria-live="polite"></p>
+    </div>
     <article class="card">
       <p class="card-head">Dadiosity Daily, Lesson 13: Restaurants</p>
       <h3>Make the wait part of the meal</h3>
@@ -331,21 +350,33 @@
 <script>
   var shareBtn = document.getElementById('sharebtn');
   var shareMsg = document.getElementById('sharemsg');
-  if (shareBtn) {
-    shareBtn.addEventListener('click', function () {
-      var url = 'https://dadiosity.com/?via=share#sample';
-      var data = { title: 'Dadiosity Daily, Lesson 13: Restaurants', text: 'Make the wait part of the meal. A sample Dadiosity lesson.', url: url };
-      if (navigator.share) {
-        navigator.share(data).catch(function () {});
-      } else if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(url).then(function () {
-          shareMsg.textContent = 'Link copied. Send it to a dad.';
-        }, function () { shareMsg.textContent = url; });
-      } else {
-        shareMsg.textContent = url;
-      }
-    });
+  function doShare(msg) {
+    var url = 'https://dadiosity.com/?via=share#sample';
+    var data = { title: 'Dadiosity Daily, Lesson 13: Restaurants', text: 'Make the wait part of the meal. A sample Dadiosity lesson.', url: url };
+    if (navigator.share) {
+      navigator.share(data).catch(function () {});
+    } else if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(function () {
+        msg.textContent = 'Link copied. Send it to a dad.';
+      }, function () { msg.textContent = url; });
+    } else {
+      msg.textContent = url;
+    }
   }
+  if (shareBtn) {
+    shareBtn.addEventListener('click', function () { doShare(shareMsg); });
+  }
+  var shareBtn2 = document.getElementById('sharebtn2');
+  var shareMsg2 = document.getElementById('sharemsg2');
+  if (shareBtn2) {
+    shareBtn2.addEventListener('click', function () { doShare(shareMsg2); });
+  }
+  try {
+    if (new URLSearchParams(window.location.search).get('via') === 'share') {
+      var arriveBox = document.getElementById('arrive');
+      if (arriveBox) arriveBox.hidden = false;
+    }
+  } catch (e) {}
 </script>
 <script>
 "use strict";
@@ -418,6 +449,10 @@ fleetSessionMarks();
   }
   var sb = document.getElementById("sharebtn");
   if (sb) sb.addEventListener("click", function(){
+    fleetTrack("share_intent", {tool: "dad-lessons", channel: navigator.share ? "native" : "clipboard"});
+  });
+  var sb2 = document.getElementById("sharebtn2");
+  if (sb2) sb2.addEventListener("click", function(){
     fleetTrack("share_intent", {tool: "dad-lessons", channel: navigator.share ? "native" : "clipboard"});
   });
 })();
