@@ -154,8 +154,9 @@ function dadNorm(s) {
   return String(s || "").toLowerCase().replace(/[\u2019\u2018]/g, "'").replace(/[^a-z0-9' ]/g, " ").replace(/\s+/g, " ").trim();
 }
 function dadStem(w) {
-  w = w.replace(/'s$/, "");
-  if (w.length > 5 && w.slice(-3) === "ing") w = w.slice(0, -3);
+  w = w.replace(/'/g, "");
+  if (w.length > 4 && w.slice(-3) === "ies") w = w.slice(0, -3) + "y";
+  else if (w.length > 5 && w.slice(-3) === "ing") w = w.slice(0, -3);
   else if (w.length > 4 && w.slice(-2) === "ed") w = w.slice(0, -2);
   else if (w.length > 3 && w.slice(-1) === "s" && w.slice(-2) !== "ss") w = w.slice(0, -1);
   return w;
@@ -190,9 +191,55 @@ var DADIO_NEUTRAL = {};
 ("grocery store toddler time much too").split(" ").forEach(function (w) { DADIO_NEUTRAL[w] = 1; });
 var DADIO_LIGHT = {};
 ("get take make go come keep give let put try help want").split(" ").forEach(function (w) { DADIO_LIGHT[w] = 1; });
+/* SPEC-DADIO-ASK-FUZZ-1 tolerance: a dad typing one-handed misspells
+   the hard-part word ("lisen", "bedtyme", "tantrm", "diner") or uses a
+   plain word the bank does not ("screams" for crying, "nightmare" for
+   a bedtime fight). Tolerance canonicalizes the QUERY's words before
+   scoring — a small curated synonym map, plus a one-letter correction
+   applied only when the typed word matches nothing in the bank at all
+   and sits one edit from exactly one topic/title word (same first
+   letter). It feeds the scorer above; the gate and the bar of 4 are
+   unchanged, and a word that already matches anything is never
+   rewritten, so an off-topic ask still earns an honest no-match. */
+var DADIO_SYN = { scream: "cry", nightmare: "fight", nitemare: "fight", dawdle: "slow", dawdl: "slow" };
+var DADIO_VOCAB = null;
+function dadVocab() {
+  if (DADIO_VOCAB) return DADIO_VOCAB;
+  var tt = {}, all = {};
+  (window.DADIO_LESSONS || []).forEach(function (lesson) {
+    (lesson.topics || []).forEach(function (t) { dadTokens(t).forEach(function (w) { tt[w] = 1; all[w] = 1; }); });
+    dadTokens(lesson.title).forEach(function (w) { tt[w] = 1; all[w] = 1; });
+    dadTokens(lesson.idea + " " + lesson.move + " " + lesson.play + " " + lesson.why + " " + lesson.core).forEach(function (w) { all[w] = 1; });
+  });
+  DADIO_VOCAB = { tt: Object.keys(tt), all: all };
+  return DADIO_VOCAB;
+}
+function dadEdit1(a, b) {
+  if (Math.abs(a.length - b.length) > 1) return false;
+  var d = [], i, j;
+  for (i = 0; i <= a.length; i++) { d.push([i]); }
+  for (j = 1; j <= b.length; j++) d[0].push(j);
+  for (i = 1; i <= a.length; i++) for (j = 1; j <= b.length; j++) {
+    d[i].push(Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a.charAt(i - 1) === b.charAt(j - 1) ? 0 : 1)));
+  }
+  return d[a.length][b.length] === 1;
+}
+function dadCanon(toks) {
+  var vocab = dadVocab();
+  var out = [], seen = {};
+  toks.forEach(function (t) {
+    var w = DADIO_SYN[t] || t;
+    if (w === t && t.length >= 5 && !vocab.all[t] && !DADIO_NEUTRAL[t]) {
+      var hits = vocab.tt.filter(function (v) { return v.length >= 4 && v.charAt(0) === t.charAt(0) && dadEdit1(t, v); });
+      if (hits.length === 1) w = hits[0];
+    }
+    if (!seen[w]) { seen[w] = 1; out.push(w); }
+  });
+  return out;
+}
 function dadScore(lesson, query) {
   var qn = " " + dadNorm(query) + " ";
-  var qToks = dadTokens(query);
+  var qToks = dadCanon(dadTokens(query));
   var qSet = {}; qToks.forEach(function (t) { qSet[t] = 1; });
   var qSquash = qn.replace(/ /g, "");
   var titleSet = {};
