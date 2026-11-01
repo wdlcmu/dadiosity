@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dadiosity · Coming soon</title>
+<title>Dadiosity · One lesson a day for dads</title>
 <meta name="description" content="Dadiosity: dads get one lesson each day. Free daily lessons by email for dads of little kids.">
 <link rel="canonical" href="https://dadiosity.com/">
 <link rel="icon" href="/assets/mark.svg" type="image/svg+xml">
@@ -167,6 +167,30 @@
   .week .wk-core { display: block; color: var(--body); }
   .week .wk-lesson { display: block; font-size: 0.8125rem; font-weight: 600; color: var(--muted); margin-top: 0.125rem; }
   .week a:hover .wk-title, .week a:focus-visible .wk-title { text-decoration: underline; }
+  .tonight {
+    width: 100%; max-width: 26rem; text-align: left; background: #fffaf0;
+    border: 2px solid var(--accent); border-radius: 1rem; padding: 1.25rem;
+    margin-bottom: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+  }
+  .tonight[hidden] { display: none; }
+  .tonight .t-label { font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.625rem; }
+  .tonight .t-photo { display: block; width: 100%; height: auto; border-radius: 0.75rem; margin-bottom: 0.875rem; }
+  .tonight .t-photo[hidden] { display: none; }
+  .tonight .t-moment { font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.25rem; }
+  .tonight .t-title { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.01em; margin-bottom: 0.5rem; }
+  .tonight .t-move { font-size: 1.25rem; font-weight: 600; color: var(--ink); line-height: 1.4; margin-bottom: 1rem; }
+  .tonight .t-link {
+    display: inline-block; font-size: 1rem; font-weight: 700; padding: 0.75rem 1.25rem;
+    min-height: 48px; border-radius: 0.5rem; background: var(--accent); color: #fff; text-decoration: none;
+  }
+  .tonight .t-tomorrow { margin-top: 0.75rem; color: var(--body); }
+  .tonight .t-tomorrow a { color: var(--accent); font-weight: 700; text-decoration: none; display: inline-block; padding: 10px 4px; min-height: 44px; }
+  .tonight .t-tomorrow a:hover { text-decoration: underline; }
+  .t-pill {
+    display: inline-block; background: var(--accent); color: #fff; border-radius: 999px;
+    padding: 0.1rem 0.6rem; margin-left: 0.5rem; font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 0.04em; text-transform: uppercase;
+  }
   .fine { font-size: 0.875rem; color: var(--muted); margin-top: 0.75rem; }
   .msg { font-weight: 600; margin-top: 1rem; min-height: 1.5rem; }
   .msg.ok { color: #15803d; }
@@ -194,6 +218,67 @@
 </head>
 <body>
 <main>
+  <section class="tonight" id="tonight" hidden aria-label="Tonight's move">
+    <p class="t-label" id="t-day">Tonight's move</p>
+    <img class="t-photo" id="t-photo" src="/assets/table-meal.jpg" width="600" height="400" alt="A dad shares a meal with his toddler at the table." hidden>
+    <p class="t-moment" id="t-moment"></p>
+    <h2 class="t-title" id="t-title"></h2>
+    <p class="t-move" id="t-move"></p>
+    <p><a class="t-link" id="t-link" href="/this-week">Read the full lesson</a></p>
+    <p class="t-tomorrow" id="t-tomorrow" hidden>Tomorrow: <a id="t-tomorrow-link" href="/this-week"></a></p>
+  </section>
+  <script>
+  (function () {
+    var WEEK = {
+      "2026-11-01": { n: 3, moment: "Swim, gym, and every switch", title: "Warn Before the Switch", move: "Warn two times before a change, then follow through." },
+      "2026-11-02": { n: 27, moment: "For the people coming and going", title: "Make a Gift for Someone", move: "Help her make one small gift for a real person, then give it to that person." },
+      "2026-11-03": { n: 27, moment: "For the people coming and going", title: "Make a Gift for Someone", move: "Help her make one small gift for a real person, then give it to that person." },
+      "2026-11-04": { n: 21, moment: "When Grandma arrives", title: "Make Hello a Big Deal", move: "Greet her first when you reunite, before bags, phone, or other talk." },
+      "2026-11-05": { n: 31, moment: "Before the goodbye", title: "Look Ahead to the Hard Part", move: "Before a hard part, scan food, rest, bathroom, and the plan, then fix the one need you can." },
+      "2026-11-06": { n: 2, moment: "When she is sad someone left", title: "Name It First", move: "Name the feeling before you fix the problem.", photo: true },
+      "2026-11-07": { n: 25, moment: "While Grandma is here", title: "When You Were Small", move: "Tell her one short true story from when you were her age, with a feeling in it." },
+      "2026-11-08": { n: 25, moment: "While Grandma is here", title: "When You Were Small", move: "Tell her one short true story from when you were her age, with a feeling in it." },
+      "2026-11-09": { n: 12, moment: "Dad's first morning back at work", title: "Start the Morning Slow", move: "Sit with her for the first five minutes of the day and ask for nothing yet." }
+    };
+    function key(d) {
+      return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+    }
+    var now = new Date();
+    var today = WEEK[key(now)];
+    var card = document.getElementById("tonight");
+    if (!today || !card) return;
+    var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    document.getElementById("t-day").textContent = "Tonight's move · " + days[now.getDay()] + ", " + months[now.getMonth()] + " " + now.getDate();
+    document.getElementById("t-moment").textContent = today.moment;
+    document.getElementById("t-title").textContent = today.title;
+    document.getElementById("t-move").textContent = today.move;
+    document.getElementById("t-link").href = "/this-week#l" + today.n;
+    if (today.photo) document.getElementById("t-photo").hidden = false;
+    var next = WEEK[key(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1))];
+    if (next) {
+      var tLink = document.getElementById("t-tomorrow-link");
+      tLink.textContent = next.title;
+      tLink.href = "/this-week#l" + next.n;
+      document.getElementById("t-tomorrow").hidden = false;
+    }
+    card.hidden = false;
+    document.addEventListener("DOMContentLoaded", function () {
+      var row = document.querySelector('.week a[href="/this-week#l' + today.n + '"] .wk-lesson');
+      if (row) {
+        var pill = document.createElement("span");
+        pill.className = "t-pill";
+        pill.textContent = "Tonight";
+        row.appendChild(pill);
+      }
+    });
+    window.addEventListener("load", function () {
+      try {
+        if (typeof fleetTrack === "function") fleetTrack("tonight_card_shown", { tool: "dad-lessons", lesson: today.n });
+      } catch (e) {}
+    });
+  })();
+  </script>
   <section class="hero">
     <svg class="mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
       <circle cx="32" cy="32" r="30" fill="#b45309"/>
@@ -207,7 +292,7 @@
       <circle cx="41" cy="29" r="4.2" fill="#fff8ec"/>
       <path d="M14 54 h36" stroke="#fff8ec" stroke-width="2.4" stroke-linecap="round" opacity="0.55"/>
     </svg>
-    <span class="kicker">Coming soon</span>
+    <span class="kicker">One lesson a day</span>
     <h1>Dadiosity</h1>
     <p class="tagline">Dads get one lesson each day.</p>
     <p class="sub">For dads of little kids. Free. A minute to read.</p>
@@ -239,13 +324,13 @@
     <h2>This week at home</h2>
     <p class="wk-intro">Grandparents are coming and going this week, and work starts again soon. Seven written lessons fit the week. The move is on each card. Tap one to read the full lesson.</p>
     <ul>
-      <li><a href="/this-week#l27"><span class="wk-moment">For the people coming and going</span><span class="wk-title">Make a Gift for Someone</span><span class="wk-core">Help her make one small gift for a real person, then give it to that person.</span><span class="wk-lesson">Lesson 27</span></a></li>
-      <li><a href="/this-week#l21"><span class="wk-moment">When Grandma arrives</span><span class="wk-title">Make Hello a Big Deal</span><span class="wk-core">Greet her first when you reunite, before bags, phone, or other talk.</span><span class="wk-lesson">Lesson 21</span></a></li>
-      <li><a href="/this-week#l31"><span class="wk-moment">Before the goodbye</span><span class="wk-title">Look Ahead to the Hard Part</span><span class="wk-core">Before a hard part, scan food, rest, bathroom, and the plan, then fix the one need you can.</span><span class="wk-lesson">Lesson 31</span></a></li>
-      <li><a href="/this-week#l2"><span class="wk-moment">When she is sad someone left</span><span class="wk-title">Name It First</span><span class="wk-core">Name the feeling before you fix the problem.</span><span class="wk-lesson">Lesson 2</span></a></li>
-      <li><a href="/this-week#l3"><span class="wk-moment">Swim, gym, and every switch</span><span class="wk-title">Warn Before the Switch</span><span class="wk-core">Warn two times before a change, then follow through.</span><span class="wk-lesson">Lesson 3</span></a></li>
-      <li><a href="/this-week#l25"><span class="wk-moment">While Grandma is here</span><span class="wk-title">When You Were Small</span><span class="wk-core">Tell her one short true story from when you were her age, with a feeling in it.</span><span class="wk-lesson">Lesson 25</span></a></li>
-      <li><a href="/this-week#l12"><span class="wk-moment">Dad's first morning back at work</span><span class="wk-title">Start the Morning Slow</span><span class="wk-core">Sit with her for the first five minutes of the day and ask for nothing yet.</span><span class="wk-lesson">Lesson 12</span></a></li>
+      <li><a href="/this-week#l3"><span class="wk-moment">Sunday · Swim, gym, and every switch</span><span class="wk-title">Warn Before the Switch</span><span class="wk-core">Warn two times before a change, then follow through.</span><span class="wk-lesson">Lesson 3</span></a></li>
+      <li><a href="/this-week#l27"><span class="wk-moment">Monday and Tuesday · For the people coming and going</span><span class="wk-title">Make a Gift for Someone</span><span class="wk-core">Help her make one small gift for a real person, then give it to that person.</span><span class="wk-lesson">Lesson 27</span></a></li>
+      <li><a href="/this-week#l21"><span class="wk-moment">Wednesday · When Grandma arrives</span><span class="wk-title">Make Hello a Big Deal</span><span class="wk-core">Greet her first when you reunite, before bags, phone, or other talk.</span><span class="wk-lesson">Lesson 21</span></a></li>
+      <li><a href="/this-week#l31"><span class="wk-moment">Thursday · Before the goodbye</span><span class="wk-title">Look Ahead to the Hard Part</span><span class="wk-core">Before a hard part, scan food, rest, bathroom, and the plan, then fix the one need you can.</span><span class="wk-lesson">Lesson 31</span></a></li>
+      <li><a href="/this-week#l2"><span class="wk-moment">Friday · When she is sad someone left</span><span class="wk-title">Name It First</span><span class="wk-core">Name the feeling before you fix the problem.</span><span class="wk-lesson">Lesson 2</span></a></li>
+      <li><a href="/this-week#l25"><span class="wk-moment">The weekend · While Grandma is here</span><span class="wk-title">When You Were Small</span><span class="wk-core">Tell her one short true story from when you were her age, with a feeling in it.</span><span class="wk-lesson">Lesson 25</span></a></li>
+      <li><a href="/this-week#l12"><span class="wk-moment">Next Monday · Dad's first morning back at work</span><span class="wk-title">Start the Morning Slow</span><span class="wk-core">Sit with her for the first five minutes of the day and ask for nothing yet.</span><span class="wk-lesson">Lesson 12</span></a></li>
     </ul>
   </section>
   <section class="how" aria-label="How it works">

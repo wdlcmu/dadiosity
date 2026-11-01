@@ -1,13 +1,14 @@
 # Dadiosity: full page text
 
 > Complete text of dadiosity.com: the homepage, the ask page, the question pages, privacy, and terms.
-> Dadiosity is one small lesson each day, for dads of little kids. It is coming soon.
+> Dadiosity is one small lesson each day, for dads of little kids. Lessons are live on the site; the daily email has not started.
 > A small pilot group starts first.
 > Text captured from the live pages, 2026-11-01.
 
 ## Homepage (https://dadiosity.com/)
 
-Coming soon
+Tonight's move (top of the homepage, changes each day): the day's lesson from This week at home, its move in full, a link to the full lesson, and tomorrow's lesson named.
+One lesson a day
 Dadiosity
 Dads get one lesson each day.
 For dads of little kids. Free. A minute to read.
@@ -24,31 +25,31 @@ Then one lesson each day.
 Read the sample lesson
 This week at home
 Grandparents are coming and going this week, and work starts again soon. Seven written lessons fit the week. The move is on each card. Tap one to read the full lesson.
-For the people coming and going
-Make a Gift for Someone
-Help her make one small gift for a real person, then give it to that person.
-Lesson 27
-When Grandma arrives
-Make Hello a Big Deal
-Greet her first when you reunite, before bags, phone, or other talk.
-Lesson 21
-Before the goodbye
-Look Ahead to the Hard Part
-Before a hard part, scan food, rest, bathroom, and the plan, then fix the one need you can.
-Lesson 31
-When she is sad someone left
-Name It First
-Name the feeling before you fix the problem.
-Lesson 2
-Swim, gym, and every switch
+Sunday · Swim, gym, and every switch
 Warn Before the Switch
 Warn two times before a change, then follow through.
 Lesson 3
-While Grandma is here
+Monday and Tuesday · For the people coming and going
+Make a Gift for Someone
+Help her make one small gift for a real person, then give it to that person.
+Lesson 27
+Wednesday · When Grandma arrives
+Make Hello a Big Deal
+Greet her first when you reunite, before bags, phone, or other talk.
+Lesson 21
+Thursday · Before the goodbye
+Look Ahead to the Hard Part
+Before a hard part, scan food, rest, bathroom, and the plan, then fix the one need you can.
+Lesson 31
+Friday · When she is sad someone left
+Name It First
+Name the feeling before you fix the problem.
+Lesson 2
+The weekend · While Grandma is here
 When You Were Small
 Tell her one short true story from when you were her age, with a feeling in it.
 Lesson 25
-Dad's first morning back at work
+Next Monday · Dad's first morning back at work
 Start the Morning Slow
 Sit with her for the first five minutes of the day and ask for nothing yet.
 Lesson 12
