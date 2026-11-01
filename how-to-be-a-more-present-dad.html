@@ -158,5 +158,32 @@ function fleetTrack(name, props){
   document.head.appendChild(s);
 })();
 </script>
+<script>
+/* Measurement (Sprint Lane 1, Oct 31, 2026): a lesson counts as read
+   when most of its card has been on screen. Counts only: the lesson
+   number and the page. Nothing about the reader. */
+(function () {
+  try {
+    if (!("IntersectionObserver" in window)) return;
+    var page = location.pathname.replace(/\//g, "") || "home";
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        io.unobserve(en.target);
+        var head = en.target.querySelector ? en.target.querySelector(".card-head") : null;
+        var m = head && head.textContent.match(/Lesson\s+(\d+)/i);
+        var lesson = m ? parseInt(m[1], 10) : (en.target._lvIndex || 0);
+        if (typeof fleetTrack === "function") {
+          fleetTrack("lesson_viewed", { tool: "dad-lessons", page: page, lesson: lesson });
+        }
+      });
+    }, { threshold: 0.6 });
+    var n = 0;
+    document.querySelectorAll("article.card, ol.plays > li, ul.plan > li").forEach(function (elm) {
+      n += 1; elm._lvIndex = n; io.observe(elm);
+    });
+  } catch (e) {}
+})();
+</script>
 </body>
 </html>
