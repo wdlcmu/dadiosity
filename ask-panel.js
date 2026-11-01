@@ -251,6 +251,8 @@ var DP_CSS = [
   "font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;",
   "box-shadow:0 4px 18px rgba(43,33,24,.30);cursor:pointer}",
   "#dp-open:active{transform:scale(.98)}",
+  "#dp-open{transition:transform .25s ease,opacity .25s ease}",
+  "#dp-open.dp-away{transform:translateY(170%);opacity:0;pointer-events:none}",
   "#dp-scrim{position:fixed;inset:0;z-index:80;background:rgba(43,33,24,.45)}",
   "#dp-sheet[hidden],#dp-scrim[hidden]{display:none}",
   "#dp-sheet{position:fixed;left:0;right:0;bottom:0;z-index:90;background:#fff8ec;color:#2b2118;",
@@ -299,7 +301,7 @@ var DP_CSS = [
   "#dp-sheet .dp-foot a{color:#b45309;font-weight:700;text-decoration:none;display:inline-block;padding:12px 6px;min-height:44px}",
   "#dp-sheet .dp-foot a:hover{text-decoration:underline}",
   "body.dp-locked{overflow:hidden}",
-  "@media (prefers-reduced-motion: reduce){#dp-sheet{animation:none}#dp-answer .dp-card{animation:none}}"
+  "@media (prefers-reduced-motion: reduce){#dp-sheet{animation:none}#dp-answer .dp-card{animation:none}#dp-open{transition:none}}"
 ].join("\n");
 var DP_CHIPS = [
   ["Bedtime is a fight every night.", "Bedtime is a fight every night"],
@@ -454,6 +456,32 @@ function dpBuild() {
   sheet.appendChild(bodyEl);
   document.body.appendChild(sheet);
   open.addEventListener("click", function () { dpOpen(open); });
+  /* Wordmark clearance: on the homepage the fixed pill can land on the
+     hero "Dadiosity" title at some scroll positions. While the title is
+     inside the pill's fixed box, slide the pill out of the way; it returns
+     as soon as the title scrolls clear. The pill's box is computed from
+     its layout size (offsetWidth/Height ignore the slide transform, so
+     the check cannot flicker). No hero title, no change. */
+  var heroTitle = document.querySelector(".hero h1");
+  if (heroTitle && open.offsetHeight) {
+    var dpTick = false;
+    var dpClear = function () {
+      dpTick = false;
+      if (!sheet.hidden) return;
+      var t = heroTitle.getBoundingClientRect();
+      var oB = window.innerHeight - 16, oT = oB - open.offsetHeight;
+      var oR = window.innerWidth - 16, oL = oR - open.offsetWidth;
+      var hit = t.bottom > oT - 8 && t.top < oB + 8 && t.right > oL - 8 && t.left < oR + 8;
+      open.classList.toggle("dp-away", hit);
+    };
+    var dpOnScroll = function () {
+      if (!dpTick) { dpTick = true; requestAnimationFrame(dpClear); }
+    };
+    window.addEventListener("scroll", dpOnScroll, { passive: true });
+    window.addEventListener("resize", dpOnScroll);
+    window.addEventListener("load", dpOnScroll);
+    dpClear();
+  }
   close.addEventListener("click", dpClose);
   scrim.addEventListener("click", dpClose);
   find.addEventListener("click", dpAsk);
