@@ -155,6 +155,18 @@
   .join-next a:hover { text-decoration: underline; }
   #sharemsg { font-size: 0.875rem; color: var(--muted); }
   #sharemsg:not(:empty) { margin-top: 0.5rem; }
+  .week { width: 100%; max-width: 26rem; text-align: left; margin-bottom: 2.25rem; }
+  .week h2 { font-size: 1.25rem; font-weight: 700; text-align: center; margin-bottom: 0.75rem; }
+  .week .wk-intro { color: var(--body); margin-bottom: 0.5rem; }
+  .week ul { list-style: none; }
+  .week li { border-top: 1px solid #eee0c8; }
+  .week li:last-child { border-bottom: 1px solid #eee0c8; }
+  .week a { display: block; text-decoration: none; padding: 0.625rem 0.25rem; min-height: 44px; }
+  .week .wk-moment { display: block; font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.125rem; }
+  .week .wk-title { display: block; font-weight: 700; color: var(--ink); }
+  .week .wk-core { display: block; color: var(--body); }
+  .week .wk-lesson { display: block; font-size: 0.8125rem; font-weight: 600; color: var(--muted); margin-top: 0.125rem; }
+  .week a:hover .wk-title, .week a:focus-visible .wk-title { text-decoration: underline; }
   .fine { font-size: 0.875rem; color: var(--muted); margin-top: 0.75rem; }
   .msg { font-weight: 600; margin-top: 1rem; min-height: 1.5rem; }
   .msg.ok { color: #15803d; }
@@ -222,6 +234,19 @@
       <source media="(max-width: 40rem)" srcset="/assets/hero-reading-portrait.jpg" width="725" height="801">
       <img class="photo" src="/assets/hero-reading.jpg" width="1200" height="801" alt="A dad reads a picture book to his toddler in bed.">
     </picture>
+  </section>
+  <section class="week" aria-label="This week at home">
+    <h2>This week at home</h2>
+    <p class="wk-intro">Grandparents are coming and going this week, and work starts again soon. Seven written lessons fit the week. The move is on each card. Tap one to read the full lesson.</p>
+    <ul>
+      <li><a href="/this-week#l27"><span class="wk-moment">For the people coming and going</span><span class="wk-title">Make a Gift for Someone</span><span class="wk-core">Help her make one small gift for a real person, then give it to that person.</span><span class="wk-lesson">Lesson 27</span></a></li>
+      <li><a href="/this-week#l21"><span class="wk-moment">When Grandma arrives</span><span class="wk-title">Make Hello a Big Deal</span><span class="wk-core">Greet her first when you reunite, before bags, phone, or other talk.</span><span class="wk-lesson">Lesson 21</span></a></li>
+      <li><a href="/this-week#l31"><span class="wk-moment">Before the goodbye</span><span class="wk-title">Look Ahead to the Hard Part</span><span class="wk-core">Before a hard part, scan food, rest, bathroom, and the plan, then fix the one need you can.</span><span class="wk-lesson">Lesson 31</span></a></li>
+      <li><a href="/this-week#l2"><span class="wk-moment">When she is sad someone left</span><span class="wk-title">Name It First</span><span class="wk-core">Name the feeling before you fix the problem.</span><span class="wk-lesson">Lesson 2</span></a></li>
+      <li><a href="/this-week#l3"><span class="wk-moment">Swim, gym, and every switch</span><span class="wk-title">Warn Before the Switch</span><span class="wk-core">Warn two times before a change, then follow through.</span><span class="wk-lesson">Lesson 3</span></a></li>
+      <li><a href="/this-week#l25"><span class="wk-moment">While Grandma is here</span><span class="wk-title">When You Were Small</span><span class="wk-core">Tell her one short true story from when you were her age, with a feeling in it.</span><span class="wk-lesson">Lesson 25</span></a></li>
+      <li><a href="/this-week#l12"><span class="wk-moment">Dad's first morning back at work</span><span class="wk-title">Start the Morning Slow</span><span class="wk-core">Sit with her for the first five minutes of the day and ask for nothing yet.</span><span class="wk-lesson">Lesson 12</span></a></li>
+    </ul>
   </section>
   <section class="how" aria-label="How it works">
     <h2>How it works</h2>
