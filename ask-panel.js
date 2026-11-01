@@ -225,7 +225,7 @@ function dadCard(lesson) {
   head.className = "card-head";
   head.textContent = lesson.heading;
   art.appendChild(head);
-  [["The idea:", lesson.idea], ["Tonight's move:", lesson.move], ["Tonight's play:", lesson.play], ["Why it works:", lesson.why], ["Core move:", lesson.core]].forEach(function (part) {
+  [["The idea:", lesson.idea], ["Try this tonight:", lesson.move], ["Tonight's play:", lesson.play], ["Why it works:", lesson.why], ["One line to keep:", lesson.core]].forEach(function (part) {
     var p = document.createElement("p");
     var strong = document.createElement("strong");
     strong.textContent = part[0];

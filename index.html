@@ -218,8 +218,8 @@
 </head>
 <body>
 <main>
-  <section class="tonight" id="tonight" hidden aria-label="Tonight's move">
-    <p class="t-label" id="t-day">Tonight's move</p>
+  <section class="tonight" id="tonight" hidden aria-label="Try this tonight">
+    <p class="t-label" id="t-day">Try this tonight</p>
     <img class="t-photo" id="t-photo" src="/assets/table-meal.jpg" width="600" height="400" alt="A dad shares a meal with his toddler at the table." hidden>
     <p class="t-moment" id="t-moment"></p>
     <h2 class="t-title" id="t-title"></h2>
@@ -249,7 +249,7 @@
     if (!today || !card) return;
     var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    document.getElementById("t-day").textContent = "Tonight's move · " + days[now.getDay()] + ", " + months[now.getMonth()] + " " + now.getDate();
+    document.getElementById("t-day").textContent = "Try this tonight · " + days[now.getDay()] + ", " + months[now.getMonth()] + " " + now.getDate();
     document.getElementById("t-moment").textContent = today.moment;
     document.getElementById("t-title").textContent = today.title;
     document.getElementById("t-move").textContent = today.move;
@@ -322,7 +322,7 @@
   </section>
   <section class="week" aria-label="This week at home">
     <h2>This week at home</h2>
-    <p class="wk-intro">Grandparents are coming and going this week, and work starts again soon. Seven written lessons fit the week. The move is on each card. Tap one to read the full lesson.</p>
+    <p class="wk-intro">Grandparents are coming and going this week, and work starts again soon. Seven written lessons fit the week. Each card shows the one thing to try. Tap one to read the full lesson.</p>
     <ul>
       <li><a href="/this-week#l3"><span class="wk-moment">Sunday · Swim, gym, and every switch</span><span class="wk-title">Warn Before the Switch</span><span class="wk-core">Warn two times before a change, then follow through.</span><span class="wk-lesson">Lesson 3</span></a></li>
       <li><a href="/this-week#l27"><span class="wk-moment">Monday and Tuesday · For the people coming and going</span><span class="wk-title">Make a Gift for Someone</span><span class="wk-core">Help her make one small gift for a real person, then give it to that person.</span><span class="wk-lesson">Lesson 27</span></a></li>
@@ -369,10 +369,10 @@
       <p class="card-head">Dadiosity Daily, Lesson 13: Restaurants</p>
       <h3>Make the wait part of the meal</h3>
       <p><strong>The idea:</strong> A restaurant meal is mostly waiting. And waiting is the hard part. So the wait is not the gap before the meal. The wait is part of the meal.</p>
-      <p><strong>Tonight's move:</strong> Before the wait starts. Give her one real choice about dinner. One small pick that is truly hers. A kid with a choice is a host. Not a prisoner of the chair.</p>
+      <p><strong>Try this tonight:</strong> Before the wait starts. Give her one real choice about dinner. One small pick that is truly hers. A kid with a choice is a host. Not a prisoner of the chair.</p>
       <p><strong>Tonight's play:</strong> At home, build a tiny pretend restaurant. Blocks for tables, a blanket over the door. She seats the stuffed animals. She takes your order in scribbles. She brings one pretend dish at a time. Pay with counted thank-yous and a big tip.</p>
       <p><strong>Why it works:</strong> Waiting feels long. When nothing in it is yours. A choice and a small job make the minutes hers. And time she owns moves faster.</p>
-      <p><strong>Core move:</strong> Give her one real choice about dinner. One small pick that is truly hers.</p>
+      <p><strong>One line to keep:</strong> Give her one real choice about dinner. One small pick that is truly hers.</p>
     </article>
     <div class="share">
       <button type="button" id="sharebtn">Share this lesson</button>
@@ -390,10 +390,10 @@
     <h2>Each lesson: five parts.</h2>
     <ul>
       <li><strong>1. The idea:</strong> one dad skill, in small steps.</li>
-      <li><strong>2. Tonight's move:</strong> one real moment.</li>
+      <li><strong>2. Try this tonight:</strong> one real moment.</li>
       <li><strong>3. Tonight's play:</strong> short game.</li>
       <li><strong>4. Why it works:</strong> clear, honest reason.</li>
-      <li><strong>5. Core move:</strong> one line to keep.</li>
+      <li><strong>5. One line to keep:</strong> the whole lesson, in one line.</li>
     </ul>
   </section>
   <section class="questions" aria-label="Questions dads ask">
