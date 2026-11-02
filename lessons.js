@@ -122,7 +122,11 @@ window.DADIO_LESSONS = [
    "go to sleep",
    "routine",
    "bedtime routine",
-   "stays in bed"
+   "stays in bed",
+   "bed without a fight",
+   "toddler bed without a fight",
+   "get her to bed without a fight",
+   "bedtime without a fight"
   ]
  },
  {
