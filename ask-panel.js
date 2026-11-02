@@ -295,6 +295,8 @@ var DP_CSS = [
   "#dp-answer .dp-card p{color:#4a3f35;margin:0 0 .875rem}",
   "#dp-answer .dp-card p:last-child{margin-bottom:0}",
   "#dp-answer .dp-card p strong{color:#2b2118}",
+  "#dp-answer .dp-card{cursor:pointer}",
+  "#dp-answer .dp-card:focus-visible{outline:2px solid #d97706;outline-offset:2px}",
   "#dp-answer .dp-nomatch{background:#fffaf0;border:1px solid #f0dfba;border-radius:1rem;padding:1.5rem 1.25rem}",
   "#dp-answer .dp-nomatch p{color:#4a3f35;margin:0 0 .875rem}",
   "#dp-answer .dp-nomatch p:last-child{margin-bottom:0}",
@@ -322,11 +324,42 @@ var DP_CHIPS = [
   ["She screams when I say no.", "She screams when I say no."]
 ];
 var dpBuilt = false, dpLastTrigger = null;
+/* Instrumentation (Phase B, Dim 10): this panel is the SINGLE firing
+   path for the ask events. The FLEET_CFG ask observer was removed from
+   index.html/ask.html so an answered chat fires ask_answered exactly
+   once (here), a no-match fires ask_fallback (the fleet name; the old
+   non-standard ask_no_match is retired), and tool_complete fires once
+   per page, on the first answered chat, as the observer used to do. */
+var dpAskCompleted = false;
+function dpTrackAnswered(props) {
+  try { fleetTrack("ask_answered", props); } catch (e) {}
+  if (!dpAskCompleted) {
+    dpAskCompleted = true;
+    try { fleetTrack("tool_complete", { tool: "dad-ask", surface: "ask" }); } catch (e) {}
+  }
+}
+function dpTrackFallback(props) {
+  try { fleetTrack("ask_fallback", props); } catch (e) {}
+}
 function dpCard(lesson) {
   var art = dadCard(lesson);
   art.className = "dp-card";
   var head = art.querySelector(".card-head");
   if (head) head.className = "dp-card-head";
+  /* DIM 9 (Phase B): the card itself is the tap target to the full
+     lesson (the whole card is far over the 44px floor). Lesson fields
+     are untouched; this only adds navigation to the card element. */
+  if (lesson && lesson.n) {
+    art.style.cursor = "pointer";
+    art.setAttribute("role", "link");
+    art.setAttribute("tabindex", "0");
+    art.setAttribute("aria-label", "Read the full lesson: " + lesson.title);
+    var dpGoLesson = function () { window.location.href = "/this-week#l" + lesson.n; };
+    art.addEventListener("click", dpGoLesson);
+    art.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); dpGoLesson(); }
+    });
+  }
   return art;
 }
 function dpLabel(text) {
@@ -358,7 +391,7 @@ function dpAskLocal() {
     p2.textContent = "The 31 lessons cover bedtime, play, food, feelings, mornings, and hard moments. Try a few plain words for the hard part, or tap an example below.";
     box.appendChild(p1); box.appendChild(p2);
     answer.appendChild(box);
-    try { fleetTrack("ask_no_match", { tool: "dad-ask" }); } catch (e) {}
+    dpTrackFallback({ tool: "dad-ask", missing: "match" });
     return;
   }
   answer.appendChild(dpLabel("Closest lesson for tonight"));
@@ -368,7 +401,7 @@ function dpAskLocal() {
     answer.appendChild(dpLabel("Also close"));
     rest.forEach(function (r) { answer.appendChild(dpCard(r.lesson)); });
   }
-  try { fleetTrack("ask_answered", { tool: "dad-ask", lesson: top.lesson.n }); } catch (e) {}
+  dpTrackAnswered({ tool: "dad-ask", lesson: top.lesson.n });
   var first = answer.querySelector(".dp-card");
   if (first) { try { first.scrollIntoView({ block: "nearest" }); } catch (e) {} }
 }
@@ -407,13 +440,13 @@ function dpRenderChat(j) {
       answer.appendChild(dpLabel("Also close"));
       lessons.slice(1).forEach(function (l) { answer.appendChild(dpCard(l)); });
     }
-    try { fleetTrack("ask_answered", { tool: "dad-ask", lesson: lessons[0].n, via: "chat" }); } catch (e) {}
+    dpTrackAnswered({ tool: "dad-ask", lesson: lessons[0].n, via: "chat" });
   } else {
     dpBubble("DADIOSITY'S AI", lead || "Something went wrong. Try again.");
     if (/There isn't a written lesson on that yet/.test(lead)) {
-      try { fleetTrack("ask_no_match", { tool: "dad-ask", via: "chat" }); } catch (e) {}
+      dpTrackFallback({ tool: "dad-ask", missing: "match", via: "chat" });
     } else {
-      try { fleetTrack("ask_answered", { tool: "dad-ask", via: "chat" }); } catch (e) {}
+      dpTrackAnswered({ tool: "dad-ask", via: "chat" });
     }
   }
   if (nearest.length) {
@@ -428,11 +461,12 @@ function dpRestingNote() {
   var note = document.createElement("div");
   note.className = "dp-bubble";
   var nw = document.createElement("p"); nw.className = "dp-who"; nw.textContent = "DADIOSITY'S AI";
-  var np = document.createElement("p"); np.textContent = "The chat is resting. Here is the match from this page instead.";
+  var np = document.createElement("p"); np.textContent = "The chat is off right now. Here is the match from this page instead.";
   note.appendChild(nw); note.appendChild(np);
   ans.insertBefore(note, ans.firstChild);
 }
 function dpSend(text) {
+  try { fleetTrack("ask_asked", { tool: "dad-ask", surface: "ask" }); } catch (e) {}
   var q = document.getElementById("dp-q");
   var hint = document.getElementById("dp-hint");
   var answer = document.getElementById("dp-answer");
@@ -529,7 +563,7 @@ function dpBuild() {
   bodyEl.className = "dp-body";
   var promise = document.createElement("p");
   promise.className = "dp-promise";
-  promise.textContent = "Chat with Dadiosity's AI. It answers only from the 31 written lessons on this site. If there is no written lesson on something, it says so plain. Nothing you type is saved.";
+  promise.textContent = "Chat with Dadiosity's AI. It answers only from the 31 written lessons on this site. If there is no written lesson on something, it will say so, in plain words. Nothing you type is saved.";
   bodyEl.appendChild(promise);
   var photo = document.createElement("img");
   photo.className = "dp-photo";
@@ -592,7 +626,7 @@ function dpBuild() {
   bodyEl.appendChild(chips);
   var foot = document.createElement("p");
   foot.className = "dp-foot";
-  foot.appendChild(document.createTextNode("Real lessons only. No match, said plain. If the chat is resting, this page finds your lesson itself."));
+  foot.appendChild(document.createTextNode("Real lessons only. No match, said plain. If the chat is off, this page finds your lesson itself."));
   foot.appendChild(document.createElement("br"));
   var full = document.createElement("a");
   full.href = "/ask";
@@ -602,32 +636,94 @@ function dpBuild() {
   sheet.appendChild(bodyEl);
   document.body.appendChild(sheet);
   open.addEventListener("click", function () { dpOpen(open); });
-  /* Wordmark clearance: on the homepage the fixed pill can land on the
-     hero "Dadiosity" title at some scroll positions. While the title is
-     inside the pill's fixed box, slide the pill out of the way; it returns
-     as soon as the title scrolls clear. The pill's box is computed from
-     its layout size (offsetWidth/Height ignore the slide transform, so
-     the check cannot flicker). No hero title, no change. */
-  var heroTitle = document.querySelector(".hero h1");
-  if (heroTitle && open.offsetHeight) {
-    var dpTick = false;
-    var dpClear = function () {
-      dpTick = false;
-      if (!sheet.hidden) return;
-      var t = heroTitle.getBoundingClientRect();
-      var oB = window.innerHeight - 16, oT = oB - open.offsetHeight;
-      var oR = window.innerWidth - 16, oL = oR - open.offsetWidth;
-      var hit = t.bottom > oT - 8 && t.top < oB + 8 && t.right > oL - 8 && t.left < oR + 8;
-      open.classList.toggle("dp-away", hit);
-    };
-    var dpOnScroll = function () {
-      if (!dpTick) { dpTick = true; requestAnimationFrame(dpClear); }
-    };
-    window.addEventListener("scroll", dpOnScroll, { passive: true });
-    window.addEventListener("resize", dpOnScroll);
-    window.addEventListener("load", dpOnScroll);
-    dpClear();
+  /* ==== FLEET YIELD GUARD (adoption, ADOPTION-SPEC Dadiosity section;
+     Phase B 2026-11-01) — replaces the old dp-away guard, which watched
+     only the homepage hero <h1> and never ran its target logic on the
+     question pages. This guard watches ANY visible interactive element
+     (the reference selector set) on every page that carries the pill.
+     The pill's RESTING box is computed once per layout from its
+     untransformed CSS position + offset size — never from its rendered
+     rect, so the yield transform cannot feed back (the PMC oscillation
+     bug). A 6px hysteresis band on the return check keeps the state
+     sticky at boundary scrolls. A focused pill never yields; an open
+     panel never yields. Everything outside this block is unchanged. */
+  var FYG_SEL = "a[href],button,input,select,textarea,summary,[role=\"button\"],[role=\"link\"],[role=\"tab\"],[role=\"menuitem\"],[tabindex]:not([tabindex=\"-1\"]),[data-fyg-watch]";
+  var fygTargets = [], fygYielded = false, fygTick = false, fygResting = null;
+  function fygSetYield(on) {
+    if (on === fygYielded) return;
+    fygYielded = on;
+    open.classList.toggle("dp-away", on);
   }
+  function fygComputeResting() {
+    var cs = window.getComputedStyle(open);
+    var w = open.offsetWidth, h = open.offsetHeight;
+    if (!w || !h) { fygResting = null; return; }
+    var vw = window.innerWidth, vh = window.innerHeight;
+    var left = parseFloat(cs.left), right = parseFloat(cs.right);
+    var top = parseFloat(cs.top), bottom = parseFloat(cs.bottom);
+    var box = {};
+    if (!isNaN(left) && cs.left !== "auto") box.left = left;
+    else if (!isNaN(right) && cs.right !== "auto") box.left = vw - right - w;
+    else box.left = vw - w;
+    if (!isNaN(top) && cs.top !== "auto") box.top = top;
+    else if (!isNaN(bottom) && cs.bottom !== "auto") box.top = vh - bottom - h;
+    else box.top = vh - h;
+    box.right = box.left + w;
+    box.bottom = box.top + h;
+    fygResting = box;
+  }
+  function fygCollect() {
+    var list = document.querySelectorAll(FYG_SEL);
+    fygTargets = [];
+    for (var i = 0; i < list.length; i++) {
+      var el = list[i];
+      if (el === open || open.contains(el)) continue;
+      if (el === sheet || sheet.contains(el)) continue;
+      if (el === scrim || scrim.contains(el)) continue;
+      fygTargets.push(el);
+    }
+  }
+  function fygUpdate() {
+    fygTick = false;
+    if (!sheet.hidden) { fygSetYield(false); return; }
+    if (document.activeElement === open || open.contains(document.activeElement)) { fygSetYield(false); return; }
+    if (!fygResting) fygComputeResting();
+    if (!fygResting) return;
+    var ex = fygYielded ? 6 : 0, box = fygResting, hit = false;
+    for (var i = 0; i < fygTargets.length; i++) {
+      var el = fygTargets[i];
+      if (!el.getClientRects || !el.getClientRects().length) continue;
+      var cs = window.getComputedStyle(el);
+      if (cs.display === "none" || cs.visibility === "hidden") continue;
+      var b = el.getBoundingClientRect();
+      if (!b.width || !b.height) continue;
+      if (b.bottom > box.top - ex && b.top < box.bottom + ex && b.right > box.left - ex && b.left < box.right + ex) { hit = true; break; }
+    }
+    fygSetYield(hit);
+  }
+  function fygSchedule() {
+    if (fygTick) return;
+    fygTick = true;
+    requestAnimationFrame(fygUpdate);
+  }
+  function fygRelayout() {
+    fygResting = null;
+    fygCollect();
+    fygSchedule();
+  }
+  window.addEventListener("scroll", fygSchedule, { passive: true });
+  window.addEventListener("resize", fygRelayout);
+  window.addEventListener("orientationchange", fygRelayout);
+  window.addEventListener("load", fygRelayout);
+  open.addEventListener("focus", function () { fygSetYield(false); }, true);
+  open.addEventListener("blur", fygSchedule, true);
+  if (window.MutationObserver) {
+    new MutationObserver(function () { fygCollect(); fygSchedule(); }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["hidden", "style", "class"] });
+  }
+  fygCollect();
+  fygComputeResting();
+  fygUpdate();
+  /* ==== END FLEET YIELD GUARD ==== */
   close.addEventListener("click", dpClose);
   scrim.addEventListener("click", dpClose);
   find.addEventListener("click", dpAsk);
