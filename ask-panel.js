@@ -683,10 +683,18 @@ function dpBuild() {
       fygTargets.push(el);
     }
   }
+  function fygKeyboardFocus() {
+    /* The focus exemption is for KEYBOARD users (a tabbed-to pill must
+       stay put). dpClose returns focus to the pill programmatically
+       after touch closes too; :focus-visible separates the two — a
+       touch-closed pill must be free to yield again on scroll. */
+    if (document.activeElement !== open && !open.contains(document.activeElement)) return false;
+    try { return open.matches(":focus-visible"); } catch (e) { return true; }
+  }
   function fygUpdate() {
     fygTick = false;
     if (!sheet.hidden) { fygSetYield(false); return; }
-    if (document.activeElement === open || open.contains(document.activeElement)) { fygSetYield(false); return; }
+    if (fygKeyboardFocus()) { fygSetYield(false); return; }
     if (!fygResting) fygComputeResting();
     if (!fygResting) return;
     var ex = fygYielded ? 6 : 0, box = fygResting, hit = false;
@@ -715,7 +723,7 @@ function dpBuild() {
   window.addEventListener("resize", fygRelayout);
   window.addEventListener("orientationchange", fygRelayout);
   window.addEventListener("load", fygRelayout);
-  open.addEventListener("focus", function () { fygSetYield(false); }, true);
+  open.addEventListener("focus", fygSchedule, true);
   open.addEventListener("blur", fygSchedule, true);
   if (window.MutationObserver) {
     new MutationObserver(function () { fygCollect(); fygSchedule(); }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["hidden", "style", "class"] });
