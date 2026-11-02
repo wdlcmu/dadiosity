@@ -209,9 +209,9 @@
   }
   .confirm a:hover { text-decoration: underline; }
   footer {
-    margin-top: auto; text-align: center; padding: 2rem 1.5rem; border-top: 1px solid #eee0c8;
+    margin-top: auto; text-align: center; padding: 2rem 1.5rem 96px; border-top: 1px solid #eee0c8;
     font-size: 0.9375rem; color: var(--muted);
-  }
+  } /* bottom room (Phase B): last footer links scroll clear of the fixed Ask pill, same 96px the question pages carry */
   footer p { margin-bottom: 0.5rem; }
   footer a { color: var(--accent); font-weight: 600; text-decoration: none; display: inline-block; padding: 12px 6px; min-height: 44px; }
   footer a:hover { text-decoration: underline; }
@@ -225,11 +225,6 @@ window.FLEET_CFG = {
     {sel: "#t-link", surface: "lesson"},
     {sel: "#t-tomorrow-link", surface: "lesson"}
   ],
-  ask: {
-    goSel: "#dp-find", answerSel: "#dp-answer", completeOnAnswer: true,
-    fallbacks: [{re: /No written lesson fits those words yet|There isn't a written lesson on that yet/i, missing: "match"}],
-    kinds: [{re: /Closest lesson for tonight/i, outcome: "matched"}, {re: /Nearest written lessons/i, outcome: "nearest"}]
-  }
 };
 </script>
 <!-- Fleet analytics — shared instrumentation (Nov 1, 2026; taxonomy:
@@ -690,12 +685,14 @@ window.FLEET_CFG = {
    label. Posture: autocapture off, session recording off, no
    identify(), anonymous only. Payloads are counts and enums only —
    never answers, never personal data. */
-var _fleetQ = [];
+/* Double-loader unification (Phase B, Dim 10): the Oct 25 fleetTrack
+   PostHog loader that used to sit here (its own array.js injection +
+   posthog.init + site_id register) is REMOVED. The Nov 1 FA block in
+   the head is now the site's only PostHog loader. fleetTrack stays as
+   a thin name so existing callers keep working; it delegates to
+   FA.track, which queues until the one loader is ready. */
 function fleetTrack(name, props){
-  try {
-    if (window.posthog && posthog.capture) posthog.capture(name, props || {});
-    else _fleetQ.push([name, props || {}]);
-  } catch (e) {}
+  try { if (window.FA && FA.track) FA.track(name, props || {}); } catch (e) {}
 }
 function fleetSessionMarks(){
   try {
@@ -715,22 +712,7 @@ function fleetSessionMarks(){
   } catch (e) {}
 }
 fleetSessionMarks();
-(function(){
-  var s = document.createElement("script");
-  s.async = true;
-  s.src = "https://us.i.posthog.com/static/array.js";
-  s.onload = function(){
-    try {
-      if (window.posthog && posthog.init){
-        posthog.init("phc_t9dkHXAZR5VEjPFm3K5JDzGKFsNNxKcwSxxcEBEeLbS7", {api_host: "https://us.i.posthog.com", autocapture: false, capture_pageview: true, disable_session_recording: true});
-        posthog.register({site_id: "dadiosity", site_name: "Dadiosity"});
-        _fleetQ.splice(0).forEach(function(e){ try { posthog.capture(e[0], e[1]); } catch (x) {} });
-        fleetSessionMarks();
-      }
-    } catch (e) {}
-  };
-  document.head.appendChild(s);
-})();
+fleetSessionMarks(); /* session marks fire through the FA loader now (shim above) */
 (function(){
   var started = false;
   var email = document.getElementById("email");
