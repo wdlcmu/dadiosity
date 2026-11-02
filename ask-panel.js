@@ -241,10 +241,13 @@ function dadLabel(text) {
   p.textContent = text;
   return p;
 }
-/* ---- Ask panel UI (SPEC-DADIO-ASKPANEL-1): the /ask matcher in place.
-   The matcher above is byte-identical to ask.html's; this tail only adds
-   the door and the sheet. The match runs on this device: nothing typed
-   here is sent or saved, exactly as on /ask. ---- */
+/* ---- Ask panel UI (SPEC-DADIO-ASKPANEL-1 + AI chat, 2026-11-01): the
+   /ask matcher in place, plus the chat door. The matcher above is
+   byte-identical to ask.html's and still runs on this device as the
+   fallback: if the chat (POST /api/chat, answers grounded only in the
+   31 written lessons) is unreachable, the panel answers with the local
+   matcher exactly as it did before, and says so. Chat turns are sent
+   to the site's own chat worker; nothing typed is stored there. ---- */
 var DP_CSS = [
   "#dp-open{position:fixed;right:1rem;bottom:1rem;z-index:70;min-height:52px;padding:0 1.25rem;",
   "border:0;border-radius:999px;background:#b45309;color:#fff;font-size:1rem;font-weight:700;",
@@ -300,15 +303,23 @@ var DP_CSS = [
   "font-size:.9375rem;color:#4a3f35;text-align:center}",
   "#dp-sheet .dp-foot a{color:#b45309;font-weight:700;text-decoration:none;display:inline-block;padding:12px 6px;min-height:44px}",
   "#dp-sheet .dp-foot a:hover{text-decoration:underline}",
+  "#dp-sheet .dp-photo{display:block;width:100%;height:auto;border-radius:.75rem;margin:0 0 .75rem}",
+  "#dp-answer .dp-bubble{margin:0 0 .5rem}",
+  "#dp-answer .dp-bubble{border:1px solid #e5e0d5;border-radius:.75rem;padding:.625rem .75rem;background:#fff;color:#2b2118}",
+  "#dp-answer .dp-bubble p{margin:0;white-space:pre-wrap}",
+  "#dp-answer .dp-bubble .dp-who{font-size:.6875rem;font-weight:700;letter-spacing:.05em;color:#92400e;margin:0 0 .25rem}",
+  "#dp-answer .dp-me{background:#fdf3e3;border-color:#e7d8c3}",
+  "#dp-answer .dp-busy{color:#92400e;font-size:.875rem;min-height:1.25rem;margin:.25rem 0 0}",
   "body.dp-locked{overflow:hidden}",
   "@media (prefers-reduced-motion: reduce){#dp-sheet{animation:none}#dp-answer .dp-card{animation:none}#dp-open{transition:none}}"
 ].join("\n");
+/* Exactly two example taps (Billy's design rule): the first is a
+   canonical real moment that returns its written lesson; the second is
+   a partial question, covered by two close lessons. Both return
+   product (a lesson card), never generic talk. */
 var DP_CHIPS = [
-  ["Bedtime is a fight every night.", "Bedtime is a fight every night"],
-  ["She won't eat at restaurants.", "She won't eat at restaurants"],
-  ["She won't listen to me.", "She won't listen to me"],
-  ["I yelled at her and I feel awful.", "I yelled at her and I feel awful"],
-  ["How do I play with her?", "How do I play with her?"]
+  ["Bedtime is a fight every night.", "Bedtime is a fight every night."],
+  ["She screams when I say no.", "She screams when I say no."]
 ];
 var dpBuilt = false, dpLastTrigger = null;
 function dpCard(lesson) {
@@ -323,7 +334,7 @@ function dpLabel(text) {
   p.className = "dp-answer-label";
   return p;
 }
-function dpAsk() {
+function dpAskLocal() {
   var q = document.getElementById("dp-q");
   var hint = document.getElementById("dp-hint");
   var answer = document.getElementById("dp-answer");
@@ -360,6 +371,116 @@ function dpAsk() {
   try { fleetTrack("ask_answered", { tool: "dad-ask", lesson: top.lesson.n }); } catch (e) {}
   var first = answer.querySelector(".dp-card");
   if (first) { try { first.scrollIntoView({ block: "nearest" }); } catch (e) {} }
+}
+/* ---- AI chat send path: POST /api/chat (the site's own worker,
+   grounded only in the 31 written lessons). On any failure or timeout
+   the panel falls back to dpAskLocal above — the matcher on this
+   device — and labels the answer as the page's own match. ---- */
+function dpBubble(who, text, me) {
+  var thread = document.getElementById("dp-answer");
+  var d = document.createElement("div");
+  d.className = "dp-bubble" + (me ? " dp-me" : "");
+  if (who) {
+    var w = document.createElement("p");
+    w.className = "dp-who";
+    w.textContent = who;
+    d.appendChild(w);
+  }
+  var p = document.createElement("p");
+  p.textContent = text;
+  d.appendChild(p);
+  thread.appendChild(d);
+  return d;
+}
+function dpRenderChat(j) {
+  var answer = document.getElementById("dp-answer");
+  var lessons = j.lessons || [];
+  var nearest = j.nearest || [];
+  var lead = j.reply || "";
+  if (lessons.length) {
+    var idx = lead.indexOf(lessons[0].heading);
+    lead = idx > 0 ? lead.slice(0, idx).trim() : "";
+    if (lead) dpBubble("DADIOSITY'S AI", lead);
+    answer.appendChild(dpLabel("Closest lesson for tonight"));
+    answer.appendChild(dpCard(lessons[0]));
+    if (lessons.length > 1) {
+      answer.appendChild(dpLabel("Also close"));
+      lessons.slice(1).forEach(function (l) { answer.appendChild(dpCard(l)); });
+    }
+    try { fleetTrack("ask_answered", { tool: "dad-ask", lesson: lessons[0].n, via: "chat" }); } catch (e) {}
+  } else {
+    dpBubble("DADIOSITY'S AI", lead || "Something went wrong. Try again.");
+    if (/There isn't a written lesson on that yet/.test(lead)) {
+      try { fleetTrack("ask_no_match", { tool: "dad-ask", via: "chat" }); } catch (e) {}
+    } else {
+      try { fleetTrack("ask_answered", { tool: "dad-ask", via: "chat" }); } catch (e) {}
+    }
+  }
+  if (nearest.length) {
+    answer.appendChild(dpLabel("Nearest written lessons"));
+    nearest.forEach(function (l) { answer.appendChild(dpCard(l)); });
+  }
+  var first = answer.querySelector(".dp-card, .dp-bubble");
+  if (first) { try { first.scrollIntoView({ block: "nearest" }); } catch (e) {} }
+}
+function dpSend(text) {
+  var q = document.getElementById("dp-q");
+  var hint = document.getElementById("dp-hint");
+  var answer = document.getElementById("dp-answer");
+  var msg = String(text || "").trim();
+  hint.textContent = "";
+  if (!msg) {
+    hint.textContent = "Say the hard part in a few words first.";
+    q.focus();
+    return;
+  }
+  var ub = document.createElement("div");
+  ub.className = "dp-bubble dp-me";
+  var uw = document.createElement("p"); uw.className = "dp-who"; uw.textContent = "YOU";
+  var up = document.createElement("p"); up.textContent = msg;
+  ub.appendChild(uw); ub.appendChild(up);
+  answer.appendChild(ub);
+  var busy = document.createElement("p");
+  busy.className = "dp-busy";
+  busy.textContent = "Dadiosity is thinking\u2026";
+  answer.appendChild(busy);
+  var done = false;
+  var timer = setTimeout(function () {
+    if (done) return;
+    done = true;
+    busy.remove();
+    dpBubble("DADIOSITY'S AI", "The chat is resting. Here is the match from this page instead.");
+    var keep = q.value;
+    q.value = msg;
+    dpAskLocal();
+    q.value = keep;
+  }, 7000);
+  fetch("/api/chat", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message: msg })
+  }).then(function (r) { return r.json(); }).then(function (j) {
+    if (done) return;
+    done = true;
+    clearTimeout(timer);
+    busy.remove();
+    dpRenderChat(j);
+  }).catch(function () {
+    if (done) return;
+    done = true;
+    clearTimeout(timer);
+    busy.remove();
+    dpBubble("DADIOSITY'S AI", "The chat is resting. Here is the match from this page instead.");
+    var keep = q.value;
+    q.value = msg;
+    dpAskLocal();
+    q.value = keep;
+  });
+}
+function dpAsk() {
+  var q = document.getElementById("dp-q");
+  dpSend(q.value);
+  q.value = "";
 }
 function dpBuild() {
   if (dpBuilt) return;
@@ -399,8 +520,25 @@ function dpBuild() {
   bodyEl.className = "dp-body";
   var promise = document.createElement("p");
   promise.className = "dp-promise";
-  promise.textContent = "Say tonight's hard part in your own words. You get the one of the 31 written lessons that fits what you wrote, right on this page. Nothing you type is sent or saved.";
+  promise.textContent = "Chat with Dadiosity's AI. It answers only from the 31 written lessons on this site. If there is no written lesson on something, it says so plain. Nothing you type is saved.";
   bodyEl.appendChild(promise);
+  var photo = document.createElement("img");
+  photo.className = "dp-photo";
+  photo.src = "/assets/table-meal.jpg";
+  photo.width = 600; photo.height = 400;
+  photo.alt = "A dad shares a meal with his toddler at the table.";
+  bodyEl.appendChild(photo);
+  var opening = document.createElement("div");
+  opening.className = "dp-bubble";
+  opening.style.cssText = "border:1px solid #e5e0d5;border-radius:.75rem;padding:.625rem .75rem;background:#fff;margin:0 0 .75rem";
+  var ow = document.createElement("p");
+  ow.style.cssText = "font-size:.6875rem;font-weight:700;letter-spacing:.05em;color:#92400e;margin:0 0 .25rem";
+  ow.textContent = "DADIOSITY'S AI";
+  var op = document.createElement("p");
+  op.style.cssText = "margin:0";
+  op.textContent = "Hi, I'm Dadiosity's AI assistant. Say tonight's hard part in your own words, and I will bring you the written lesson that fits.";
+  opening.appendChild(ow); opening.appendChild(op);
+  bodyEl.appendChild(opening);
   var label = document.createElement("label");
   label.htmlFor = "dp-q";
   label.textContent = "Tonight's hard part, in your words";
@@ -413,7 +551,7 @@ function dpBuild() {
   var find = document.createElement("button");
   find.type = "button";
   find.id = "dp-find";
-  find.textContent = "Find my lesson";
+  find.textContent = "Send";
   bodyEl.appendChild(find);
   var hint = document.createElement("p");
   hint.id = "dp-hint";
@@ -438,15 +576,14 @@ function dpBuild() {
     b.setAttribute("data-q", pair[0]);
     b.textContent = pair[1];
     b.addEventListener("click", function () {
-      document.getElementById("dp-q").value = b.getAttribute("data-q") || "";
-      dpAsk();
+      dpSend(b.getAttribute("data-q") || "");
     });
     chips.appendChild(b);
   });
   bodyEl.appendChild(chips);
   var foot = document.createElement("p");
   foot.className = "dp-foot";
-  foot.appendChild(document.createTextNode("Real lessons only. No match, said plain."));
+  foot.appendChild(document.createTextNode("Real lessons only. No match, said plain. If the chat is resting, this page finds your lesson itself."));
   foot.appendChild(document.createElement("br"));
   var full = document.createElement("a");
   full.href = "/ask";
