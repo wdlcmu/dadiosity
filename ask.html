@@ -110,12 +110,9 @@
 </style>
 <script>
 window.FLEET_CFG = {
-  site: "dadiosity",
-  ask: {
-    goSel: "#askbtn", answerSel: "#answer", completeOnAnswer: true,
-    fallbacks: [{re: /No written lesson fits those words yet/i, missing: "match"}],
-    kinds: [{re: /Closest lesson for tonight/i, outcome: "matched"}]
-  }
+  site: "dadiosity"
+  /* ask events: fired once by the dadAsk handler itself (Phase B,
+     Dim 10 single-path); the FA ask observer config is removed. */
 };
 </script>
 <!-- Fleet analytics — shared instrumentation (Nov 1, 2026; taxonomy:
@@ -533,7 +530,9 @@ function dadLabel(text) {
   p.textContent = text;
   return p;
 }
+var dadAskCompleted = false;
 function dadAsk() {
+  try { fleetTrack("ask_asked", { tool: "dad-ask", surface: "ask" }); } catch (e) {}
   var q = document.getElementById("q").value;
   var hint = document.getElementById("hint");
   var answer = document.getElementById("answer");
@@ -557,7 +556,7 @@ function dadAsk() {
     p2.textContent = "The 31 lessons cover bedtime, play, food, feelings, mornings, and hard moments. Try a few plain words for the hard part, or tap an example above.";
     box.appendChild(p1); box.appendChild(p2);
     answer.appendChild(box);
-    try { fleetTrack("ask_no_match", { tool: "dad-ask" }); } catch (e) {}
+    try { fleetTrack("ask_fallback", { tool: "dad-ask", missing: "match" }); } catch (e) {}
     return;
   }
   answer.appendChild(dadLabel("Closest lesson for tonight"));
@@ -568,6 +567,7 @@ function dadAsk() {
     rest.forEach(function (r) { answer.appendChild(dadCard(r.lesson)); });
   }
   try { fleetTrack("ask_answered", { tool: "dad-ask", lesson: top.lesson.n }); } catch (e) {}
+  if (!dadAskCompleted) { dadAskCompleted = true; try { fleetTrack("tool_complete", { tool: "dad-ask", surface: "ask" }); } catch (e) {} }
   var first = answer.querySelector(".card");
   if (first) { try { first.scrollIntoView({ block: "nearest" }); } catch (e) {} }
 }
@@ -587,28 +587,12 @@ document.querySelectorAll(".chip").forEach(function (ch) {
 /* Fleet analytics, same posture as the homepage: counts and enums only,
    never the words typed here. PostHog project 624507, autocapture off,
    session recording off, no identify(). */
-var _fleetQ = [];
+/* Double-loader unification (Phase B, Dim 10): the Oct 25 fleetTrack
+   PostHog loader is REMOVED; the Nov 1 FA block in the head is the only
+   loader. fleetTrack delegates to FA.track (which queues until ready). */
 function fleetTrack(name, props){
-  try {
-    if (window.posthog && posthog.capture) posthog.capture(name, props || {});
-    else _fleetQ.push([name, props || {}]);
-  } catch (e) {}
+  try { if (window.FA && FA.track) FA.track(name, props || {}); } catch (e) {}
 }
-(function(){
-  var s = document.createElement("script");
-  s.async = true;
-  s.src = "https://us.i.posthog.com/static/array.js";
-  s.onload = function(){
-    try {
-      if (window.posthog && posthog.init){
-        posthog.init("phc_t9dkHXAZR5VEjPFm3K5JDzGKFsNNxKcwSxxcEBEeLbS7", {api_host: "https://us.i.posthog.com", autocapture: false, capture_pageview: true, disable_session_recording: true});
-        posthog.register({site_id: "dadiosity", site_name: "Dadiosity"});
-        _fleetQ.splice(0).forEach(function(e){ try { posthog.capture(e[0], e[1]); } catch (x) {} });
-      }
-    } catch (e) {}
-  };
-  document.head.appendChild(s);
-})();
 </script>
 </body>
 </html>
