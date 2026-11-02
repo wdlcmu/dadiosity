@@ -65,6 +65,10 @@
   .hero .msg.ok { color: #7ee2a0; }
   .hero .msg.err { color: #fda4a4; }
   .hero .confirm { margin-left: auto; margin-right: auto; }
+  .idbar { width: 100%; max-width: 26rem; text-align: center; margin-bottom: 1.25rem; }
+  .idbar .mark { width: 40px; height: 40px; vertical-align: -11px; margin-right: 0.5rem; }
+  .idbar .id-name { display: inline; margin: 0; font-size: 1.75rem; font-weight: 800; letter-spacing: -0.02em; color: var(--ink); }
+  .idbar .id-line { font-size: 1.0625rem; color: var(--body); margin-top: 0.4rem; }
   .sample-first { color: #f5c877; font-weight: 700; display: inline-block; padding: 12px 6px; min-height: 44px; }
   .kicker {
     display: inline-block; font-size: 0.875rem; font-weight: 600; letter-spacing: 0.08em;
@@ -369,6 +373,21 @@ window.FLEET_CFG = {
 </head>
 <body>
 <main>
+  <header class="idbar">
+    <p><svg class="mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+      <circle cx="32" cy="32" r="30" fill="#b45309"/>
+      <g stroke="#fff8ec" stroke-width="3.4" stroke-linecap="round" fill="none">
+        <path d="M23 28 v13"/><path d="M23 41 l-5 9"/><path d="M23 41 l5 9"/>
+        <path d="M23 32 q7 4 11 2"/>
+        <path d="M41 34 v9"/><path d="M41 43 l-3.5 7"/><path d="M41 43 l3.5 7"/>
+        <path d="M41 37 q-4 -1 -7 -3"/>
+      </g>
+      <circle cx="23" cy="21" r="5.5" fill="#fff8ec"/>
+      <circle cx="41" cy="29" r="4.2" fill="#fff8ec"/>
+      <path d="M14 54 h36" stroke="#fff8ec" stroke-width="2.4" stroke-linecap="round" opacity="0.55"/>
+    </svg><h1 class="id-name">Dadiosity</h1></p>
+    <p class="id-line">One lesson a day for dads of little kids.</p>
+  </header>
   <section class="tonight" id="tonight" hidden aria-label="Try this tonight">
     <p class="t-label" id="t-day">Try this tonight</p>
     <img class="t-photo" id="t-photo" src="/assets/table-meal.jpg" width="600" height="400" alt="A dad shares a meal with his toddler at the table." hidden>
@@ -408,12 +427,18 @@ window.FLEET_CFG = {
     document.getElementById("t-why").textContent = today.why;
     document.getElementById("t-link").href = "/this-week#l" + today.n;
     if (today.photo) document.getElementById("t-photo").hidden = false;
-    var next = WEEK[key(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1))];
-    if (next) {
-      var tLink = document.getElementById("t-tomorrow-link");
-      tLink.textContent = next.title;
-      tLink.href = "/this-week#l" + next.n;
-      document.getElementById("t-tomorrow").hidden = false;
+    var tPara = document.getElementById("t-tomorrow");
+    for (var off = 1; off <= 7; off++) {
+      var nd = new Date(now.getFullYear(), now.getMonth(), now.getDate() + off);
+      var nx = WEEK[key(nd)];
+      if (nx && nx.n !== today.n) {
+        var tLink = document.getElementById("t-tomorrow-link");
+        tLink.textContent = nx.title;
+        tLink.href = "/this-week#l" + nx.n;
+        tPara.childNodes[0].textContent = (off === 1 ? "Tomorrow" : days[nd.getDay()]) + ": ";
+        tPara.hidden = false;
+        break;
+      }
     }
     card.hidden = false;
     document.addEventListener("DOMContentLoaded", function () {
@@ -433,30 +458,13 @@ window.FLEET_CFG = {
   })();
   </script>
   <section class="hero">
-    <svg class="mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
-      <circle cx="32" cy="32" r="30" fill="#b45309"/>
-      <g stroke="#fff8ec" stroke-width="3.4" stroke-linecap="round" fill="none">
-        <path d="M23 28 v13"/><path d="M23 41 l-5 9"/><path d="M23 41 l5 9"/>
-        <path d="M23 32 q7 4 11 2"/>
-        <path d="M41 34 v9"/><path d="M41 43 l-3.5 7"/><path d="M41 43 l3.5 7"/>
-        <path d="M41 37 q-4 -1 -7 -3"/>
-      </g>
-      <circle cx="23" cy="21" r="5.5" fill="#fff8ec"/>
-      <circle cx="41" cy="29" r="4.2" fill="#fff8ec"/>
-      <path d="M14 54 h36" stroke="#fff8ec" stroke-width="2.4" stroke-linecap="round" opacity="0.55"/>
-    </svg>
-    <span class="kicker">One lesson a day</span>
-    <h1>Dadiosity</h1>
-    <p class="tagline">Dads get one lesson each day.</p>
-    <p class="sub">For dads of little kids. Free. A minute to read.</p>
-    <p class="fine"><a class="sample-first" href="#sample">Read a sample lesson.</a></p>
     <form id="signup" method="post" action="/signup" novalidate>
       <label for="email">Sign up for daily lessons.</label>
       <div class="row">
         <input type="email" id="email" name="email" placeholder="you@email.com" autocomplete="email" required>
         <button type="submit" id="go">Join</button>
       </div>
-      <p class="fine">Daily emails have not started yet. The first group is small, picked from this list. The first 31 lessons are written.</p>
+      <p class="fine">Daily emails have not started yet. The first group is small, picked from this list.</p>
       <p class="fine">No spam. No ads. We never sell your email.</p>
       <p class="msg" id="msg" role="status" aria-live="polite"></p>
     </form>
@@ -468,6 +476,7 @@ window.FLEET_CFG = {
       <p>Then one lesson each day.</p>
       <p><a href="#sample">Read the sample lesson</a></p>
     </section>
+    <p class="fine"><a class="sample-first" href="#sample">Read a sample lesson.</a></p>
     <picture>
       <source media="(max-width: 40rem)" srcset="/assets/hero-reading-portrait.jpg" width="725" height="801">
       <img class="photo" src="/assets/hero-reading.jpg" width="1200" height="801" alt="A dad reads a picture book to his toddler in bed.">
@@ -475,7 +484,7 @@ window.FLEET_CFG = {
   </section>
   <section class="week" aria-label="This week at home">
     <h2>This week at home</h2>
-    <p class="wk-intro">Grandparents are coming and going this week, and work starts again soon. Seven written lessons fit the week. Each card shows the one thing to try. Tap one to read the full lesson.</p>
+    <p class="wk-intro">Grandparents are coming and going this week, and work starts again soon. Each card shows the one thing to try. Tap one to read the full lesson.</p>
     <ul>
       <li><a href="/this-week#l3"><span class="wk-moment">Sunday · Leaving the pool</span><span class="wk-title">Warn Her Before It Ends</span><span class="wk-core">Warn two times before a change, then follow through.</span><span class="wk-lesson">Lesson 3</span></a></li>
       <li><a href="/this-week#l27"><span class="wk-moment">Monday and Tuesday · For the people coming and going</span><span class="wk-title">Make a Gift for Someone</span><span class="wk-core">Help her make one small gift for a real person, then give it to that person.</span><span class="wk-lesson">Lesson 27</span></a></li>
@@ -491,21 +500,17 @@ window.FLEET_CFG = {
     <ol>
       <li><strong>1. Join:</strong> Add your email. Nothing else.</li>
       <li><strong>2. First group:</strong> Emails have not started yet. A small group of dads goes first.</li>
-      <li><strong>3. Start:</strong> Your first lesson comes when emails start, or sooner if you are in the first group.</li>
-      <li><strong>4. Read daily:</strong> One short lesson. A minute each.</li>
+      <li><strong>3. Read daily:</strong> One short lesson. A minute each.</li>
     </ol>
   </section>
   <section class="trust" aria-label="What we don't do and our guarantees">
     <h2>What we don't do</h2>
-    <p><strong>Not sending yet.</strong> Daily emails have not started.</p>
     <p><strong>Email only.</strong> The form takes one email address.</p>
     <p><strong>Nothing else asked.</strong> No name, phone, or payment.</p>
     <p><strong>Nothing to buy.</strong> The lessons are free.</p>
-    <p><strong>Short only.</strong> One short lesson each day.</p>
     <p><strong>No long reads.</strong> No courses or ebooks.</p>
     <h2 class="guarantees">Our guarantees</h2>
     <p><strong>Leave any time.</strong> Email hello@dadiosity.com today.</p>
-    <p><strong>Stop link.</strong> Every lesson carries one.</p>
   </section>
   <section class="sample" id="sample" aria-label="A sample daily lesson">
     <p class="sample-label">A sample lesson</p>
