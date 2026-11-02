@@ -46,8 +46,8 @@ window.DADIO_LESSONS = [
  },
  {
   "n": 3,
-  "title": "Warn Before the Switch",
-  "heading": "Dadiosity Daily, Lesson 3: Warn Before the Switch",
+  "title": "Warn Her Before It Ends",
+  "heading": "Dadiosity Daily, Lesson 3: Warn Her Before It Ends",
   "idea": "Hard moments often come at a switch. Play stops, dinner starts, or the bath ends. A sudden switch can feel like a loss. A fair warning makes it easier.",
   "move": "Tonight, warn her two times before each switch. Say, two more minutes, then we wash hands. Say it once more at one minute. Then follow through, calm and kind.",
   "play": "Practice the switch as a game. Send a stuffed bear down a slide made of books. Count down out loud together. Clap when the bear lands and the turn ends.",
@@ -580,13 +580,13 @@ window.DADIO_LESSONS = [
  },
  {
   "n": 31,
-  "title": "Look Ahead to the Hard Part",
-  "heading": "Dadiosity Daily, Lesson 31: Look Ahead to the Hard Part",
+  "title": "Check Her Needs Before You Go",
+  "heading": "Dadiosity Daily, Lesson 31: Check Her Needs Before You Go",
   "idea": "Most blow ups are not a shock. Hunger, a tired body, a long wait, and a sudden switch stack up. One stack can tip a calm kid into tears.",
   "move": "Tonight, before a hard part like a trip out, scan her stack first. Food, rest, bathroom, and what comes next. Fix the one need you can fix, then name the plan in one short line.",
   "play": "Pack for a pretend trip with a stuffed bear. Ask what the bear needs before you go. Food, water, a rest, a toy for the wait. Let her pack each thing in a bag.",
   "why": "A need fixed early does not join the stack. A plan she has heard makes the hard part feel known. You stop some tears before they start.",
-  "core": "before a hard part, scan food, rest, bathroom, and the plan, then fix the one need you can.",
+  "core": "check food, rest, and bathroom before you go, fix the one you can, then tell her the plan.",
   "topics": [
    "prevent tantrums",
    "tantrum",
