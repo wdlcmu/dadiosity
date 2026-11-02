@@ -423,6 +423,15 @@ function dpRenderChat(j) {
   var first = answer.querySelector(".dp-card, .dp-bubble");
   if (first) { try { first.scrollIntoView({ block: "nearest" }); } catch (e) {} }
 }
+function dpRestingNote() {
+  var ans = document.getElementById("dp-answer");
+  var note = document.createElement("div");
+  note.className = "dp-bubble";
+  var nw = document.createElement("p"); nw.className = "dp-who"; nw.textContent = "DADIOSITY'S AI";
+  var np = document.createElement("p"); np.textContent = "The chat is resting. Here is the match from this page instead.";
+  note.appendChild(nw); note.appendChild(np);
+  ans.insertBefore(note, ans.firstChild);
+}
 function dpSend(text) {
   var q = document.getElementById("dp-q");
   var hint = document.getElementById("dp-hint");
@@ -449,11 +458,11 @@ function dpSend(text) {
     if (done) return;
     done = true;
     busy.remove();
-    dpBubble("DADIOSITY'S AI", "The chat is resting. Here is the match from this page instead.");
     var keep = q.value;
     q.value = msg;
     dpAskLocal();
     q.value = keep;
+    dpRestingNote();
   }, 7000);
   fetch("/api/chat", {
     method: "POST",
@@ -470,11 +479,11 @@ function dpSend(text) {
     done = true;
     clearTimeout(timer);
     busy.remove();
-    dpBubble("DADIOSITY'S AI", "The chat is resting. Here is the match from this page instead.");
     var keep = q.value;
     q.value = msg;
     dpAskLocal();
     q.value = keep;
+    dpRestingNote();
   });
 }
 function dpAsk() {
