@@ -399,7 +399,7 @@ function dpBuild() {
   bodyEl.className = "dp-body";
   var promise = document.createElement("p");
   promise.className = "dp-promise";
-  promise.textContent = "Say tonight's hard part in your own words. We match your words to one of the 31 written lessons, right on this page. Nothing you type is sent or saved.";
+  promise.textContent = "Say tonight's hard part in your own words. You get the one of the 31 written lessons that fits what you wrote, right on this page. Nothing you type is sent or saved.";
   bodyEl.appendChild(promise);
   var label = document.createElement("label");
   label.htmlFor = "dp-q";
