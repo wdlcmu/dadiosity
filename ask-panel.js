@@ -234,6 +234,29 @@ function dadTodayAsk(query) {
   if (listWord && childWord) return true;
   return false;
 }
+/* SPEC-COLDQA1103-D3 route: a bank-size question — "how many lessons
+   are there?" and its plain variants — names no hard part, so the
+   topic scorer finds nothing and the chat door fell through to a
+   model-drafted welcome that sometimes carried the count and
+   sometimes did not. This gate names the count family only (how
+   many + lesson, in a total form: at the start of the ask, or with
+   an are-there / do-you-have form), and refuses any ask that names
+   a topic or hard part — those keep their own lesson or their
+   honest no-match. The doors answer with the bank's own size,
+   never a typed-in number. */
+function dadCountAsk(query) {
+  var words = {};
+  dadNorm(query).split(" ").forEach(function (w) { if (w) words[w] = 1; });
+  if (!words.how || !words.many) return false;
+  if (!words.lesson && !words.lessons) return false;
+  var topic = ["bedtime", "sleep", "sleeping", "listen", "listening", "tantrum", "meltdown", "cry", "crying", "scream", "screaming", "hit", "hits", "hitting", "bite", "biting", "yell", "yelling", "fight", "fights", "eat", "eating", "food", "dinner", "teeth", "potty", "sick", "fever", "play", "morning", "mornings", "feeling", "feelings"];
+  for (var i = 0; i < topic.length; i++) { if (words[topic[i]]) return false; }
+  var n = dadNorm(query);
+  if (n.indexOf("how many") === 0) return true;
+  if (words.are && words.there) return true;
+  if (words.do && words.you && words.have) return true;
+  return false;
+}
 function dadRank(query) {
   var bank = window.DADIO_LESSONS || [];
   var scored = bank.map(function (lesson) { return { lesson: lesson, score: dadScore(lesson, query) }; });
@@ -408,6 +431,20 @@ function dpAskLocal() {
   if (!dadNorm(q.value)) {
     hint.textContent = "Say the hard part in a few words first.";
     q.focus();
+    return;
+  }
+  if (dadCountAsk(q.value)) {
+    var cbox = document.createElement("div");
+    cbox.className = "dp-nomatch";
+    var cp1 = document.createElement("p");
+    var cs1 = document.createElement("strong");
+    cs1.textContent = "There are " + (window.DADIO_LESSONS || []).length + " written lessons.";
+    cp1.appendChild(cs1);
+    var cp2 = document.createElement("p");
+    cp2.textContent = "Each one is short: one idea, a real moment to try tonight, a short play idea, why it works, and one line to keep. Try a few plain words for the hard part, or tap an example below.";
+    cbox.appendChild(cp1); cbox.appendChild(cp2);
+    answer.appendChild(cbox);
+    dpTrackAnswered({ tool: "dad-ask", via: "local-count" });
     return;
   }
   var ranked = dadRank(q.value);
