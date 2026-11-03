@@ -379,6 +379,15 @@ var DP_CHIPS = [
   ["She screams when I say no.", "She screams when I say no."]
 ];
 var dpBuilt = false, dpLastTrigger = null;
+/* Session state for the chat worker (the Clearline pattern, copied
+   from the rebuilt worker's preview page): the worker is stateless
+   and stores nothing; this page holds the thread in memory only —
+   the last state the worker returned (last served lesson + tonight's
+   plan) and the recent turns — and echoes both with each message, so
+   a follow-up ("why does that work though?") can reach the lesson it
+   follows. Nothing here is persisted: a page reload starts fresh. */
+var dpChatState = null;
+var dpChatHistory = [];
 /* Instrumentation (Phase B, Dim 10): this panel is the SINGLE firing
    path for the ask events. The FLEET_CFG ask observer was removed from
    index.html/ask.html so an answered chat fires ask_answered exactly
@@ -475,7 +484,10 @@ function dpAskLocal() {
   if (first) { try { first.scrollIntoView({ block: "nearest" }); } catch (e) {} }
 }
 /* ---- AI chat send path: POST /api/chat (the site's own worker,
-   grounded only in the 45 written lessons). On any failure or timeout
+   grounded only in the 45 written lessons). Each send echoes the
+   session state + history held in dpChatState/dpChatHistory and
+   stores the updated state from the response, exactly as the
+   worker's preview page does. On any failure or timeout
    the panel falls back to dpAskLocal above — the matcher on this
    device — and labels the answer as the page's own match. ---- */
 function dpBubble(who, text, me) {
@@ -570,12 +582,16 @@ function dpSend(text) {
   fetch("/api/chat", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message: msg })
+    body: JSON.stringify({ message: msg, state: dpChatState, history: dpChatHistory })
   }).then(function (r) { return r.json(); }).then(function (j) {
     if (done) return;
     done = true;
     clearTimeout(timer);
     busy.remove();
+    if (j.state) dpChatState = j.state;
+    dpChatHistory.push({ role: "user", text: msg });
+    dpChatHistory.push({ role: "assistant", text: (j.reply || "").slice(0, 400), lesson: (j.lessons && j.lessons[0] && j.lessons[0].n) || undefined });
+    if (dpChatHistory.length > 8) dpChatHistory = dpChatHistory.slice(-8);
     dpRenderChat(j);
   }).catch(function () {
     if (done) return;
