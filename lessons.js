@@ -13,6 +13,7 @@ window.DADIO_LESSONS = [
   "play": "Sit on the floor with a soft ball. Roll it to her and wait. When she rolls it back, cheer like it is a big win. Let the game stay slow and silly.",
   "why": "A close face feels safe, and safe kids listen better. Eye level also slows you down. That calm is the first lesson she copies from you.",
   "core": "get to eye level before you speak.",
+  "puzzle": "You call her name from across the room and she acts like she never heard you. What changes when you get down low?",
   "topics": [
    "eye level",
    "get low",
@@ -33,6 +34,7 @@ window.DADIO_LESSONS = [
   "play": "Stand at a mirror together. Make a happy face, a sad face, and a mad face. Name each one out loud. Let her pick the next face for you to make.",
   "why": "Words give a feeling a smaller shape. A named feeling is easier to hold. She learns the words by hearing them at the moment she needs them most.",
   "core": "name the feeling before you fix the problem.",
+  "puzzle": "She is crying hard and you do not know why. What does she need to hear before she needs help?",
   "topics": [
    "feelings",
    "name the feeling",
@@ -53,6 +55,7 @@ window.DADIO_LESSONS = [
   "play": "Practice the switch as a game. Send a stuffed bear down a slide made of books. Count down out loud together. Clap when the bear lands and the turn ends.",
   "why": "A warning gives her mind time to move. Time to move means fewer tears at the edge. She trusts the switch when it is not a surprise.",
   "core": "warn two times before a change, then follow through.",
+  "puzzle": "Play is going fine, then you say time to go and the tears start. What warning would have changed the ending?",
   "topics": [
    "switch",
    "transition",
@@ -73,6 +76,7 @@ window.DADIO_LESSONS = [
   "play": "Stack blocks together and talk through each one. Red block on top. Big block falls down. Laugh, build it again, and keep the words just as plain as that.",
   "why": "Kids copy words they hear at the moment the words fit. Short lines are easy to grab and try. Your calm voice turns plain time into word time.",
   "core": "narrate small moments in short, plain lines.",
+  "puzzle": "Bath time is quiet and she is just splashing. How can plain talk in a plain moment teach her new words?",
   "topics": [
    "talking",
    "words",
@@ -93,6 +97,7 @@ window.DADIO_LESSONS = [
   "play": "Pretend to bump a stuffed bear by mistake. Say sorry to the bear together. Give it a hug and a bandage made of cloth. Let her lead the care.",
   "why": "A quick fix shows her that love comes back after a hard moment. She learns that a bad moment can still end well. That lesson shapes how she fixes things too.",
   "core": "after you snap, stop, say sorry, and reconnect fast.",
+  "puzzle": "You snapped an hour ago and the house still feels cold. What makes a bad moment end well?",
   "topics": [
    "yelled",
    "snapped",
@@ -114,6 +119,7 @@ window.DADIO_LESSONS = [
   "play": "Put a stuffed bear to bed before her turn comes. A bath in a toy tub, one short book, one short song. Use the same order you will use for her.",
   "why": "A known order feels safe at night. Safe kids settle with less fight in them. She can rest because she knows the road home to sleep.",
   "core": "keep the same three bedtime steps in the same order.",
+  "puzzle": "Bedtime is a new fight every night, with new rules each time. What would her body do with the same three steps in the same order?",
   "topics": [
    "bedtime",
    "sleep",
@@ -138,6 +144,7 @@ window.DADIO_LESSONS = [
   "play": "Act out the good moment with two stuffed animals. Keep it short and a bit silly. Let her pick which animal plays her part in it. End the show with a cheer.",
   "why": "Naming the good trains the mind to go and find it. Kids sleep well after a warm last thought. You will carry that same good moment into your night too.",
   "core": "name one true good moment as the last thing at bedtime.",
+  "puzzle": "The day had hard parts, and bedtime is minutes away. Which words from the whole day will she carry into sleep?",
   "topics": [
    "bedtime",
    "end of the day",
@@ -156,6 +163,7 @@ window.DADIO_LESSONS = [
   "play": "Line up two hats or two scarves. Let her pick one for you and one for her. Wear the pick with pride. Swap roles and pick for her stuffed bear.",
   "why": "A choice is power she does not have to fight for. She practices picking, and you keep the edges safe. Small picks now build calm picks later.",
   "core": "offer two good choices you can live with, then honor the pick she makes.",
+  "puzzle": "You give one clear order and she digs in at once. What does she get from two choices that an order never gives her?",
   "topics": [
    "choices",
    "choice",
@@ -176,6 +184,7 @@ window.DADIO_LESSONS = [
   "play": "Play a freeze game with music or claps. Move, then freeze when the sound stops. Take turns starting and stopping the sound. Laugh when you freeze mid step.",
   "why": "Quiet time lets her mind catch up to your words. She feels less rushed, and you feel less mad. One calm ask beats five loud ones, most nights.",
   "core": "ask once, then pause while you count slow to ten before you say it again.",
+  "puzzle": "You asked her to come here. She just stands there. What is her mind doing in the quiet before she moves?",
   "topics": [
    "won't listen",
    "not listening",
@@ -195,6 +204,7 @@ window.DADIO_LESSONS = [
   "play": "Set up a post office with paper and a box. She stamps each card and drops it in the box. You write one card to her bear and thank her for the mail.",
   "why": "Work she can see done makes her feel able. Able kids try more and whine less for control. You are not just feeding her. You are raising a helper.",
   "core": "give her one real job she can finish, one that truly helps the home.",
+  "puzzle": "You set the table fast while she watches from the side. What small real job would make her part of this home?",
   "topics": [
    "real job",
    "help",
@@ -214,6 +224,7 @@ window.DADIO_LESSONS = [
   "play": "Build a tower and let it fall. Build it back the same way, block by block. Show her a fall is not the end of the fun or the game.",
   "why": "She learns the line will hold, and love holds too. Both truths feel safe. A dad who stays close is a dad she can trust with hard news.",
   "core": "say no once, short and kind, then stay close while the feelings pass.",
+  "puzzle": "You said no once, short and kind, and the tears still come. What do you do with your feet while the feeling passes?",
   "topics": [
    "hold the line",
    "limit",
@@ -233,6 +244,7 @@ window.DADIO_LESSONS = [
   "play": "Tonight, act out the morning with two stuffed bears. Wake them slow, hug them, dress them, feed them. Let her be the dad bear who keeps the pace kind and calm.",
   "why": "A calm first five minutes can save a hard hour. She starts the day feeling held, not pushed. You start it like a dad, not a drill.",
   "core": "sit with her for the first five minutes of the day and ask for nothing yet.",
+  "puzzle": "The day starts with orders about shoes and bags, and she is tense before breakfast. What do the first five minutes owe her instead?",
   "topics": [
    "morning",
    "wake up",
@@ -251,6 +263,7 @@ window.DADIO_LESSONS = [
   "play": "Race toys back to their home box before the song ends. Take turns tossing one in from a short step away. End with a high five lap around.",
   "why": "A clear end makes work feel fair. She can see the job shrink as she works. Short wins teach her that starting is the brave and doable part.",
   "core": "tidy toys into one basket for the length of one song, then stop.",
+  "puzzle": "You point at the whole mess and say clean up, and she quits before she starts. How small does the job have to get before she can finish it?",
   "topics": [
    "tidy",
    "clean up",
@@ -270,6 +283,7 @@ window.DADIO_LESSONS = [
   "play": "Tonight at home, hide three soft toys in one room. Hunt for them slow, one by one. When she finds one, stop and cheer the find like it is gold.",
   "why": "Time you give to her wonder tells her she matters more than the clock. She learns to look close at the world. You get to see it through her eyes.",
   "core": "stop for one thing she finds on a walk and look at it with her for a minute.",
+  "puzzle": "She stops dead on the walk for a bug, and the walk has places to be. What is she seeing that you are walking straight past?",
   "topics": [
    "outside",
    "walk",
@@ -290,6 +304,7 @@ window.DADIO_LESSONS = [
   "play": "Let her tell you the plot of a book you both know. Sit back and hear the whole tale. Ask one thing at the end about a part she liked best.",
   "why": "Being heard all the way out tells her her words count. She talks more when she feels heard. You learn more about her day than a quick guess can give you.",
   "core": "let her finish her whole story before you reply, with no jump in.",
+  "puzzle": "Her story comes out slow, with stops and starts, and you already know the ending. What happens to her telling if you jump in and finish it?",
   "topics": [
    "finish",
    "interrupt",
@@ -309,6 +324,7 @@ window.DADIO_LESSONS = [
   "play": "Put a few safe lids and jars on the floor. Let her open and close each one at her own pace. You hold the jar still. She does the turning.",
   "why": "A hard thing she does on her own sticks with her for a long time. She feels strong in her own hands. Waiting shows trust she can feel and copy.",
   "core": "keep your hands back and let her try a hard thing herself before you help.",
+  "puzzle": "She is stuck on a tight lid and your hand is already reaching in. What does she learn if your hand stays back?",
   "topics": [
    "let her try",
    "independent",
@@ -328,6 +344,7 @@ window.DADIO_LESSONS = [
   "play": "Play a kind spy game at home. Each of you hunts for a good deed to name out loud. She finds one of yours, you find one of hers, and you cheer each find.",
   "why": "A named good deed feels like a win she can hold. She will chase that warm feeling again. You train your own eyes too, to see the good first.",
   "core": "name one good thing she does, in detail, right when she does it.",
+  "puzzle": "She hears no and stop all day long. Which of her good moments ever get named out loud?",
   "topics": [
    "praise",
    "good out loud",
@@ -346,6 +363,7 @@ window.DADIO_LESSONS = [
   "play": "Play a soft voice game. Whisper a word for her to guess, then let her whisper one for you. Go back and forth, hushed and giggling, till words run out.",
   "why": "A soft voice is hard to fight with. She leans in to hear you, and leaning in calms her. You set the sound of the room by the sound you bring to it each night.",
   "core": "drop your own voice to soft and slow before you ask her to quiet down.",
+  "puzzle": "The room is loud, so you tell her to quiet down, loud. Why does your shout never make her quieter?",
   "topics": [
    "voice down",
    "calm voice",
@@ -365,6 +383,7 @@ window.DADIO_LESSONS = [
   "play": "Swap seats for school play at home. She is the teacher, you are the kid at the desk. Raise your hand, try hard, and let her praise your good work.",
   "why": "Teaching makes her sort what she knows into clear steps. Pride grows when dad learns from her. You show her learning is for all ages, not just kids.",
   "core": "ask her to teach you one small thing, then learn it her way.",
+  "puzzle": "All day you show her how things work. What changes in her when she gets to show you?",
   "topics": [
    "teach me",
    "let her teach",
@@ -382,6 +401,7 @@ window.DADIO_LESSONS = [
   "play": "Put on one fast song and dance like the floor is hot. Freeze when it stops, fall down laughing, then get up and go again till the song ends.",
   "why": "Big moves burn off the buzz that makes sitting hard. Her body settles when it has done its work. You get a calm meal start. She gets to wiggle first.",
   "core": "move and shake with her for two minutes before you ask her to sit.",
+  "puzzle": "She cannot sit still at dinner, not even for a minute. Is she being hard, or is her body still full of buzz?",
   "topics": [
    "wiggles",
    "energy",
@@ -401,6 +421,7 @@ window.DADIO_LESSONS = [
   "play": "Make up a hello you both use each time. A high five, a spin, a nose tap, in the same order. Practice it three times tonight till you both know it well.",
   "why": "A big hello tells her she comes first in your day. That warm minute can lift the whole night. She will run to a dad who is glad to see her.",
   "core": "greet her first when you reunite, before bags, phone, or other talk.",
+  "puzzle": "You come home with bags in both hands, already talking about the drive. In that first minute, where does she land?",
   "topics": [
    "hello",
    "coming home",
@@ -419,6 +440,7 @@ window.DADIO_LESSONS = [
   "play": "Build a town from blocks and soft toys. She picks who lives there and where roads go. You move the cars where she sends them and say the lines she gives you.",
   "why": "Led play tells her her ideas can hold a room. She thinks in steps and tries them out loud. You learn what she loves by staying inside her plan.",
   "core": "follow her play idea for ten minutes without leading or fixing it.",
+  "puzzle": "Her game makes no sense to you and the plot keeps drifting. What do you learn if you follow it for ten minutes without fixing a thing?",
   "topics": [
    "play",
    "how to play",
@@ -438,6 +460,7 @@ window.DADIO_LESSONS = [
   "play": "Blow a light scarf or tissue across the floor with long breaths. Take turns moving it one step at a time. Laugh at the hops, then slow each blow down.",
   "why": "A long out breath helps a body let go. Doing it with you makes it safe to copy. She learns a way to calm that lives in her own body.",
   "core": "breathe out slow with her for three rounds before you use words.",
+  "puzzle": "She is too upset for words and talk just lands as noise. What can her body do before her ears can listen?",
   "topics": [
    "breathe",
    "breathing",
@@ -456,6 +479,7 @@ window.DADIO_LESSONS = [
   "play": "Play a body check game with a stuffed bear. Pretend the bear is cranky, then guess what it needs. Give it water, food, or a nap, and cheer when it feels well.",
   "why": "A met need can end a storm in a plain way. She learns to read her body signs over time. You skip a talk when a snack was the real fix.",
   "core": "check her body for hunger, thirst, tiredness, or a bathroom need before you judge her mood.",
+  "puzzle": "She falls apart over a tiny thing and the talk you start goes nowhere. What might her body be asking for that her mood is not?",
   "topics": [
    "tantrum",
    "meltdown",
@@ -477,6 +501,7 @@ window.DADIO_LESSONS = [
   "play": "Act out your small story with two stuffed animals. One plays young you, one plays the helper. Keep it soft and short. Let her pick a happy line for the end.",
   "why": "Hearing dad was small once makes her own fears feel less alone. She hears feelings pass and help comes. Stories like this build trust she will keep for years to come.",
   "core": "tell her one short true story from when you were her age, with a feeling in it.",
+  "puzzle": "She thinks you were always big and sure. What would one true story from your small days give her?",
   "topics": [
    "story",
    "when you were small",
@@ -494,6 +519,7 @@ window.DADIO_LESSONS = [
   "play": "After dinner, play a look close game with a tray of things. She studies the tray, you hide one thing, and she names what is gone. Swap roles and play two rounds.",
   "why": "Full eyes at a meal tell her she is worth your whole mind. Talk grows when no screen cuts in. She learns meals are for people at the table.",
   "core": "keep your phone in another room for the whole meal.",
+  "puzzle": "Your phone sits face down and dark beside your plate. Why can she still feel it pulling your eyes all meal long?",
   "topics": [
    "phone",
    "phones",
@@ -513,6 +539,7 @@ window.DADIO_LESSONS = [
   "play": "Set up a small gift shop of her drawings and crafts. She wraps one pick in cloth or paper for its new owner. You help tie it, then plan the giving.",
   "why": "Making for others grows care she can feel in her hands. She sees her work bring a smile to a face. Pride from giving lasts longer than pride from getting things.",
   "core": "help her make one small gift for a real person, then give it to that person.",
+  "puzzle": "She hands over a gift you picked, wrapped, and paid for. Which part of giving did she never get to feel?",
   "topics": [
    "gift",
    "make a gift",
@@ -531,6 +558,7 @@ window.DADIO_LESSONS = [
   "play": "Draw tomorrow on a scrap of paper together. One sun, one star pick, one scene of her good thing. Stick it by her bed so morning starts with that plan.",
   "why": "A named good thing gives hope a handle she can hold. She falls asleep facing forward, not stuck on today. Morning starts with a plan you both share and like.",
   "core": "at bedtime, let her pick one small thing to look forward to tomorrow.",
+  "puzzle": "Bedtime comes and tomorrow is a big blank to her. What one small named thing could she fall asleep looking forward to?",
   "topics": [
    "tomorrow",
    "one thing for tomorrow",
@@ -548,6 +576,7 @@ window.DADIO_LESSONS = [
   "play": "Make a tasting plate for a stuffed bear. One food it loves, one new food to sniff. Let her serve the bear first, then set hers like it.",
   "why": "A safe food keeps the meal calm. A small new bite is a low risk she can say yes to. Tries add up over time, no fight.",
   "core": "put one small new bite beside a food she trusts, with no push to finish it.",
+  "puzzle": "The whole plate is new food and she eats none of it. What does one safe food beside the new bite change for her?",
   "topics": [
    "eat",
    "eating",
@@ -571,6 +600,7 @@ window.DADIO_LESSONS = [
   "play": "Play a find it game at home. Call out a color or a shape and hunt for it together. Cheer each find, then call the next one fast.",
   "why": "A new sight gives her mind a new job. Hands that hold a thing have less work for a fight. The no still holds, but her mind has moved on.",
   "core": "when she is stuck, turn her eyes and hands to a new thing instead of repeating the no.",
+  "puzzle": "She is stuck on one want and every no makes her dig in deeper. What can a new thing in her hands do that a fifth no cannot?",
   "topics": [
    "distract",
    "distraction",
@@ -591,6 +621,7 @@ window.DADIO_LESSONS = [
   "play": "Pack for a pretend trip with a stuffed bear. Ask what the bear needs before you go. Food, water, a rest, a toy for the wait. Let her pack each thing in a bag.",
   "why": "A need fixed early does not join the stack. A plan she has heard makes the hard part feel known. You stop some tears before they start.",
   "core": "check food, rest, and bathroom before you go, fix the one you can, then tell her the plan.",
+  "puzzle": "The trip out fell apart before it even started. What had quietly stacked up in her before you ever left the house?",
   "topics": [
    "prevent tantrums",
    "tantrum",

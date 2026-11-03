@@ -201,6 +201,16 @@
     text-transform: uppercase; color: var(--accent); margin-bottom: 0.25rem;
   }
   .tonight .t-miss .m-text { font-size: 1.0625rem; font-weight: 600; color: var(--ink); line-height: 1.4; }
+  .tonight .t-puzzle {
+    border-left: 4px solid var(--ink); border-radius: 0.5rem;
+    padding: 0.25rem 0.875rem; margin-bottom: 1rem;
+  }
+  .tonight .t-puzzle[hidden] { display: none; }
+  .tonight .t-puzzle .p-label {
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--ink); margin-bottom: 0.25rem;
+  }
+  .tonight .t-puzzle .p-text { font-size: 1.0625rem; font-weight: 600; color: var(--ink); line-height: 1.4; }
   .tonight .t-full { border-top: 1px solid #f0dfba; padding-top: 1rem; margin-bottom: 1rem; }
   .tonight .t-full[hidden] { display: none; }
   .tonight .t-full p { color: var(--body); margin-bottom: 0.875rem; }
@@ -412,6 +422,10 @@ window.FLEET_CFG = {
       <p class="m-label">The miss</p>
       <p class="m-text" id="t-miss-text"></p>
     </div>
+    <div class="t-puzzle" id="t-puzzle" hidden>
+      <p class="p-label">Tonight's puzzle</p>
+      <p class="p-text" id="t-puzzle-text"></p>
+    </div>
     <h2 class="t-title" id="t-title"></h2>
     <p class="t-move" id="t-move"></p>
     <p class="t-why" id="t-why"></p>
@@ -427,15 +441,15 @@ window.FLEET_CFG = {
   <script>
   (function () {
     var WEEK = {
-      "2026-11-01": { n: 3, moment: "Leaving the pool", title: "Warn Her Before It Ends", move: "\"Two more minutes, then we get out.\" Say it twice. Then get out.", why: "Ends are easier when she hears them coming first.", miss: "We say time to go once, out of nowhere, and then carry her out mid-meltdown." },
-      "2026-11-02": { n: 27, moment: "For the people coming and going", title: "Make a Gift for Someone", move: "Help her make one small gift for a real person, then give it to that person.", why: "People come and go all this week, so a gift she makes now has a real person waiting for it.", miss: "We buy the gift ourselves and let her just hand it over." },
-      "2026-11-03": { n: 27, moment: "For the people coming and going", title: "Make a Gift for Someone", move: "Help her make one small gift for a real person, then give it to that person.", why: "People come and go all this week, so a gift she makes now has a real person waiting for it.", miss: "We buy the gift ourselves and let her just hand it over." },
-      "2026-11-04": { n: 21, moment: "When Grandma arrives", title: "Make Hello a Big Deal", move: "Greet her first when you reunite, before bags, phone, or other talk.", why: "Grandma arrives today, and the first hello sets the tone for her whole visit.", miss: "We say hello while hauling the bags in, already talking about the drive." },
-      "2026-11-05": { n: 31, moment: "Before the goodbye", title: "Check Her Needs Before You Go", move: "Check food, rest, and bathroom before you go, fix the one you can, then tell her the plan.", why: "A hungry or tired kid cries at a goodbye. A fed, rested one takes it better.", miss: "We head out hungry and rushed, and the goodbye turns into tears." },
-      "2026-11-06": { n: 2, moment: "When she is sad someone left", title: "Name It First", move: "Name the feeling before you fix the problem.", photo: true, why: "She calms faster when she hears that you know what she feels.", miss: "We try to fix the sad feeling fast, before we ever name it." },
-      "2026-11-07": { n: 25, moment: "While Grandma is here", title: "When You Were Small", move: "Tell her one short true story from when you were her age, with a feeling in it.", why: "Grandma is here this weekend, and nobody remembers your small days the way she does.", miss: "She hears our rules all day. She never hears that we were small once too." },
-      "2026-11-08": { n: 25, moment: "While Grandma is here", title: "When You Were Small", move: "Tell her one short true story from when you were her age, with a feeling in it.", why: "Grandma is here this weekend, and nobody remembers your small days the way she does.", miss: "She hears our rules all day. She never hears that we were small once too." },
-      "2026-11-09": { n: 12, moment: "Dad's first morning back at work", title: "Start the Morning Slow", move: "Sit with her for the first five minutes of the day and ask for nothing yet.", why: "Work mornings start again today, so five slow minutes keep the change small for her.", miss: "The day starts with orders about shoes and bags from the very first minute." }
+      "2026-11-01": { n: 3, moment: "Leaving the pool", title: "Warn Her Before It Ends", move: "\"Two more minutes, then we get out.\" Say it twice. Then get out.", why: "Ends are easier when she hears them coming first.", miss: "We say time to go once, out of nowhere, and then carry her out mid-meltdown.", puzzle: "She is happy in the water and the swim is nearly done. What two warnings make getting out easier?" },
+      "2026-11-02": { n: 27, moment: "For the people coming and going", title: "Make a Gift for Someone", move: "Help her make one small gift for a real person, then give it to that person.", why: "People come and go all this week, so a gift she makes now has a real person waiting for it.", miss: "We buy the gift ourselves and let her just hand it over.", puzzle: "She hands over a gift you picked, wrapped, and paid for. Which part of giving did she never get to feel?" },
+      "2026-11-03": { n: 27, moment: "For the people coming and going", title: "Make a Gift for Someone", move: "Help her make one small gift for a real person, then give it to that person.", why: "People come and go all this week, so a gift she makes now has a real person waiting for it.", miss: "We buy the gift ourselves and let her just hand it over.", puzzle: "She hands over a gift you picked, wrapped, and paid for. Which part of giving did she never get to feel?" },
+      "2026-11-04": { n: 21, moment: "When Grandma arrives", title: "Make Hello a Big Deal", move: "Greet her first when you reunite, before bags, phone, or other talk.", why: "Grandma arrives today, and the first hello sets the tone for her whole visit.", miss: "We say hello while hauling the bags in, already talking about the drive.", puzzle: "The car pulls up and your hands are full of bags. What does the first hello tell her about where she lands?" },
+      "2026-11-05": { n: 31, moment: "Before the goodbye", title: "Check Her Needs Before You Go", move: "Check food, rest, and bathroom before you go, fix the one you can, then tell her the plan.", why: "A hungry or tired kid cries at a goodbye. A fed, rested one takes it better.", miss: "We head out hungry and rushed, and the goodbye turns into tears.", puzzle: "A goodbye is coming and tears are close. What quiet stack of needs could tip her over at the door?" },
+      "2026-11-06": { n: 2, moment: "When she is sad someone left", title: "Name It First", move: "Name the feeling before you fix the problem.", photo: true, why: "She calms faster when she hears that you know what she feels.", miss: "We try to fix the sad feeling fast, before we ever name it.", puzzle: "She is sad that someone left and the feeling has no words yet. What does she need to hear before she needs fixing?" },
+      "2026-11-07": { n: 25, moment: "While Grandma is here", title: "When You Were Small", move: "Tell her one short true story from when you were her age, with a feeling in it.", why: "Grandma is here this weekend, and nobody remembers your small days the way she does.", miss: "She hears our rules all day. She never hears that we were small once too.", puzzle: "Grandma remembers your small days better than anyone. What story could the two of you hand her tonight?" },
+      "2026-11-08": { n: 25, moment: "While Grandma is here", title: "When You Were Small", move: "Tell her one short true story from when you were her age, with a feeling in it.", why: "Grandma is here this weekend, and nobody remembers your small days the way she does.", miss: "She hears our rules all day. She never hears that we were small once too.", puzzle: "Grandma remembers your small days better than anyone. What story could the two of you hand her tonight?" },
+      "2026-11-09": { n: 12, moment: "Dad's first morning back at work", title: "Start the Morning Slow", move: "Sit with her for the first five minutes of the day and ask for nothing yet.", why: "Work mornings start again today, so five slow minutes keep the change small for her.", miss: "The day starts with orders about shoes and bags from the very first minute.", puzzle: "Work mornings start again today. What do the first five minutes owe her before the shoes and the bags?" }
     };
     window.DADIO_WEEK = WEEK;
     function key(d) {
@@ -455,6 +469,10 @@ window.FLEET_CFG = {
     if (today.miss) {
       document.getElementById("t-miss-text").textContent = today.miss;
       document.getElementById("t-miss").hidden = false;
+    }
+    if (today.puzzle) {
+      document.getElementById("t-puzzle-text").textContent = today.puzzle;
+      document.getElementById("t-puzzle").hidden = false;
     }
     document.getElementById("t-link").href = "/this-week#l" + today.n;
     if (today.photo) document.getElementById("t-photo").hidden = false;
@@ -525,6 +543,10 @@ window.FLEET_CFG = {
     document.getElementById("t-movefull").textContent = L.move;
     document.getElementById("t-play").textContent = L.play;
     document.getElementById("t-keep").textContent = cap(L.core);
+    if (L.puzzle) {
+      document.getElementById("t-puzzle-text").textContent = L.puzzle;
+      document.getElementById("t-puzzle").hidden = false;
+    }
     var link = document.getElementById("t-link");
     link.href = "#t-full";
     link.setAttribute("aria-expanded", "false");
