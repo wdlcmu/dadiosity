@@ -1005,8 +1005,9 @@ fleetSessionMarks(); /* session marks fire through the FA loader now (shim above
 /* Evenings plan render (Nov 2, 2026, evenings SPEC sections 2, 3, 5):
    fills tonight's running plan from plans.js on every day, in both the
    hand-built week path and the bank rotation path. Anchor rotation is
-   one code path all days: day-of-year mod 21. Weekend picks rotate by
-   week number: Saturday takes the week's pick, Sunday the next one.
+   one code path all days: continuous days since a fixed epoch, mod 21
+   (Nov 3, 2026: no New Year reset; 2026 picks unchanged). Weekend picks
+   rotate by continuous week number: Saturday takes the week's pick, Sunday the next one.
    The veto ("Another one") walks to the next bench entry in order,
    never last night's anchor, and survives a reload in sessionStorage
    only. The site saves nothing about a visitor. */
@@ -1022,7 +1023,19 @@ document.addEventListener("DOMContentLoaded", function () {
   function doy(d) {
     return Math.floor((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - Date.UTC(d.getFullYear(), 0, 0)) / 86400000);
   }
-  function anchorIdx(d) { return doy(d) % P.anchors.length; }
+  /* Continuous epoch counts (F6/F7 fix, Nov 3, 2026): anchors and
+     weekend picks advance by whole days/weeks since a fixed epoch,
+     never resetting at New Year. The offsets are chosen so every
+     2026 night and weekend keeps the pick the old day-of-year math
+     already published (anchor: +5 makes 2026-01-01 land on its old
+     index 1; weekend: day 733 is Sat 2026-01-03, old week index 0) —
+     only the year-boundary behaviour changes. */
+  var EPOCH_UTC = Date.UTC(2024, 0, 1);
+  function epochDay(d) {
+    return Math.floor((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - EPOCH_UTC) / 86400000);
+  }
+  function mod(n, m) { return ((n % m) + m) % m; }
+  function anchorIdx(d) { return mod(epochDay(d) + 5, P.anchors.length); }
   function store(k, v) { try { sessionStorage.setItem(k, v); } catch (e) {} }
   function read(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }
   var now = new Date();
@@ -1040,6 +1053,13 @@ document.addEventListener("DOMContentLoaded", function () {
   var saved = read(aKey);
   var aIdx = saved !== null ? parseInt(saved, 10) : anchorIdx(now);
   if (isNaN(aIdx) || aIdx < 0 || aIdx >= P.anchors.length) aIdx = anchorIdx(now);
+  /* F3: a restored anchor must obey the veto rule too — never last
+     night's base anchor. A planted/stale value that breaks it falls
+     back to today's base (which can never equal last night's). */
+  if (aIdx === anchorIdx(new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1))) {
+    aIdx = anchorIdx(now);
+    if (saved !== null) store(aKey, String(aIdx));
+  }
   function renderAnchor() {
     var a = P.anchors[aIdx];
     document.getElementById("p-anchor-name").textContent = a.name + ".";
@@ -1077,7 +1097,7 @@ document.addEventListener("DOMContentLoaded", function () {
   /* Weekend picks: Saturday is the week's rotation pick, Sunday next. */
   var monday0 = new Date(now.getFullYear(), now.getMonth(), now.getDate() - ((now.getDay() + 6) % 7));
   function pickIdx(sat, off) {
-    return (Math.floor(doy(sat) / 7) + off) % P.weekend.length;
+    return mod(Math.floor((epochDay(sat) - 733) / 7) + off, P.weekend.length);
   }
   var sat = new Date(monday0.getFullYear(), monday0.getMonth(), monday0.getDate() + 5);
   var sun = new Date(monday0.getFullYear(), monday0.getMonth(), monday0.getDate() + 6);
@@ -1090,6 +1110,14 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   var satPick = vetoedPick(sat, pickIdx(sat, 0));
   var sunPick = vetoedPick(sun, pickIdx(sat, 1));
+  /* F3: a restored pair must obey the veto rule too — Sat != Sun.
+     Reset the later-restored day (Sunday) to its base, advancing
+     once if that base is itself the colliding Saturday pick. */
+  if (satPick.idx === sunPick.idx) {
+    sunPick.idx = pickIdx(sat, 1);
+    if (sunPick.idx === satPick.idx) sunPick.idx = (sunPick.idx + 1) % P.weekend.length;
+    store(sunPick.key, String(sunPick.idx));
+  }
   function facts(w) {
     return (w.length === "full" ? "Most of the day" : "Half the day") + " · " +
       (w.cost === "free" ? "Free" : (w.cost === "a little" ? "Costs a little" : "A day out")) + " · " +
@@ -1101,11 +1129,26 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById(prefix + "-facts").textContent = facts(w);
     document.getElementById(prefix + "-grab").textContent = w.grab + ".";
   }
-  function bindVeto(btnId, pick, otherIdx, render) {
-    document.getElementById(btnId).addEventListener("click", function () {
-      do { pick.idx = (pick.idx + 1) % P.weekend.length; } while (pick.idx === otherIdx);
+  /* F1+F2: every veto re-renders ALL surfaces from the one shared
+     pick objects (renderWeekendAll), and the forbidden other-day
+     index is read LIVE from the other pick object at click time —
+     never a number captured when the handler was bound. */
+  var renderWkFn = null, renderTbFn = null, todayBlockLive = false;
+  function renderWeekendAll() {
+    if (renderWkFn) renderWkFn();
+    if (renderTbFn) renderTbFn();
+    var sp = document.getElementById("pw-pick-" + key(sat));
+    if (sp) sp.textContent = "Weekend pick: " + P.weekend[satPick.idx].name;
+    var up = document.getElementById("pw-pick-" + key(sun));
+    if (up) up.textContent = "Weekend pick: " + P.weekend[sunPick.idx].name;
+  }
+  function bindVeto(btnId, pick, otherPick) {
+    var el = document.getElementById(btnId);
+    if (!el) return;
+    el.addEventListener("click", function () {
+      do { pick.idx = (pick.idx + 1) % P.weekend.length; } while (pick.idx === otherPick.idx);
       store(pick.key, String(pick.idx));
-      render();
+      renderWeekendAll();
     });
   }
 
@@ -1114,13 +1157,13 @@ document.addEventListener("DOMContentLoaded", function () {
   if (dow === 5 || dow === 6 || dow === 0) {
     document.getElementById("w-sat-day").textContent = "Saturday, " + months[sat.getMonth()] + " " + sat.getDate();
     document.getElementById("w-sun-day").textContent = "Sunday, " + months[sun.getMonth()] + " " + sun.getDate();
-    var renderWk = function () {
+    renderWkFn = function () {
       renderPick("w-sat", P.weekend[satPick.idx]);
       renderPick("w-sun", P.weekend[sunPick.idx]);
     };
-    bindVeto("w-sat-veto", satPick, sunPick.idx, renderWk);
-    bindVeto("w-sun-veto", sunPick, satPick.idx, renderWk);
-    renderWk();
+    bindVeto("w-sat-veto", satPick, sunPick);
+    bindVeto("w-sun-veto", sunPick, satPick);
+    renderWkFn();
     document.getElementById("t-weekend").hidden = false;
   }
 
@@ -1129,15 +1172,16 @@ document.addEventListener("DOMContentLoaded", function () {
   if ((dow === 6 || dow === 0) && now.getHours() < 17) {
     var mine = dow === 6 ? satPick : sunPick;
     var other = dow === 6 ? sunPick : satPick;
-    var renderTb = function () {
+    todayBlockLive = true;
+    renderTbFn = function () {
       var w = P.weekend[mine.idx];
       document.getElementById("tb-name").textContent = w.name;
       document.getElementById("tb-how").textContent = w.how;
       document.getElementById("tb-facts").textContent = facts(w);
       document.getElementById("tb-grab").textContent = w.grab + ".";
     };
-    bindVeto("tb-veto", mine, other.idx, renderTb);
-    renderTb();
+    bindVeto("tb-veto", mine, other);
+    renderTbFn();
     document.getElementById("today-block").hidden = false;
   }
 
@@ -1177,6 +1221,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (d.getDay() === 6 || d.getDay() === 0) {
       var pickSpan = document.createElement("span");
       pickSpan.className = "pw-pick";
+      pickSpan.id = "pw-pick-" + key(d);
       var pk = d.getDay() === 6 ? satPick : sunPick;
       var base = d.getDay() === 6 ? pickIdx(sat, 0) : pickIdx(sat, 1);
       var isThisWeekendDay = key(d) === key(sat) || key(d) === key(sun);
@@ -1188,6 +1233,20 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   renderAnchor();
   document.getElementById("plan-week").hidden = false;
+
+  /* F5: clock rollover — a tab left open must not serve yesterday's
+     plan or file vetoes under yesterday's date key. Check every 5s
+     and on every return to the tab; on a date change (or on crossing
+     17:00 while the Today block is up) reload — the render is
+     idempotent and all storage is date-keyed, so a reload lands
+     exactly on the new day's plan. */
+  function rolloverCheck() {
+    var n = new Date();
+    if (key(n) !== todayKey) { location.reload(); return; }
+    if (todayBlockLive && n.getHours() >= 17) location.reload();
+  }
+  setInterval(rolloverCheck, 5000);
+  document.addEventListener("visibilitychange", rolloverCheck);
 });
 </script>
 
