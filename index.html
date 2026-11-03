@@ -1009,8 +1009,8 @@ fleetSessionMarks(); /* session marks fire through the FA loader now (shim above
    (Nov 3, 2026: no New Year reset; 2026 picks unchanged). Weekend picks
    rotate by continuous week number: Saturday takes the week's pick, Sunday the next one.
    The veto ("Another one") walks to the next bench entry in order,
-   never last night's anchor, and survives a reload in sessionStorage
-   only. The site saves nothing about a visitor. */
+   never last night's or tomorrow's anchor, and survives a reload in
+   sessionStorage only. The site saves nothing about a visitor. */
 document.addEventListener("DOMContentLoaded", function () {
   var P = window.PLANS;
   var card = document.getElementById("tonight");
@@ -1054,9 +1054,13 @@ document.addEventListener("DOMContentLoaded", function () {
   var aIdx = saved !== null ? parseInt(saved, 10) : anchorIdx(now);
   if (isNaN(aIdx) || aIdx < 0 || aIdx >= P.anchors.length) aIdx = anchorIdx(now);
   /* F3: a restored anchor must obey the veto rule too — never last
-     night's base anchor. A planted/stale value that breaks it falls
-     back to today's base (which can never equal last night's). */
-  if (aIdx === anchorIdx(new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1))) {
+     night's base anchor and never tomorrow's (SPEC-COLDQA1103-D1:
+     tomorrow's base is pure date math, computable tonight, so a
+     restored pick must not repeat tomorrow either). A planted/stale
+     value that breaks it falls back to today's base (which can never
+     equal last night's or tomorrow's). */
+  if (aIdx === anchorIdx(new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1)) ||
+      aIdx === anchorIdx(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1))) {
     aIdx = anchorIdx(now);
     if (saved !== null) store(aKey, String(aIdx));
   }
@@ -1071,7 +1075,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   document.getElementById("t-veto").addEventListener("click", function () {
     var prev = anchorIdx(new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1));
-    do { aIdx = (aIdx + 1) % P.anchors.length; } while (aIdx === prev);
+    var next = anchorIdx(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1));
+    do { aIdx = (aIdx + 1) % P.anchors.length; } while (aIdx === prev || aIdx === next);
     store(aKey, String(aIdx));
     renderAnchor();
   });

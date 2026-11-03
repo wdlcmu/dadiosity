@@ -498,11 +498,43 @@ function dadScore(lesson, query) {
   if (!pass && score > 3) score = 3;
   return score;
 }
+/* SPEC-COLDQA1103-D2 route: the site's own headline question —
+   "what can I do with my 3-year-old today?" and its plain variants —
+   names no hard part, so the topic scorer finds nothing and both ask
+   doors dead-ended on it. The guide page with that exact title
+   answers it with two written lessons in order: Lesson 22 for right
+   now, Lesson 6 for the end of the day. This route fires only for
+   that today-activity family (today plus an ask word plus a child
+   word, or an ideas/things ask with a child word), only when the
+   query names no hard part (a named hard part keeps its own lesson
+   or its honest no-match), and only when the scorer itself found
+   nothing at the bar of 4 — so every query that already answers
+   keeps its exact answer. */
+function dadTodayAsk(query) {
+  var words = {};
+  dadNorm(query).split(" ").forEach(function (w) { if (w) words[w] = 1; });
+  if (!words.today) return false;
+  var hard = ["bedtime", "sleep", "sleeping", "listen", "listening", "tantrum", "meltdown", "cry", "crying", "scream", "screaming", "hit", "hits", "hitting", "bite", "biting", "yell", "yelling", "fight", "fights", "eat", "eating", "food", "dinner", "teeth", "potty", "sick", "fever"];
+  for (var i = 0; i < hard.length; i++) { if (words[hard[i]]) return false; }
+  var askWord = words.what || words.things || words.thing || words.ideas || words.idea || words.activities || words.activity || words.something;
+  var listWord = words.things || words.thing || words.ideas || words.idea || words.activities || words.activity;
+  var childWord = words.year || words.old || words.toddler || words.kid || words.kids || words.child || words.children || words.daughter || words.son || words.baby || words.we || words["2"] || words["3"] || words["4"] || words["5"];
+  if (words.do && askWord && childWord) return true;
+  if (listWord && childWord) return true;
+  return false;
+}
 function dadRank(query) {
   var bank = window.DADIO_LESSONS || [];
   var scored = bank.map(function (lesson) { return { lesson: lesson, score: dadScore(lesson, query) }; });
   scored = scored.filter(function (r) { return r.score > 0; });
   scored.sort(function (a, b) { return (b.score - a.score) || (a.lesson.n - b.lesson.n); });
+  if (dadTodayAsk(query) && (!scored.length || scored[0].score < 4)) {
+    var byN = {};
+    bank.forEach(function (l) { byN[l.n] = l; });
+    if (byN[22] && byN[6]) {
+      return [{ lesson: byN[22], score: 8 }, { lesson: byN[6], score: 6 }];
+    }
+  }
   return scored;
 }
 window.DADIO_MATCH = { score: dadScore, rank: dadRank, THRESHOLD: 4 };
