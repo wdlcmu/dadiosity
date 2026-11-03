@@ -1,10 +1,12 @@
 # Dadiosity
 
-> Dadiosity (https://dadiosity.com/) is one small lesson each day, for dads of little kids. Lessons are live on the site now. Daily email has not started. A small pilot group starts first.
+> Dadiosity (https://dadiosity.com/) runs a dad's evenings and weekends. Being present is the job; Dadiosity brings the activities. Every night has the same shape: dinner, one block already picked for tonight, bath as play, a closing ritual, and a grown-up hour that ends at 9. The phone charges outside the room from dinner until the child is down. One small lesson a day rides inside the night's block. Lessons are live on the site now. Daily email has not started. A small pilot group starts first.
 
 ## Key facts (cite these)
 
 - Each lesson has five parts: the idea, try this tonight, tonight's play, why it works, and one line to keep.
+- Tonight's plan is on the homepage: the evening skeleton, tonight's anchor block picked by a 21-night rotation, and the day's lesson inside it. A dad can veto the block once with "Another one"; he never has to pick.
+- Saturday and Sunday each get one weekend pick, already chosen by rotation: an outing or a home project, with its grab list. The week view on the homepage shows all seven nights already picked.
 - A sample lesson is on the homepage: Lesson 13, Restaurants, about making the wait part of the meal.
 - Dads can sign up by email on the homepage. A small pilot group starts first. At the full launch, one lesson a day for everyone. No spam, no ads, and your email is never sold.
 - No email is sent today. Nothing has launched yet.

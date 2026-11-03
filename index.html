@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dadiosity · One lesson a day for dads</title>
-<meta name="description" content="Dadiosity: dads get one lesson each day. Free daily lessons by email for dads of little kids.">
+<title>Dadiosity · Being present is the job. We bring the activities.</title>
+<meta name="description" content="Dadiosity runs a dad's evenings and weekends: tonight's plan already picked, the phone in its place, and one lesson a day for dads of little kids.">
 <link rel="canonical" href="https://dadiosity.com/">
 <link rel="icon" href="/assets/mark.svg" type="image/svg+xml">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Dadiosity">
 <meta property="og:title" content="Dadiosity">
-<meta property="og:description" content="Dads get one lesson each day. Free daily lessons by email for dads of little kids.">
+<meta property="og:description" content="Being present is the job. We bring the activities. Tonight's evening plan, already picked, plus one lesson a day for dads of little kids.">
 <meta property="og:url" content="https://dadiosity.com/">
 <meta property="og:image" content="https://dadiosity.com/assets/og-card.jpg">
 <meta property="og:image:type" content="image/jpeg">
@@ -21,14 +21,14 @@
 <meta name="twitter:image" content="https://dadiosity.com/assets/og-card.jpg">
 <meta name="twitter:image:alt" content="A dad reads a picture book to his toddler in bed.">
 <meta name="twitter:title" content="Dadiosity">
-<meta name="twitter:description" content="Dads get one lesson each day. Free daily lessons by email for dads of little kids.">
+<meta name="twitter:description" content="Being present is the job. We bring the activities. Tonight's evening plan, already picked, plus one lesson a day for dads of little kids.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "Dadiosity",
   "url": "https://dadiosity.com/",
-  "description": "One small lesson each day, for dads of little kids."
+  "description": "Dadiosity runs a dad's evenings and weekends: a fixed plan, tonight's activity already picked, and one small lesson each day, for dads of little kids."
 }
 </script>
 <style>
@@ -238,6 +238,53 @@
     display: inline-block; padding: 12px 6px; min-height: 44px;
   }
   .confirm a:hover { text-decoration: underline; }
+
+  .tonight .t-plan { border-bottom: 1px solid #f0dfba; padding-bottom: 1rem; margin-bottom: 1rem; }
+  .tonight .t-plan .p-head { font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.625rem; }
+  .tonight .t-plan ol { list-style: none; }
+  .tonight .t-plan li { padding: 0.45rem 0; border-top: 1px solid #f3e7cd; color: var(--body); }
+  .tonight .t-plan li:first-child { border-top: 0; padding-top: 0; }
+  .tonight .t-plan li strong { color: var(--ink); }
+  .tonight .t-plan .p-grab { display: block; color: var(--body); }
+  .tonight .t-season { background: #fbeed3; border-left: 4px solid var(--accent); border-radius: 0.5rem; padding: 0.75rem 0.875rem; margin-top: 0.625rem; }
+  .tonight .t-season .s-label { font-size: 0.9375rem; font-weight: 700; color: var(--ink); margin-bottom: 0.25rem; }
+  .tonight .t-season .s-text { font-size: 1rem; font-weight: 600; color: var(--ink); line-height: 1.4; margin-bottom: 0.25rem; }
+  .tonight .t-season a, .tonight .t-veto-row a { color: var(--accent); font-weight: 700; text-decoration: none; display: inline-block; padding: 12px 6px; min-height: 44px; }
+  .tonight .t-season a:hover, .tonight .t-veto-row a:hover { text-decoration: underline; }
+  .tonight .t-veto-row { margin-top: 0.5rem; }
+  .tonight button.t-veto, .wknd button.t-veto, .todayblk button.t-veto {
+    flex: 0 1 auto; background: #fff; color: var(--accent); border: 2px solid var(--accent);
+  }
+  .tonight .t-lesson-head { font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.625rem; }
+  .todayblk {
+    width: 100%; max-width: 26rem; text-align: left; background: #fffaf0;
+    border: 2px solid var(--ink); border-radius: 1rem; padding: 1.25rem; margin-bottom: 2rem;
+  }
+  .todayblk[hidden] { display: none; }
+  .todayblk .p-head { font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+  .todayblk h2 { font-size: 1.375rem; font-weight: 800; margin-bottom: 0.375rem; }
+  .todayblk p { color: var(--body); margin-bottom: 0.375rem; }
+  .todayblk p strong { color: var(--ink); }
+  .wknd { width: 100%; max-width: 26rem; text-align: left; margin-bottom: 2.25rem; }
+  .wknd[hidden] { display: none; }
+  .wknd h2 { font-size: 1.25rem; font-weight: 700; text-align: center; margin-bottom: 0.75rem; }
+  .wknd .wk-pick { border-top: 1px solid #eee0c8; padding: 0.625rem 0.25rem; }
+  .wknd .wk-day { display: block; font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.125rem; }
+  .wknd .wk-name { display: block; font-weight: 700; color: var(--ink); }
+  .wknd .wk-how { display: block; color: var(--body); }
+  .wknd .wk-facts { display: block; color: var(--body); font-size: 0.9375rem; }
+  .planweek { width: 100%; max-width: 26rem; text-align: left; margin-bottom: 2.25rem; }
+  .planweek[hidden] { display: none; }
+  .planweek h2 { font-size: 1.25rem; font-weight: 700; text-align: center; margin-bottom: 0.75rem; }
+  .planweek .pw-intro { color: var(--body); margin-bottom: 0.5rem; }
+  .planweek ul { list-style: none; }
+  .planweek li { border-top: 1px solid #eee0c8; }
+  .planweek li:last-child { border-bottom: 1px solid #eee0c8; }
+  .planweek a { display: block; text-decoration: none; padding: 0.625rem 0.25rem; min-height: 44px; }
+  .planweek .pw-day { display: block; font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.125rem; }
+  .planweek .pw-anchor { display: block; font-weight: 700; color: var(--ink); }
+  .planweek .pw-pick { display: block; color: var(--body); }
+  .planweek a:hover .pw-anchor, .planweek a:focus-visible .pw-anchor { text-decoration: underline; }
   footer {
     margin-top: auto; text-align: center; padding: 2rem 1.5rem 96px; border-top: 1px solid #eee0c8;
     font-size: 0.9375rem; color: var(--muted);
@@ -412,10 +459,38 @@ window.FLEET_CFG = {
       <circle cx="41" cy="29" r="4.2" fill="#fff8ec"/>
       <path d="M14 54 h36" stroke="#fff8ec" stroke-width="2.4" stroke-linecap="round" opacity="0.55"/>
     </svg><h1 class="id-name">Dadiosity</h1></p>
-    <p class="id-line">One lesson a day for dads of little kids.</p>
+    <p class="id-line">Being present is the job. We bring the activities.</p>
   </header>
+  <section class="todayblk" id="today-block" hidden aria-label="Today's weekend pick">
+    <p class="p-head">Today</p>
+    <h2 id="tb-name"></h2>
+    <p id="tb-how"></p>
+    <p><strong>Facts:</strong> <span id="tb-facts"></span></p>
+    <p><strong>Grab:</strong> <span id="tb-grab"></span></p>
+    <p><button type="button" class="t-veto" id="tb-veto">Another one</button></p>
+  </section>
   <section class="tonight" id="tonight" hidden aria-label="Try this tonight">
     <p class="t-label" id="t-day">Try this tonight</p>
+    <div class="t-plan" id="t-plan" hidden>
+      <p class="p-head">Tonight, 6 to 9</p>
+      <ol>
+        <li><strong>Dinner.</strong> <span id="p-dinner"></span> <span id="p-phone"></span></li>
+        <li><strong>The one block.</strong> <strong id="p-anchor-name"></strong> <span id="p-anchor-how"></span> <span id="p-anchor-min"></span>
+          <span class="p-grab"><strong>Grab:</strong> <span id="p-anchor-grab"></span></span>
+          <div class="t-season" id="t-season" hidden>
+            <p class="s-label">Tonight's lesson: <span id="s-title"></span></p>
+            <p class="s-text" id="s-puzzle"></p>
+            <p><a href="#t-lesson-layer" id="s-full">The full lesson</a></p>
+          </div>
+          <p class="t-veto-row"><button type="button" class="t-veto" id="t-veto">Another one</button></p>
+        </li>
+        <li><strong id="p-bath"></strong></li>
+        <li><strong id="p-close"></strong></li>
+        <li><strong id="p-hour"></strong></li>
+      </ol>
+    </div>
+    <div class="t-lesson" id="t-lesson-layer">
+    <p class="t-lesson-head">Tonight's lesson</p>
     <img class="t-photo" id="t-photo" src="/assets/table-meal.jpg" width="600" height="400" alt="A dad shares a meal with his toddler at the table." hidden>
     <p class="t-moment" id="t-moment"></p>
     <div class="t-miss" id="t-miss" hidden>
@@ -437,6 +512,7 @@ window.FLEET_CFG = {
     </div>
     <p><a class="t-link" id="t-link" href="/this-week">Read the full lesson</a></p>
     <p class="t-tomorrow" id="t-tomorrow" hidden>Tomorrow: <a id="t-tomorrow-link" href="/this-week"></a></p>
+    </div>
   </section>
   <script>
   (function () {
@@ -581,6 +657,30 @@ window.FLEET_CFG = {
     });
   });
   </script>
+  <section class="wknd" id="t-weekend" hidden aria-label="This weekend, already picked">
+    <h2>This weekend</h2>
+    <div class="wk-pick">
+      <span class="wk-day" id="w-sat-day">Saturday</span>
+      <span class="wk-name" id="w-sat-name"></span>
+      <span class="wk-how" id="w-sat-how"></span>
+      <span class="wk-facts" id="w-sat-facts"></span>
+      <span class="wk-facts"><strong>Grab:</strong> <span id="w-sat-grab"></span></span>
+      <p><button type="button" class="t-veto" id="w-sat-veto">Another one</button></p>
+    </div>
+    <div class="wk-pick">
+      <span class="wk-day" id="w-sun-day">Sunday</span>
+      <span class="wk-name" id="w-sun-name"></span>
+      <span class="wk-how" id="w-sun-how"></span>
+      <span class="wk-facts" id="w-sun-facts"></span>
+      <span class="wk-facts"><strong>Grab:</strong> <span id="w-sun-grab"></span></span>
+      <p><button type="button" class="t-veto" id="w-sun-veto">Another one</button></p>
+    </div>
+  </section>
+  <section class="planweek" id="plan-week" hidden aria-label="This week's evenings, already picked">
+    <h2>This week's evenings</h2>
+    <p class="pw-intro">Every night this week is already picked. Tap a night to read its lesson.</p>
+    <ul id="pw-list"></ul>
+  </section>
   <section class="hero">
     <form id="signup" method="post" action="/signup" novalidate>
       <label for="email">Sign up for daily lessons.</label>
@@ -898,7 +998,198 @@ fleetSessionMarks(); /* session marks fire through the FA loader now (shim above
   } catch (e) {}
 })();
 </script>
+<script src="/plans.js"></script>
 <script src="/lessons.js"></script>
 <script src="/ask-panel.js"></script>
+<script>
+/* Evenings plan render (Nov 2, 2026, evenings SPEC sections 2, 3, 5):
+   fills tonight's running plan from plans.js on every day, in both the
+   hand-built week path and the bank rotation path. Anchor rotation is
+   one code path all days: day-of-year mod 21. Weekend picks rotate by
+   week number: Saturday takes the week's pick, Sunday the next one.
+   The veto ("Another one") walks to the next bench entry in order,
+   never last night's anchor, and survives a reload in sessionStorage
+   only. The site saves nothing about a visitor. */
+document.addEventListener("DOMContentLoaded", function () {
+  var P = window.PLANS;
+  var card = document.getElementById("tonight");
+  if (!P || !card || card.hidden) return;
+  var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function key(d) {
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  }
+  function doy(d) {
+    return Math.floor((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - Date.UTC(d.getFullYear(), 0, 0)) / 86400000);
+  }
+  function anchorIdx(d) { return doy(d) % P.anchors.length; }
+  function store(k, v) { try { sessionStorage.setItem(k, v); } catch (e) {} }
+  function read(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }
+  var now = new Date();
+  var todayKey = key(now);
+
+  /* Skeleton, verbatim from the bench. */
+  document.getElementById("p-dinner").textContent = P.skeleton.dinner;
+  document.getElementById("p-phone").textContent = P.skeleton.phone;
+  document.getElementById("p-bath").textContent = P.skeleton.bath;
+  document.getElementById("p-close").textContent = P.skeleton.close;
+  document.getElementById("p-hour").textContent = P.skeleton.hour;
+
+  /* Tonight's anchor, with the veto. */
+  var aKey = "dad_anchor_" + todayKey;
+  var saved = read(aKey);
+  var aIdx = saved !== null ? parseInt(saved, 10) : anchorIdx(now);
+  if (isNaN(aIdx) || aIdx < 0 || aIdx >= P.anchors.length) aIdx = anchorIdx(now);
+  function renderAnchor() {
+    var a = P.anchors[aIdx];
+    document.getElementById("p-anchor-name").textContent = a.name + ".";
+    document.getElementById("p-anchor-how").textContent = a.how;
+    document.getElementById("p-anchor-min").textContent = "About " + a.minutes + " minutes.";
+    document.getElementById("p-anchor-grab").textContent = a.grab + ".";
+    var row = document.getElementById("pw-anchor-" + todayKey);
+    if (row) row.textContent = a.name;
+  }
+  document.getElementById("t-veto").addEventListener("click", function () {
+    var prev = anchorIdx(new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1));
+    do { aIdx = (aIdx + 1) % P.anchors.length; } while (aIdx === prev);
+    store(aKey, String(aIdx));
+    renderAnchor();
+  });
+
+  /* Seasoning: tonight's lesson rides inside the anchor block. The
+     lesson layer keeps the miss and the full lesson; its puzzle line
+     moves here, so it prints once. */
+  var title = document.getElementById("t-title").textContent;
+  var puzzleEl = document.getElementById("t-puzzle");
+  var puzzleTxt = document.getElementById("t-puzzle-text").textContent;
+  if (title && puzzleTxt) {
+    document.getElementById("s-title").textContent = title;
+    document.getElementById("s-puzzle").textContent = puzzleTxt;
+    document.getElementById("t-season").hidden = false;
+  }
+  if (puzzleEl) puzzleEl.hidden = true;
+  document.getElementById("s-full").addEventListener("click", function (e) {
+    var layer = document.getElementById("t-lesson-layer");
+    if (layer && layer.scrollIntoView) { e.preventDefault(); layer.scrollIntoView({ block: "start" }); }
+  });
+  document.getElementById("t-plan").hidden = false;
+
+  /* Weekend picks: Saturday is the week's rotation pick, Sunday next. */
+  var monday0 = new Date(now.getFullYear(), now.getMonth(), now.getDate() - ((now.getDay() + 6) % 7));
+  function pickIdx(sat, off) {
+    return (Math.floor(doy(sat) / 7) + off) % P.weekend.length;
+  }
+  var sat = new Date(monday0.getFullYear(), monday0.getMonth(), monday0.getDate() + 5);
+  var sun = new Date(monday0.getFullYear(), monday0.getMonth(), monday0.getDate() + 6);
+  function vetoedPick(dayDate, baseIdx) {
+    var k = "dad_weekend_" + key(dayDate);
+    var sv = read(k);
+    var idx = sv !== null ? parseInt(sv, 10) : baseIdx;
+    if (isNaN(idx) || idx < 0 || idx >= P.weekend.length) idx = baseIdx;
+    return { idx: idx, key: k };
+  }
+  var satPick = vetoedPick(sat, pickIdx(sat, 0));
+  var sunPick = vetoedPick(sun, pickIdx(sat, 1));
+  function facts(w) {
+    return (w.length === "full" ? "Most of the day" : "Half the day") + " · " +
+      (w.cost === "free" ? "Free" : (w.cost === "a little" ? "Costs a little" : "A day out")) + " · " +
+      (w.weather === "any" ? "Any weather" : (w.weather === "wet" ? "Good in rain" : "Needs a dry day"));
+  }
+  function renderPick(prefix, w) {
+    document.getElementById(prefix + "-name").textContent = w.name;
+    document.getElementById(prefix + "-how").textContent = w.how;
+    document.getElementById(prefix + "-facts").textContent = facts(w);
+    document.getElementById(prefix + "-grab").textContent = w.grab + ".";
+  }
+  function bindVeto(btnId, pick, otherIdx, render) {
+    document.getElementById(btnId).addEventListener("click", function () {
+      do { pick.idx = (pick.idx + 1) % P.weekend.length; } while (pick.idx === otherIdx);
+      store(pick.key, String(pick.idx));
+      render();
+    });
+  }
+
+  /* Friday to Sunday: the weekend block under tonight's plan. */
+  var dow = now.getDay();
+  if (dow === 5 || dow === 6 || dow === 0) {
+    document.getElementById("w-sat-day").textContent = "Saturday, " + months[sat.getMonth()] + " " + sat.getDate();
+    document.getElementById("w-sun-day").textContent = "Sunday, " + months[sun.getMonth()] + " " + sun.getDate();
+    var renderWk = function () {
+      renderPick("w-sat", P.weekend[satPick.idx]);
+      renderPick("w-sun", P.weekend[sunPick.idx]);
+    };
+    bindVeto("w-sat-veto", satPick, sunPick.idx, renderWk);
+    bindVeto("w-sun-veto", sunPick, satPick.idx, renderWk);
+    renderWk();
+    document.getElementById("t-weekend").hidden = false;
+  }
+
+  /* Saturday and Sunday before 5 PM: today's pick sits under the
+     identity line as "Today"; the evening plan takes the spot after. */
+  if ((dow === 6 || dow === 0) && now.getHours() < 17) {
+    var mine = dow === 6 ? satPick : sunPick;
+    var other = dow === 6 ? sunPick : satPick;
+    var renderTb = function () {
+      var w = P.weekend[mine.idx];
+      document.getElementById("tb-name").textContent = w.name;
+      document.getElementById("tb-how").textContent = w.how;
+      document.getElementById("tb-facts").textContent = facts(w);
+      document.getElementById("tb-grab").textContent = w.grab + ".";
+    };
+    bindVeto("tb-veto", mine, other.idx, renderTb);
+    renderTb();
+    document.getElementById("today-block").hidden = false;
+  }
+
+  /* The week view: seven rows, Monday to Sunday, read-only proof that
+     no deciding is coming. A row tap opens that day's lesson. */
+  var WEEK = window.DADIO_WEEK || {};
+  var bank = window.DADIO_LESSONS || [];
+  function lessonN(d) {
+    var hit = WEEK[key(d)];
+    if (hit) return hit.n;
+    if (bank.length) return ((doy(d) - 1) % bank.length) + 1;
+    return null;
+  }
+  var monday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - ((now.getDay() + 6) % 7));
+  var list = document.getElementById("pw-list");
+  for (var i = 0; i < 7; i++) {
+    var d = new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + i);
+    var li = document.createElement("li");
+    var a = document.createElement("a");
+    var n = lessonN(d);
+    a.href = n ? "/this-week#l" + n : "#plan-week";
+    var daySpan = document.createElement("span");
+    daySpan.className = "pw-day";
+    daySpan.textContent = days[d.getDay()] + ", " + months[d.getMonth()] + " " + d.getDate();
+    if (key(d) === todayKey) {
+      var pill = document.createElement("span");
+      pill.className = "t-pill";
+      pill.textContent = "Tonight";
+      daySpan.appendChild(pill);
+    }
+    var anchorSpan = document.createElement("span");
+    anchorSpan.className = "pw-anchor";
+    anchorSpan.id = "pw-anchor-" + key(d);
+    anchorSpan.textContent = P.anchors[anchorIdx(d)].name;
+    a.appendChild(daySpan);
+    a.appendChild(anchorSpan);
+    if (d.getDay() === 6 || d.getDay() === 0) {
+      var pickSpan = document.createElement("span");
+      pickSpan.className = "pw-pick";
+      var pk = d.getDay() === 6 ? satPick : sunPick;
+      var base = d.getDay() === 6 ? pickIdx(sat, 0) : pickIdx(sat, 1);
+      var isThisWeekendDay = key(d) === key(sat) || key(d) === key(sun);
+      pickSpan.textContent = "Weekend pick: " + P.weekend[isThisWeekendDay ? pk.idx : base].name;
+      a.appendChild(pickSpan);
+    }
+    li.appendChild(a);
+    list.appendChild(li);
+  }
+  renderAnchor();
+  document.getElementById("plan-week").hidden = false;
+});
+</script>
+
 </body>
 </html>
