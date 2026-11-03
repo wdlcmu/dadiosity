@@ -191,6 +191,22 @@
   .tonight .t-tomorrow { margin-top: 0.75rem; color: var(--body); }
   .tonight .t-tomorrow a { color: var(--accent); font-weight: 700; text-decoration: none; display: inline-block; padding: 10px 4px; min-height: 44px; }
   .tonight .t-tomorrow a:hover { text-decoration: underline; }
+  .tonight .t-miss {
+    background: #fbeed3; border-left: 4px solid var(--accent); border-radius: 0.5rem;
+    padding: 0.75rem 0.875rem; margin-bottom: 1rem;
+  }
+  .tonight .t-miss[hidden] { display: none; }
+  .tonight .t-miss .m-label {
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 0.25rem;
+  }
+  .tonight .t-miss .m-text { font-size: 1.0625rem; font-weight: 600; color: var(--ink); line-height: 1.4; }
+  .tonight .t-full { border-top: 1px solid #f0dfba; padding-top: 1rem; margin-bottom: 1rem; }
+  .tonight .t-full[hidden] { display: none; }
+  .tonight .t-full p { color: var(--body); margin-bottom: 0.875rem; }
+  .tonight .t-full p:last-child { margin-bottom: 0; }
+  .tonight .t-full p strong { color: var(--ink); }
+  .week[hidden] { display: none; }
   .t-pill {
     display: inline-block; background: var(--accent); color: #fff; border-radius: 999px;
     padding: 0.1rem 0.6rem; margin-left: 0.5rem; font-size: 0.75rem; font-weight: 700;
@@ -392,25 +408,36 @@ window.FLEET_CFG = {
     <p class="t-label" id="t-day">Try this tonight</p>
     <img class="t-photo" id="t-photo" src="/assets/table-meal.jpg" width="600" height="400" alt="A dad shares a meal with his toddler at the table." hidden>
     <p class="t-moment" id="t-moment"></p>
+    <div class="t-miss" id="t-miss" hidden>
+      <p class="m-label">The miss</p>
+      <p class="m-text" id="t-miss-text"></p>
+    </div>
     <h2 class="t-title" id="t-title"></h2>
     <p class="t-move" id="t-move"></p>
     <p class="t-why" id="t-why"></p>
+    <div class="t-full" id="t-full" hidden>
+      <p><strong>The idea:</strong> <span id="t-idea"></span></p>
+      <p><strong>Try this tonight:</strong> <span id="t-movefull"></span></p>
+      <p><strong>Tonight's play:</strong> <span id="t-play"></span></p>
+      <p><strong>One line to keep:</strong> <span id="t-keep"></span></p>
+    </div>
     <p><a class="t-link" id="t-link" href="/this-week">Read the full lesson</a></p>
     <p class="t-tomorrow" id="t-tomorrow" hidden>Tomorrow: <a id="t-tomorrow-link" href="/this-week"></a></p>
   </section>
   <script>
   (function () {
     var WEEK = {
-      "2026-11-01": { n: 3, moment: "Leaving the pool", title: "Warn Her Before It Ends", move: "\"Two more minutes, then we get out.\" Say it twice. Then get out.", why: "Ends are easier when she hears them coming first." },
-      "2026-11-02": { n: 27, moment: "For the people coming and going", title: "Make a Gift for Someone", move: "Help her make one small gift for a real person, then give it to that person.", why: "People come and go all this week, so a gift she makes now has a real person waiting for it." },
-      "2026-11-03": { n: 27, moment: "For the people coming and going", title: "Make a Gift for Someone", move: "Help her make one small gift for a real person, then give it to that person.", why: "People come and go all this week, so a gift she makes now has a real person waiting for it." },
-      "2026-11-04": { n: 21, moment: "When Grandma arrives", title: "Make Hello a Big Deal", move: "Greet her first when you reunite, before bags, phone, or other talk.", why: "Grandma arrives today, and the first hello sets the tone for her whole visit." },
-      "2026-11-05": { n: 31, moment: "Before the goodbye", title: "Check Her Needs Before You Go", move: "Check food, rest, and bathroom before you go, fix the one you can, then tell her the plan.", why: "A hungry or tired kid cries at a goodbye. A fed, rested one takes it better." },
-      "2026-11-06": { n: 2, moment: "When she is sad someone left", title: "Name It First", move: "Name the feeling before you fix the problem.", photo: true, why: "She calms faster when she hears that you know what she feels." },
-      "2026-11-07": { n: 25, moment: "While Grandma is here", title: "When You Were Small", move: "Tell her one short true story from when you were her age, with a feeling in it.", why: "Grandma is here this weekend, and nobody remembers your small days the way she does." },
-      "2026-11-08": { n: 25, moment: "While Grandma is here", title: "When You Were Small", move: "Tell her one short true story from when you were her age, with a feeling in it.", why: "Grandma is here this weekend, and nobody remembers your small days the way she does." },
-      "2026-11-09": { n: 12, moment: "Dad's first morning back at work", title: "Start the Morning Slow", move: "Sit with her for the first five minutes of the day and ask for nothing yet.", why: "Work mornings start again today, so five slow minutes keep the change small for her." }
+      "2026-11-01": { n: 3, moment: "Leaving the pool", title: "Warn Her Before It Ends", move: "\"Two more minutes, then we get out.\" Say it twice. Then get out.", why: "Ends are easier when she hears them coming first.", miss: "We say time to go once, out of nowhere, and then carry her out mid-meltdown." },
+      "2026-11-02": { n: 27, moment: "For the people coming and going", title: "Make a Gift for Someone", move: "Help her make one small gift for a real person, then give it to that person.", why: "People come and go all this week, so a gift she makes now has a real person waiting for it.", miss: "We buy the gift ourselves and let her just hand it over." },
+      "2026-11-03": { n: 27, moment: "For the people coming and going", title: "Make a Gift for Someone", move: "Help her make one small gift for a real person, then give it to that person.", why: "People come and go all this week, so a gift she makes now has a real person waiting for it.", miss: "We buy the gift ourselves and let her just hand it over." },
+      "2026-11-04": { n: 21, moment: "When Grandma arrives", title: "Make Hello a Big Deal", move: "Greet her first when you reunite, before bags, phone, or other talk.", why: "Grandma arrives today, and the first hello sets the tone for her whole visit.", miss: "We say hello while hauling the bags in, already talking about the drive." },
+      "2026-11-05": { n: 31, moment: "Before the goodbye", title: "Check Her Needs Before You Go", move: "Check food, rest, and bathroom before you go, fix the one you can, then tell her the plan.", why: "A hungry or tired kid cries at a goodbye. A fed, rested one takes it better.", miss: "We head out hungry and rushed, and the goodbye turns into tears." },
+      "2026-11-06": { n: 2, moment: "When she is sad someone left", title: "Name It First", move: "Name the feeling before you fix the problem.", photo: true, why: "She calms faster when she hears that you know what she feels.", miss: "We try to fix the sad feeling fast, before we ever name it." },
+      "2026-11-07": { n: 25, moment: "While Grandma is here", title: "When You Were Small", move: "Tell her one short true story from when you were her age, with a feeling in it.", why: "Grandma is here this weekend, and nobody remembers your small days the way she does.", miss: "She hears our rules all day. She never hears that we were small once too." },
+      "2026-11-08": { n: 25, moment: "While Grandma is here", title: "When You Were Small", move: "Tell her one short true story from when you were her age, with a feeling in it.", why: "Grandma is here this weekend, and nobody remembers your small days the way she does.", miss: "She hears our rules all day. She never hears that we were small once too." },
+      "2026-11-09": { n: 12, moment: "Dad's first morning back at work", title: "Start the Morning Slow", move: "Sit with her for the first five minutes of the day and ask for nothing yet.", why: "Work mornings start again today, so five slow minutes keep the change small for her.", miss: "The day starts with orders about shoes and bags from the very first minute." }
     };
+    window.DADIO_WEEK = WEEK;
     function key(d) {
       return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
     }
@@ -425,6 +452,10 @@ window.FLEET_CFG = {
     document.getElementById("t-title").textContent = today.title;
     document.getElementById("t-move").textContent = today.move;
     document.getElementById("t-why").textContent = today.why;
+    if (today.miss) {
+      document.getElementById("t-miss-text").textContent = today.miss;
+      document.getElementById("t-miss").hidden = false;
+    }
     document.getElementById("t-link").href = "/this-week#l" + today.n;
     if (today.photo) document.getElementById("t-photo").hidden = false;
     var tPara = document.getElementById("t-tomorrow");
@@ -457,6 +488,77 @@ window.FLEET_CFG = {
     });
   })();
   </script>
+  <script>
+  /* Daily fallback (Nov 2, 2026): on days the hand-built week map does
+     not cover, tonight's card fills from the lesson bank (lessons.js)
+     on a steady daily rotation, with the full lesson inline, and the
+     dated week list steps aside instead of going stale. Hand-built
+     weeks render exactly as before; this runs only when the map left
+     the card hidden. */
+  document.addEventListener("DOMContentLoaded", function () {
+    var card = document.getElementById("tonight");
+    if (!card || !card.hidden) return;
+    var bank = window.DADIO_LESSONS || [];
+    if (!bank.length) return;
+    var WEEK = window.DADIO_WEEK || {};
+    var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    function key(d) {
+      return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+    }
+    function dayOfYear(d) {
+      return Math.floor((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - Date.UTC(d.getFullYear(), 0, 0)) / 86400000);
+    }
+    function byN(n) {
+      for (var i = 0; i < bank.length; i++) if (bank[i].n === n) return bank[i];
+      return bank[0];
+    }
+    function cap(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
+    var now = new Date();
+    var L = byN(((dayOfYear(now) - 1) % bank.length) + 1);
+    document.getElementById("t-day").textContent = "Try this tonight · " + days[now.getDay()] + ", " + months[now.getMonth()] + " " + now.getDate();
+    document.getElementById("t-moment").textContent = "Lesson " + L.n + " of " + bank.length;
+    document.getElementById("t-title").textContent = L.title;
+    document.getElementById("t-move").textContent = cap(L.core);
+    document.getElementById("t-why").textContent = L.why;
+    document.getElementById("t-idea").textContent = L.idea;
+    document.getElementById("t-movefull").textContent = L.move;
+    document.getElementById("t-play").textContent = L.play;
+    document.getElementById("t-keep").textContent = cap(L.core);
+    var link = document.getElementById("t-link");
+    link.href = "#t-full";
+    link.setAttribute("aria-expanded", "false");
+    link.addEventListener("click", function (e) {
+      e.preventDefault();
+      var full = document.getElementById("t-full");
+      var open = full.hidden;
+      full.hidden = !open;
+      link.textContent = open ? "Hide the full lesson" : "Read the full lesson";
+      link.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    var tPara = document.getElementById("t-tomorrow");
+    for (var off = 1; off <= 7; off++) {
+      var nd = new Date(now.getFullYear(), now.getMonth(), now.getDate() + off);
+      var nx = WEEK[key(nd)];
+      if (nx && nx.n !== L.n) {
+        var tLink = document.getElementById("t-tomorrow-link");
+        tLink.textContent = nx.title;
+        tLink.href = "/this-week#l" + nx.n;
+        tPara.childNodes[0].textContent = (off === 1 ? "Tomorrow" : days[nd.getDay()]) + ": ";
+        tPara.hidden = false;
+        break;
+      }
+    }
+    var weekSec = document.querySelector(".week");
+    if (weekSec) weekSec.hidden = true;
+    card.hidden = false;
+    window.addEventListener("load", function () {
+      try {
+        if (typeof fleetTrack === "function") fleetTrack("tonight_card_shown", { tool: "dad-lessons", lesson: L.n });
+      } catch (e) {}
+    });
+  });
+  </script>
   <section class="hero">
     <form id="signup" method="post" action="/signup" novalidate>
       <label for="email">Sign up for daily lessons.</label>
@@ -484,7 +586,7 @@ window.FLEET_CFG = {
   </section>
   <section class="week" aria-label="This week at home">
     <h2>This week at home</h2>
-    <p class="wk-intro">Grandparents are coming and going this week, and work starts again soon. Each card shows the one thing to try. Tap one to read the full lesson.</p>
+    <p class="wk-intro">Grandparents are coming and going this week, and work starts again soon. Each row shows the one thing to try. Tap one to read the full lesson.</p>
     <ul>
       <li><a href="/this-week#l3"><span class="wk-moment">Sunday · Leaving the pool</span><span class="wk-title">Warn Her Before It Ends</span><span class="wk-core">Warn two times before a change, then follow through.</span><span class="wk-lesson">Lesson 3</span></a></li>
       <li><a href="/this-week#l27"><span class="wk-moment">Monday and Tuesday · For the people coming and going</span><span class="wk-title">Make a Gift for Someone</span><span class="wk-core">Help her make one small gift for a real person, then give it to that person.</span><span class="wk-lesson">Lesson 27</span></a></li>
