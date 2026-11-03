@@ -300,7 +300,7 @@ function dadLabel(text) {
    /ask matcher in place, plus the chat door. The matcher above is
    byte-identical to ask.html's and still runs on this device as the
    fallback: if the chat (POST /api/chat, answers grounded only in the
-   31 written lessons) is unreachable, the panel answers with the local
+   45 written lessons) is unreachable, the panel answers with the local
    matcher exactly as it did before, and says so. Chat turns are sent
    to the site's own chat worker; nothing typed is stored there. ---- */
 var DP_CSS = [
@@ -457,7 +457,7 @@ function dpAskLocal() {
     s1.textContent = "No written lesson fits those words yet.";
     p1.appendChild(s1);
     var p2 = document.createElement("p");
-    p2.textContent = "The 31 lessons cover bedtime, play, food, feelings, mornings, and hard moments. Try a few plain words for the hard part, or tap an example below.";
+    p2.textContent = "The 45 lessons cover bedtime, play, food, feelings, mornings, fears, sharing, screens, and hard moments. Try a few plain words for the hard part, or tap an example below.";
     box.appendChild(p1); box.appendChild(p2);
     answer.appendChild(box);
     dpTrackFallback({ tool: "dad-ask", missing: "match" });
@@ -475,7 +475,7 @@ function dpAskLocal() {
   if (first) { try { first.scrollIntoView({ block: "nearest" }); } catch (e) {} }
 }
 /* ---- AI chat send path: POST /api/chat (the site's own worker,
-   grounded only in the 31 written lessons). On any failure or timeout
+   grounded only in the 45 written lessons). On any failure or timeout
    the panel falls back to dpAskLocal above — the matcher on this
    device — and labels the answer as the page's own match. ---- */
 function dpBubble(who, text, me) {
@@ -632,7 +632,7 @@ function dpBuild() {
   bodyEl.className = "dp-body";
   var promise = document.createElement("p");
   promise.className = "dp-promise";
-  promise.textContent = "Chat with Dadiosity's AI. It answers only from the 31 written lessons on this site. If there is no written lesson on something, it will say so, in plain words. Nothing you type is saved.";
+  promise.textContent = "Chat with Dadiosity's AI. It answers only from the 45 written lessons on this site. If there is no written lesson on something, it will say so, in plain words. Nothing you type is saved.";
   bodyEl.appendChild(promise);
   var photo = document.createElement("img");
   photo.className = "dp-photo";

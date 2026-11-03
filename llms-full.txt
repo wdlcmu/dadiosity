@@ -7,7 +7,7 @@
 
 ## Homepage (https://dadiosity.com/)
 
-Tonight (top of the homepage, changes each day): tonight's running plan for 6 to 9, the fixed skeleton (dinner, one block, bath as play, the close, your hour) with tonight's anchor block already picked by rotation and the phone line printed in the dinner block. The day's lesson rides inside the anchor block as a seasoning strip (its title and puzzle line), and the full lesson sits directly below the plan on the same card, opening with the miss, then the move and why it works, the full lesson one tap away, and tomorrow's lesson named. On days outside the hand-built week, the lesson fills from the same 31-lesson bank on a daily rotation, puzzle included. Friday to Sunday the card also shows this weekend's two picks, and the week view below shows all seven nights already picked.
+Tonight (top of the homepage, changes each day): tonight's running plan for 6 to 9, the fixed skeleton (dinner, one block, bath as play, the close, your hour) with tonight's anchor block already picked by rotation and the phone line printed in the dinner block. The day's lesson rides inside the anchor block as a seasoning strip (its title and puzzle line), and the full lesson sits directly below the plan on the same card, opening with the miss, then the move and why it works, the full lesson one tap away, and tomorrow's lesson named. On days outside the hand-built week, the lesson fills from the same 45-lesson bank on a daily rotation, puzzle included. Friday to Sunday the card also shows this weekend's two picks, and the week view below shows all seven nights already picked.
 Dadiosity
 Being present is the job. We bring the activities.
 Tonight's plan for 6 to 9 is on the card, already picked, with one lesson inside it.
@@ -15,7 +15,7 @@ For dads of little kids. Free. A minute to read.
 Read a sample lesson.
 Sign up for daily lessons.
 Join
-A small pilot group starts first, picked from this list. The first 31 lessons are written.
+A small pilot group starts first, picked from this list. The first 45 lessons are written.
 No spam. No ads. We never sell your email.
 You are in.
 We saved your email.
@@ -161,7 +161,7 @@ Tonight's play: Tonight, act out the morning with two stuffed bears. Wake them s
 Why it works: A calm first five minutes can save a hard hour. She starts the day feeling held, not pushed. You start it like a dad, not a drill.
 One line to keep: Sit with her for the first five minutes of the day and ask for nothing yet.
 One short lesson a day, starting small
-Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 31 lessons are written.
+Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 45 lessons are written.
 Join the list
 Stay curious. She's only three once.
 More questions dads ask
@@ -189,7 +189,7 @@ More family tools: Pick My Costume · The Present Picker
 
 Dadiosity
 Dealing with something tonight?
-Ask here. Say tonight's hard part in your own words. We match your words to one of the 31 written lessons, right on this page. Nothing you type is sent or saved. No email needed.
+Ask here. Say tonight's hard part in your own words. We match your words to one of the 45 written lessons, right on this page. Nothing you type is sent or saved. No email needed.
 Tonight's hard part, in your words
 Find my lesson
 Or tap an example:
@@ -200,7 +200,7 @@ I yelled at her and I feel awful
 How do I play with her?
 How this works
 Your words stay here. The match runs on this page, on your device. Nothing is sent or saved.
-Real lessons only. Each answer is one of the 31 written lessons, word for word. Nothing is made up.
+Real lessons only. Each answer is one of the 45 written lessons, word for word. Nothing is made up.
 No match, said plain. If no lesson fits your words, this page says so. It does not guess.
 Read the sample lesson
 Join for daily lessons
@@ -335,7 +335,7 @@ Tonight's play: Put a stuffed bear to bed before her turn comes. A bath in a toy
 Why it works: A known order feels safe at night. Safe kids settle with less fight in them. She can rest because she knows the road home to sleep.
 One line to keep: Keep the same three bedtime steps in the same order.
 One short lesson a day, starting small
-Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 31 lessons are written.
+Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 45 lessons are written.
 Join the list
 Stay curious. She's only three once.
 More questions dads ask
@@ -378,7 +378,7 @@ You do not need a plan or new toys. Pick one thing below and give it ten minutes
 The one rule that makes all of these work
 Let her lead. Follow her play idea for ten minutes without leading or fixing it. Ask what happens next, then do that. Her game, her pace. It is a full Dadiosity lesson on how to play with a toddler.
 One short lesson a day, starting small
-Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 31 lessons are written.
+Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 45 lessons are written.
 Join the list
 Stay curious. She's only three once.
 More questions dads ask
@@ -440,7 +440,7 @@ Tonight's play: Let her tell you the plot of a book you both know. Sit back and 
 Why it works: Being heard all the way out tells her her words count. She talks more when she feels heard. You learn more about her day than a quick guess can give you.
 One line to keep: Let her finish her whole story before you reply, with no jump in.
 One short lesson a day, starting small
-Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 31 lessons are written.
+Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 45 lessons are written.
 Join the list
 Stay curious. She's only three once.
 More questions dads ask
@@ -498,7 +498,7 @@ One line to keep: At bedtime, let her pick one small thing to look forward to to
 When she will not settle
 Get low and breathe out slow with her. Blow out long, like cooling soup. Count each out breath on your fingers. Do three rounds before you use words.
 One short lesson a day, starting small
-Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 31 lessons are written.
+Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 45 lessons are written.
 Join the list
 Stay curious. She's only three once.
 More questions dads ask
@@ -555,7 +555,7 @@ Two more small ones
 Start the morning slow. The first minutes set the tone for the home. Lay out clothes and cups the night before. When she wakes, sit with her for five minutes. Hold her, talk soft, and ask for nothing yet.
 Tell her a story from when you were small. Keep it short and true, with a feeling in it. Name how you felt, what went wrong, and who helped you feel safe again.
 One short lesson a day, starting small
-Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 31 lessons are written.
+Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 45 lessons are written.
 Join the list
 Stay curious. She's only three once.
 More questions dads ask
@@ -614,7 +614,7 @@ Say no once, and stay close. Say no one time, short and kind. No more sweets ton
 When she is stuck on one want, turn her eyes. Point to a new thing and name it with wonder. A red leaf. A loud truck. Put a safe small thing in her hands. The no still holds, but her mind has moved on.
 Before the next hard part, scan the stack. Hunger, a tired body, and a long wait stack up. Before a trip out, check food, rest, bathroom, and what comes next. Fix the one need you can fix, then name the plan in one short line.
 One short lesson a day, starting small
-Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 31 lessons are written.
+Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 45 lessons are written.
 Join the list
 Stay curious. She's only three once.
 More questions dads ask
@@ -673,7 +673,7 @@ Get down low. Your kid hears you best when you are close. Get down on one knee o
 After the storm, shake it out. A small body holds a lot of buzz. When the tears slow down, take two minutes to move with her. Jump, spin, march, shake each arm and leg out. End slow, with three deep breaths.
 If you snap, fix it fast. You will snap some days. Stop as soon as you can. Take one slow breath, get low, and say you are sorry. Name what you did, then hug or sit close.
 One short lesson a day, starting small
-Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 31 lessons are written.
+Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 45 lessons are written.
 Join the list
 Stay curious. She's only three once.
 More questions dads ask
@@ -732,7 +732,7 @@ Tidy to one song. Make the tidy the first step of the night. Put toys in one bas
 Bring your voice down as the night goes on. She matches the sound she hears. Speak soft and slow, and keep your words short as bed gets near.
 Ask once, then pause. Little kids need time to hear an ask and act on it. Ask one time, then count slow to ten in your head before you say it again, in the same plain words.
 One short lesson a day, starting small
-Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 31 lessons are written.
+Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 45 lessons are written.
 Join the list
 Stay curious. She's only three once.
 More questions dads ask
@@ -791,7 +791,7 @@ Before you go in, scan the stack. Hunger, a tired body, and a long wait stack up
 Catch the good out loud, right there. Name one good thing she does, in plain detail, right when she does it. You held the cart the whole aisle. That helped us.
 When she is stuck on one want, turn her eyes. Point to a new thing and name it with wonder. A red pepper. A big fish. Put a safe small thing in her hands. The no still holds, but her mind has moved on.
 One short lesson a day, starting small
-Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 31 lessons are written.
+Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 45 lessons are written.
 Join the list
 Stay curious. She's only three once.
 More questions dads ask
@@ -850,7 +850,7 @@ Say what you see. Plain talk during small moments does the word work. Name thing
 Run the buzz off. A small body holds a lot of buzz, and outside is the best place to burn it. Jump, spin, march, and shake with her for two minutes.
 Catch the good out loud. Watch for one good thing she does and name it at once, in plain detail. You carried your stick the whole way.
 One short lesson a day, starting small
-Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 31 lessons are written.
+Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 45 lessons are written.
 Join the list
 Stay curious. She's only three once.
 More questions dads ask
@@ -909,7 +909,7 @@ Check her body too. Hitting can ride on a tired or hungry body. Check hunger, th
 Say it soft. She matches the sound she hears. Drop your voice to soft and slow, and keep your words short. A soft voice is hard to fight with.
 Breathe out slow with her. When feelings rise fast, words can land too soon. Get low and blow out long, like cooling soup. Count each out breath on your fingers. Do three rounds before you use words.
 One short lesson a day, starting small
-Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 31 lessons are written.
+Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 45 lessons are written.
 Join the list
 Stay curious. She's only three once.
 More questions dads ask
@@ -971,7 +971,7 @@ Quick question
 How do I make mornings easier with my toddler?
 Plan tonight: lay out clothes and cups before bed. When she wakes, sit with her for five minutes and ask for nothing yet. Before a hard part, scan her stack: food, rest, bathroom, and what comes next. Fix the one need you can fix. Give her two good choices you can live with, and honor the pick she makes.
 One short lesson a day, starting small
-Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 31 lessons are written.
+Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 45 lessons are written.
 Join the list
 Stay curious. She's only three once.
 More questions dads ask
@@ -1033,7 +1033,7 @@ Quick question
 What do I do after I yell at my toddler?
 Stop as soon as you can. Take one slow breath. Get low, say you are sorry, and name what you did. Then hug or sit close. Breathe out slow with her, like cooling soup, for three rounds before you use more words.
 One short lesson a day, starting small
-Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 31 lessons are written.
+Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 45 lessons are written.
 Join the list
 Stay curious. She's only three once.
 More questions dads ask
@@ -1095,7 +1095,7 @@ Quick question
 How do I get my toddler to sit at the table?
 Before dinner, move with her for two minutes: jump, spin, march, and shake each arm and leg out. End slow, with three deep breaths, then walk to the table. Keep your phone in another room for the whole meal. Put one small new bite beside a food she trusts, and praise a try, not a clean plate.
 One short lesson a day, starting small
-Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 31 lessons are written.
+Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 45 lessons are written.
 Join the list
 Stay curious. She's only three once.
 More questions dads ask
@@ -1157,7 +1157,7 @@ Quick question
 How do I get my toddler to clean up toys?
 Make the job small: pick one song you like, and put toys in one basket till the song ends. Stop when the song stops, even if a few toys stay out. Give her that one real job to finish, thank her for the work by name, and name one good thing she does right when she does it.
 One short lesson a day, starting small
-Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 31 lessons are written.
+Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 45 lessons are written.
 Join the list
 Stay curious. She's only three once.
 More questions dads ask

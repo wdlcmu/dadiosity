@@ -1055,8 +1055,10 @@ fleetSessionMarks(); /* session marks fire through the FA loader now (shim above
 /* Evenings plan render (Nov 2, 2026, evenings SPEC sections 2, 3, 5):
    fills tonight's running plan from plans.js on every day, in both the
    hand-built week path and the bank rotation path. Anchor rotation is
-   one code path all days: continuous days since a fixed epoch, mod 21
-   (Nov 3, 2026: no New Year reset; 2026 picks unchanged). Weekend picks
+   one code path all days: continuous days since a fixed epoch, mod the
+   bench length (Nov 3, 2026: no New Year reset; the full-bank build the
+   same day grew the bench 21 -> 27 anchors and 16 -> 20 weekend picks,
+   so fallback-day picks re-based on the longer bench then). Weekend picks
    rotate by continuous week number: Saturday takes the week's pick, Sunday the next one.
    The veto ("Another one") walks to the next bench entry in order,
    never last night's or tomorrow's anchor, and survives a reload in
