@@ -1103,7 +1103,10 @@ window.DADIO_LESSONS = [
    "brush teeth",
    "brushing",
    "toothbrush",
-   "won't brush"
+   "won't brush",
+   "refuses the toothbrush",
+   "won't use her toothbrush",
+   "refuses to brush"
   ],
   "moment": "brushing teeth",
   "slot": "bath",
