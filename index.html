@@ -276,6 +276,7 @@
     background: #f1f5f4; border: 1px solid var(--line); border-radius: 999px; padding: 0.3rem 0.75rem;
   }
   .tonight .t-season { border-left: 3px solid var(--line-dark); padding: 0.25rem 0 0.25rem 0.875rem; margin-top: 0.875rem; }
+  .tonight .t-season .s-fit { font-size: 1rem; color: var(--body); line-height: 1.55; margin-bottom: 0.375rem; }
   .tonight .t-season .s-label { font-size: 0.9375rem; font-weight: 700; color: var(--ink); margin-bottom: 0.25rem; }
   .tonight .t-season .s-text { font-size: 1rem; color: var(--body); line-height: 1.55; margin-bottom: 0.25rem; }
   .tonight .t-season a, .tonight .t-veto-row a { color: var(--accent); font-weight: 700; text-decoration: none; display: inline-block; padding: 12px 6px; min-height: 44px; }
@@ -288,6 +289,20 @@
   .tonight button.t-veto:hover, .wknd button.t-veto:hover, .todayblk button.t-veto:hover { background: var(--tint); }
   .tonight .t-lesson { margin-top: 2.25rem; }
   .tonight .t-lesson-head { font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); margin-bottom: 0.625rem; }
+  /* Desktop treatment (readability fix pass, Nov 3, 2026): past 64rem
+     the page stops being one centered phone column. The tonight
+     section opens to two columns, the plan on the left as the primary
+     pick and the lesson layer on the right as its secondary, and the
+     week list pairs up. Mobile layout is untouched. */
+  @media (min-width: 64rem) {
+    main { max-width: 72rem; }
+    .tonight { max-width: 64rem; display: grid; grid-template-columns: 1.15fr 0.85fr; column-gap: 3rem; }
+    .tonight .t-label { grid-column: 1 / -1; }
+    .tonight .t-plan { grid-column: 1; }
+    .tonight .t-lesson { grid-column: 2; margin-top: 0; border-left: 1px solid var(--line); padding-left: 2rem; }
+    .week { max-width: 56rem; }
+    .week ul { display: grid; grid-template-columns: 1fr 1fr; column-gap: 2.5rem; }
+  }
   .todayblk {
     width: 100%; max-width: 26rem; text-align: left; background: #fff;
     border: 1px solid var(--line); border-radius: 1rem; padding: 1.25rem; margin-bottom: 2rem;
@@ -519,6 +534,7 @@ window.FLEET_CFG = {
           <p class="tl-how" id="p-anchor-how"></p>
           <p class="tl-chips"><span class="chip" id="p-anchor-min"></span><span class="chip">Grab: <span id="p-anchor-grab"></span></span></p>
           <div class="t-season" id="t-season" hidden>
+            <p class="s-fit">The block is the activity. The lesson is the move inside it.</p>
             <p class="s-label">Tonight's lesson: <span id="s-title"></span></p>
             <p class="s-text" id="s-puzzle"></p>
             <p><a href="#t-lesson-layer" id="s-full">The full lesson</a></p>
@@ -760,13 +776,13 @@ window.FLEET_CFG = {
     <h2>This week at home</h2>
     <p class="wk-intro">Grandparents are coming and going this week, and work starts again soon. Each row shows the one thing to try. Tap one to read the full lesson.</p>
     <ul>
-      <li><a href="/this-week#l3"><span class="wk-moment">Sunday · Leaving the pool</span><span class="wk-title">Warn Her Before It Ends</span><span class="wk-core">Warn two times before a change, then follow through.</span><span class="wk-lesson">Lesson 3</span></a></li>
-      <li><a href="/this-week#l27"><span class="wk-moment">Monday and Tuesday · For the people coming and going</span><span class="wk-title">Make a Gift for Someone</span><span class="wk-core">Help her make one small gift for a real person, then give it to that person.</span><span class="wk-lesson">Lesson 27</span></a></li>
-      <li><a href="/this-week#l21"><span class="wk-moment">Wednesday · When Grandma arrives</span><span class="wk-title">Make Hello a Big Deal</span><span class="wk-core">Greet her first when you reunite, before bags, phone, or other talk.</span><span class="wk-lesson">Lesson 21</span></a></li>
-      <li><a href="/this-week#l31"><span class="wk-moment">Thursday · Before the goodbye</span><span class="wk-title">Check Her Needs Before You Go</span><span class="wk-core">Check food, rest, and bathroom before you go, fix the one you can, then tell her the plan.</span><span class="wk-lesson">Lesson 31</span></a></li>
-      <li><a href="/this-week#l2"><span class="wk-moment">Friday · When she is sad someone left</span><span class="wk-title">Name It First</span><span class="wk-core">Name the feeling before you fix the problem.</span><span class="wk-lesson">Lesson 2</span></a></li>
-      <li><a href="/this-week#l25"><span class="wk-moment">The weekend · While Grandma is here</span><span class="wk-title">When You Were Small</span><span class="wk-core">Tell her one short true story from when you were her age, with a feeling in it.</span><span class="wk-lesson">Lesson 25</span></a></li>
-      <li><a href="/this-week#l12"><span class="wk-moment">Next Monday · Dad's first morning back at work</span><span class="wk-title">Start the Morning Slow</span><span class="wk-core">Sit with her for the first five minutes of the day and ask for nothing yet.</span><span class="wk-lesson">Lesson 12</span></a></li>
+      <li><a href="/this-week#l3"><span class="wk-moment">Sunday · Leaving the pool</span><span class="wk-title">Warn Her Before It Ends</span><span class="wk-lesson">Lesson 3</span></a></li>
+      <li><a href="/this-week#l27"><span class="wk-moment">Monday and Tuesday · For the people coming and going</span><span class="wk-title">Make a Gift for Someone</span><span class="wk-lesson">Lesson 27</span></a></li>
+      <li><a href="/this-week#l21"><span class="wk-moment">Wednesday · When Grandma arrives</span><span class="wk-title">Make Hello a Big Deal</span><span class="wk-lesson">Lesson 21</span></a></li>
+      <li><a href="/this-week#l31"><span class="wk-moment">Thursday · Before the goodbye</span><span class="wk-title">Check Her Needs Before You Go</span><span class="wk-lesson">Lesson 31</span></a></li>
+      <li><a href="/this-week#l2"><span class="wk-moment">Friday · When she is sad someone left</span><span class="wk-title">Name It First</span><span class="wk-lesson">Lesson 2</span></a></li>
+      <li><a href="/this-week#l25"><span class="wk-moment">The weekend · While Grandma is here</span><span class="wk-title">When You Were Small</span><span class="wk-lesson">Lesson 25</span></a></li>
+      <li><a href="/this-week#l12"><span class="wk-moment">Next Monday · Dad's first morning back at work</span><span class="wk-title">Start the Morning Slow</span><span class="wk-lesson">Lesson 12</span></a></li>
     </ul>
   </section>
   <section class="how" aria-label="How it works">
