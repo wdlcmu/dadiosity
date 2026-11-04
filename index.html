@@ -73,7 +73,7 @@
   .idbar { width: 100%; max-width: 26rem; text-align: center; margin-bottom: 1.25rem; }
   .idbar .mark { width: 40px; height: 40px; vertical-align: -11px; margin-right: 0.5rem; }
   .idbar .id-name { display: inline; margin: 0; font-size: 1.75rem; font-weight: 800; letter-spacing: -0.02em; color: var(--ink); }
-  .idbar .id-line { font-size: 1.0625rem; color: var(--body); margin-top: 0.4rem; }
+  .idbar .id-line { font-size: 1.0625rem; font-weight: 600; color: var(--ink); margin-top: 0.4rem; }
   .sample-first { color: var(--accent); font-weight: 700; display: inline-block; padding: 12px 6px; min-height: 44px; }
   .kicker {
     display: inline-block; font-size: 0.875rem; font-weight: 600; letter-spacing: 0.08em;
@@ -303,6 +303,26 @@
     .week { max-width: 56rem; }
     .week ul { display: grid; grid-template-columns: 1fr 1fr; column-gap: 2.5rem; }
   }
+  /* Mobile stack tightening (Nov 3, 2026, SPEC-KEEPER1103-D3): at
+     390px the puzzle opener started at the fold (y~808 of 844) and its
+     closure link sat below it. Spacing above the opener tightens on
+     small screens only, so the question and "The full lesson" both
+     land on screen one. Desktop layout is untouched. */
+  @media (max-width: 40rem) {
+    main { padding-top: 0.75rem; }
+    .idbar { margin-bottom: 0.625rem; }
+    .idbar .id-line { margin-top: 0.25rem; }
+    .tonight { padding-top: 0.625rem; }
+    .tonight .t-label { margin-bottom: 0.5rem; }
+    .tonight .t-plan .p-head { margin-bottom: 0.5rem; }
+    .tonight .tl-step { padding-bottom: 0.875rem; }
+    .tonight .tl-text, .tonight .tl-line { line-height: 1.5; }
+    .tonight .tl-anchor { font-size: 1.625rem; margin-bottom: 0.25rem; }
+    .tonight .tl-how { margin-bottom: 0.375rem; }
+    .tonight .t-season { margin-top: 0.5rem; }
+    .tonight .t-season .s-fit { margin-bottom: 0.25rem; }
+    .tonight .t-season .s-text { margin-bottom: 0.125rem; }
+  }
   .todayblk {
     width: 100%; max-width: 26rem; text-align: left; background: #fff;
     border: 1px solid var(--line); border-radius: 1rem; padding: 1.25rem; margin-bottom: 2rem;
@@ -507,7 +527,7 @@ window.FLEET_CFG = {
       <circle cx="41" cy="29" r="4.2" fill="#ffffff"/>
       <path d="M14 54 h36" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" opacity="0.55"/>
     </svg><h1 class="id-name">Dadiosity</h1></p>
-    <p class="id-line">Being present is the job. We bring the activities.</p>
+    <p class="id-line">One lesson a day for dads of little kids.</p>
   </header>
   <section class="todayblk" id="today-block" data-fyg-watch hidden aria-label="Today's weekend pick">
     <p class="p-head">Today</p>
@@ -1077,8 +1097,9 @@ fleetSessionMarks(); /* session marks fire through the FA loader now (shim above
    so fallback-day picks re-based on the longer bench then). Weekend picks
    rotate by continuous week number: Saturday takes the week's pick, Sunday the next one.
    The veto ("Another one") walks to the next bench entry in order,
-   never last night's or tomorrow's anchor, and survives a reload in
-   sessionStorage only. The site saves nothing about a visitor. */
+   never landing on any other night's anchor of the same week, and
+   survives a reload in sessionStorage only. The site saves nothing
+   about a visitor. */
 document.addEventListener("DOMContentLoaded", function () {
   var P = window.PLANS;
   var card = document.getElementById("tonight");
@@ -1121,14 +1142,26 @@ document.addEventListener("DOMContentLoaded", function () {
   var saved = read(aKey);
   var aIdx = saved !== null ? parseInt(saved, 10) : anchorIdx(now);
   if (isNaN(aIdx) || aIdx < 0 || aIdx >= P.anchors.length) aIdx = anchorIdx(now);
-  /* F3: a restored anchor must obey the veto rule too — never last
-     night's base anchor and never tomorrow's (SPEC-COLDQA1103-D1:
-     tomorrow's base is pure date math, computable tonight, so a
-     restored pick must not repeat tomorrow either). A planted/stale
-     value that breaks it falls back to today's base (which can never
-     equal last night's or tomorrow's). */
-  if (aIdx === anchorIdx(new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1)) ||
-      aIdx === anchorIdx(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1))) {
+  /* The same-week set: the base anchors of the other six days of
+     this week (Mon-Sun). A veto replacement, and a restored pick,
+     must never land on any of them, or the week view would show the
+     same activity twice in one week (SPEC-KEEPER1103-D4; this set
+     includes last night and tomorrow, the F3 / SPEC-COLDQA1103-D1
+     cases). The seven base anchors are seven consecutive bench
+     indices, always distinct, so today's base is never in the set. */
+  function weekAnchorSet() {
+    var mon = new Date(now.getFullYear(), now.getMonth(), now.getDate() - ((now.getDay() + 6) % 7));
+    var set = {};
+    for (var i = 0; i < 7; i++) {
+      var d = new Date(mon.getFullYear(), mon.getMonth(), mon.getDate() + i);
+      if (key(d) !== todayKey) set[anchorIdx(d)] = 1;
+    }
+    return set;
+  }
+  /* F3: a restored anchor must obey the veto rule too. A planted or
+     stale value that lands on another night of this week falls back
+     to today's base (which can never collide). */
+  if (weekAnchorSet()[aIdx]) {
     aIdx = anchorIdx(now);
     if (saved !== null) store(aKey, String(aIdx));
   }
@@ -1142,9 +1175,8 @@ document.addEventListener("DOMContentLoaded", function () {
     if (row) row.textContent = a.name;
   }
   document.getElementById("t-veto").addEventListener("click", function () {
-    var prev = anchorIdx(new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1));
-    var next = anchorIdx(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1));
-    do { aIdx = (aIdx + 1) % P.anchors.length; } while (aIdx === prev || aIdx === next);
+    var forb = weekAnchorSet();
+    do { aIdx = (aIdx + 1) % P.anchors.length; } while (forb[aIdx]);
     store(aKey, String(aIdx));
     renderAnchor();
   });
