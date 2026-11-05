@@ -7,7 +7,7 @@
 - Each lesson has five parts: the idea, try this tonight, tonight's play, why it works, and one line to keep.
 - Tonight's plan is on the homepage: the evening skeleton, tonight's anchor block picked by a 21-night rotation, and the day's lesson inside it. A dad can veto the block once with "Another one"; he never has to pick.
 - Saturday and Sunday each get one weekend pick, already chosen by rotation: an outing or a home project, with its grab list. The week view on the homepage shows all seven nights already picked.
-- A sample lesson is on the homepage: Lesson 13, Restaurants, about making the wait part of the meal.
+- A sample lesson is on the homepage: Lesson 13, Tidy to One Song, about tidying toys into one basket for the length of one song.
 - Dads can sign up by email on the homepage. A small pilot group starts first. At the full launch, one lesson a day for everyone. No spam, no ads, and your email is never sold.
 - No email is sent today. Nothing has launched yet.
 - There is no plugin, app, or callable tool.
