@@ -179,9 +179,10 @@
   .week .wk-core { display: block; color: var(--body); }
   .week .wk-lesson { display: block; font-size: 0.8125rem; font-weight: 600; color: var(--muted); margin-top: 0.125rem; }
   .week a:hover .wk-title, .week a:focus-visible .wk-title { text-decoration: underline; }
-  /* Tonight: an open timeline, no enclosing card. A left rail with a
-     node per step; the one block is the hero; the lesson rides below
-     as a quiet layer. */
+  /* Tonight: the plan leads as a horizontal swipe unit of photo-led
+     cards (Nov 5, 2026; the .tn-* rules below); the one block is the
+     hero card and tonight's lesson rides inside it, with the full
+     lesson layer beside/below as a quiet second column. */
   .tonight {
     width: 100%; max-width: 26rem; text-align: left;
     border-top: 1px solid var(--line); padding-top: 1.25rem;
@@ -305,6 +306,57 @@
     border: 2px solid var(--accent); border-radius: 0.75rem; font-size: 1.0625rem; font-weight: 700;
   }
   .tonight button.t-veto:hover, .wknd button.t-veto:hover, .todayblk button.t-veto:hover { background: var(--tint); }
+  /* Tonight as a horizontal swipe unit (Nov 5, 2026, Billy's dogfood
+     ask): the five evening blocks become photo-led cards on one
+     sideways rail, modeled on Pick My Costume's homepage unit —
+     scroll-snap, the next card peeking at the edge, dots + count
+     below. The rail replaces the vertical timeline as the plan's
+     lead presentation; every block's content is the same content,
+     printed once, on its card. The rail bleeds to the screen edge
+     on phone (main's side padding) so the peek reads as "swipe". */
+  .tonight .tn-track {
+    display: flex; align-items: flex-start; gap: 0.75rem; overflow-x: auto;
+    scroll-snap-type: x mandatory; scroll-padding-left: 1.5rem;
+    margin: 0 -1.5rem; padding: 0.25rem 1.5rem 0.75rem;
+    -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    -ms-overflow-style: none; touch-action: pan-x pan-y;
+  }
+  .tonight .tn-track::-webkit-scrollbar { display: none; }
+  .tonight .tn-card {
+    flex: 0 0 80%; scroll-snap-align: start; background: #fff;
+    border: 1px solid var(--line); border-radius: 1rem; overflow: hidden;
+    display: flex; flex-direction: column; text-align: left;
+  }
+  .tonight .tn-photo { display: block; flex: none; width: 100%; height: 11.25rem; object-fit: cover; background: var(--tint); }
+  @media (min-width: 40rem) { .tonight .tn-photo { height: 20rem; } }
+  .tonight .tn-body { padding: 0.875rem 1rem 1rem; display: flex; flex-direction: column; flex: 1; }
+  .tonight .tn-body .tl-name { margin-bottom: 0.25rem; }
+  .tonight .tn-body .tl-line { font-size: 1.25rem; font-weight: 600; line-height: 1.45; }
+  .tonight .tn-card .t-season { margin-top: 0.875rem; }
+  .tonight .tn-card .t-veto-row { margin-top: auto; padding-top: 0.875rem; }
+  /* Dots and count stack at the left: the right side of the row is
+     where the fixed Ask pill floats, and the stacked pair (dots
+     236px, count below them) never reaches the pill's zone. */
+  .tonight .tn-nav {
+    display: flex; flex-direction: column; align-items: flex-start;
+    margin-top: 0.25rem;
+  }
+  .tonight .tn-dots { display: flex; gap: 0.25rem; }
+  .tonight .tn-dot {
+    flex: none; width: 44px; height: 44px; padding: 0; border: 0; background: none;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .tonight .tn-dot::before {
+    content: ""; width: 8px; height: 8px; border-radius: 999px;
+    background: var(--line-dark); transition: background 0.15s ease, transform 0.15s ease;
+  }
+  .tonight .tn-dot[aria-current="true"]::before { background: var(--accent); transform: scale(1.35); }
+  .tonight .tn-count { font-size: 0.9375rem; font-weight: 600; color: var(--muted); flex: none; white-space: nowrap; margin-top: 0.125rem; }
+  @media (min-width: 64rem) {
+    .tonight .tn-track { margin: 0; padding: 0.25rem 0.25rem 0.75rem; scroll-padding-left: 0.25rem; }
+    .tonight .tn-card { flex-basis: 84%; }
+  }
   .tonight .t-lesson { margin-top: 2.25rem; }
   .tonight .t-lesson-head { font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); margin-bottom: 0.625rem; }
   /* Desktop treatment (readability fix pass, Nov 3, 2026): past 64rem
@@ -583,41 +635,55 @@ window.FLEET_CFG = {
     <p class="t-label" id="t-day">Try this tonight</p>
     <div class="t-plan" id="t-plan" hidden>
       <p class="p-head">Tonight, 6 to 9</p>
-      <ol class="tl">
-        <li class="tl-step" data-fyg-watch>
-          <span class="tl-dot" aria-hidden="true"></span>
-          <p class="tl-name">Dinner</p>
-          <p class="tl-text"><span id="p-dinner"></span> <span id="p-phone"></span></p>
-        </li>
-        <li class="tl-step tl-hero" data-fyg-watch>
-          <span class="tl-dot" aria-hidden="true"></span>
-          <p class="tl-name">The one block</p>
-          <h3 class="tl-anchor" id="p-anchor-name"></h3>
-          <p class="tl-how" id="p-anchor-how"></p>
-          <p class="tl-chips"><span class="chip" id="p-anchor-min"></span><span class="chip">Grab: <span id="p-anchor-grab"></span></span></p>
-          <div class="t-season" id="t-season" hidden>
-            <p class="s-fit">The block is the activity. The lesson is the move inside it.</p>
-            <p class="s-label">Tonight's lesson: <span id="s-title"></span></p>
-            <p class="s-text" id="s-puzzle"></p>
-            <p class="s-move" id="s-move" hidden><strong>The move:</strong> <span id="s-move-text"></span></p>
-            <p><button type="button" class="s-reveal" id="s-reveal" aria-expanded="false" aria-controls="s-move" hidden>Show the move</button></p>
-            <p class="s-full-row"><a href="#t-lesson-layer" id="s-full">The full lesson</a></p>
+      <div class="tn-track" id="tn-track" role="region" aria-label="Tonight's plan — swipe through the blocks" tabindex="0">
+        <article class="tn-card" data-tn-card data-tn-name="Dinner" data-fyg-watch>
+          <img class="tn-photo" src="/assets/table-meal.jpg" width="600" height="400" alt="A dad shares a meal with his toddler at the table.">
+          <div class="tn-body">
+            <p class="tl-name">Dinner</p>
+            <p class="tl-text"><span id="p-dinner"></span> <span id="p-phone"></span></p>
           </div>
-          <p class="t-veto-row"><button type="button" class="t-veto" id="t-veto">Another one</button></p>
-        </li>
-        <li class="tl-step" data-fyg-watch>
-          <span class="tl-dot" aria-hidden="true"></span>
-          <p class="tl-line" id="p-bath"></p>
-        </li>
-        <li class="tl-step" data-fyg-watch>
-          <span class="tl-dot" aria-hidden="true"></span>
-          <p class="tl-line" id="p-close"></p>
-        </li>
-        <li class="tl-step" data-fyg-watch>
-          <span class="tl-dot" aria-hidden="true"></span>
-          <p class="tl-line" id="p-hour"></p>
-        </li>
-      </ol>
+        </article>
+        <article class="tn-card" data-tn-card data-tn-name="The one block" data-fyg-watch>
+          <img class="tn-photo" src="/assets/play-blocks.jpg" width="900" height="600" alt="A dad and his toddler play with blocks on the floor.">
+          <div class="tn-body">
+            <p class="tl-name">The one block</p>
+            <h3 class="tl-anchor" id="p-anchor-name"></h3>
+            <p class="tl-how" id="p-anchor-how"></p>
+            <p class="tl-chips"><span class="chip" id="p-anchor-min"></span><span class="chip">Grab: <span id="p-anchor-grab"></span></span></p>
+            <div class="t-season" id="t-season" hidden>
+              <p class="s-fit">The block is the activity. The lesson is the move inside it.</p>
+              <p class="s-label">Tonight's lesson: <span id="s-title"></span></p>
+              <p class="s-text" id="s-puzzle"></p>
+              <p class="s-move" id="s-move" hidden><strong>The move:</strong> <span id="s-move-text"></span></p>
+              <p><button type="button" class="s-reveal" id="s-reveal" aria-expanded="false" aria-controls="s-move" hidden>Show the move</button></p>
+              <p class="s-full-row"><a href="#t-lesson-layer" id="s-full">The full lesson</a></p>
+            </div>
+            <p class="t-veto-row"><button type="button" class="t-veto" id="t-veto">Another one</button></p>
+          </div>
+        </article>
+        <article class="tn-card" data-tn-card data-tn-name="Bath" data-fyg-watch>
+          <img class="tn-photo" src="/assets/theme-bedtime.jpg" width="1200" height="800" alt="A dad reads a picture book to his toddler in a chair, the lamp low." loading="lazy" decoding="async">
+          <div class="tn-body">
+            <p class="tl-line" id="p-bath"></p>
+          </div>
+        </article>
+        <article class="tn-card" data-tn-card data-tn-name="The close" data-fyg-watch>
+          <img class="tn-photo" src="/assets/hero-reading.jpg" width="1200" height="800" alt="A dad reads to his toddler in bed, string lights glowing." loading="lazy" decoding="async">
+          <div class="tn-body">
+            <p class="tl-line" id="p-close"></p>
+          </div>
+        </article>
+        <article class="tn-card" data-tn-card data-tn-name="Your hour" data-fyg-watch>
+          <img class="tn-photo" src="/assets/theme-hour.jpg" width="1200" height="800" alt="A dad rests on the couch at night, feet up, watching a show." loading="lazy" decoding="async">
+          <div class="tn-body">
+            <p class="tl-line" id="p-hour"></p>
+          </div>
+        </article>
+      </div>
+      <div class="tn-nav">
+        <div class="tn-dots" id="tn-dots" role="group" aria-label="Jump to a block"></div>
+        <p class="tn-count" id="tn-count" aria-live="polite">1 of 5</p>
+      </div>
     </div>
     <div class="t-lesson" id="t-lesson-layer">
     <p class="t-lesson-head">Tonight's lesson</p>
@@ -1399,6 +1465,69 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   setInterval(rolloverCheck, 5000);
   document.addEventListener("visibilitychange", rolloverCheck);
+});
+</script>
+<script>
+/* Tonight rail (Nov 5, 2026): dots + count under the horizontal unit.
+   The active card is read from the track's scroll position — card
+   offsets are evenly stepped (one flex basis + one gap), so the
+   index is the rounded step count, clamped. A dot tap, or a tap on
+   a card that is not in front, scrolls that card to the snap start;
+   taps on real controls inside a card (the veto, "Show the move",
+   links) pass through untouched. Scrolling is native — thumb swipe
+   on iOS, wheel/trackpad and keyboard on desktop — this script only
+   keeps the indicator honest. */
+document.addEventListener("DOMContentLoaded", function () {
+  var track = document.getElementById("tn-track");
+  if (!track) return;
+  var cards = track.querySelectorAll("[data-tn-card]");
+  var dotsWrap = document.getElementById("tn-dots");
+  var count = document.getElementById("tn-count");
+  if (!cards.length || !dotsWrap || !count) return;
+  var dots = [];
+  function goTo(i) {
+    if (cards[i]) cards[i].scrollIntoView({ behavior: "smooth", inline: "start", block: "nearest" });
+  }
+  for (var i = 0; i < cards.length; i++) {
+    (function (idx) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "tn-dot";
+      b.setAttribute("aria-label", "Go to block " + (idx + 1) + ": " + (cards[idx].getAttribute("data-tn-name") || ""));
+      b.setAttribute("aria-current", idx === 0 ? "true" : "false");
+      b.addEventListener("click", function () { goTo(idx); });
+      dotsWrap.appendChild(b);
+      dots.push(b);
+    })(i);
+  }
+  var current = 0;
+  function activeIdx() {
+    if (cards.length < 2) return 0;
+    var step = cards[1].offsetLeft - cards[0].offsetLeft;
+    if (!step) return 0;
+    var idx = Math.round(track.scrollLeft / step);
+    return Math.max(0, Math.min(cards.length - 1, idx));
+  }
+  function paint() {
+    var idx = activeIdx();
+    if (idx === current && dots[idx].getAttribute("aria-current") === "true") return;
+    current = idx;
+    for (var j = 0; j < dots.length; j++) dots[j].setAttribute("aria-current", j === idx ? "true" : "false");
+    count.textContent = (idx + 1) + " of " + cards.length;
+  }
+  var ticking = false;
+  track.addEventListener("scroll", function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { ticking = false; paint(); });
+  }, { passive: true });
+  track.addEventListener("click", function (e) {
+    if (e.target.closest("button, a, input, select, textarea")) return;
+    var card = e.target.closest("[data-tn-card]");
+    if (!card) return;
+    for (var k = 0; k < cards.length; k++) if (cards[k] === card) { if (k !== current) goTo(k); break; }
+  });
+  paint();
 });
 </script>
 
