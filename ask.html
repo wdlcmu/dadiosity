@@ -545,13 +545,20 @@ function dadScore(lesson, query) {
      designed stray-word shape one level up, so it takes the same
      cap: the full-topic anchor must be a situation word (not a light
      verb, not "fix"), and the corroborating word must be a topic
-     word or a non-generic content word. */
+     word or a non-generic content word. Completion (same day): the
+     phrase branch below takes the same anchor requirement — an
+     adjacent generic phrase is still generic. "My laptop screen is
+     cracked how do I fix it" carries the topic "fix it" word-for-word
+     at the end, so the surface-phrase branch waved Lesson 41 through
+     at the bar while the split-wording car query was capped. A phrase
+     hit whose only full-topic anchor is a light verb or "fix" is not
+     a parenting situation and does not pass on the phrase alone. */
   var topicNPCount = 0, topicSeen = {};
   Object.keys(full).concat(Object.keys(partial)).forEach(function (t) { if (!DADIO_NEUTRAL[t] && !topicSeen[t]) { topicSeen[t] = 1; topicNPCount += 1; } });
   var solidAnchor = Object.keys(fullNP).some(function (t) { return !DADIO_LIGHT[t] && t !== "fix"; });
   var npNonGeneric = denomToks.filter(function (t) { return np[t] && !DADIO_LIGHT[t] && t !== "fix"; }).length;
   var pass = false;
-  if (phraseFull || surfacePhrase) pass = true;
+  if ((phraseFull || surfacePhrase) && solidAnchor) pass = true;
   else if (denomToks.length === 1 && fullNPCount === 1) pass = true;
   else if (npCount >= 2 && fullNPCount >= 1 && solidAnchor && (topicNPCount >= 2 || npNonGeneric >= 2)) pass = true;
   else if (npCount >= 3 && denomToks.some(function (t) { return partial[t]; })) pass = true;
