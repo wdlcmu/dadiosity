@@ -464,11 +464,65 @@ function dadActionHit(lesson, query, qPairs, qCorr, full) {
       if (/(ing|ed)$/.test(w)) verbStems[collapse(dadStem(w))] = 1;
     });
   });
+  var rawWords = dadNorm(query).split(" ");
   for (var i = 0; i < qPairs.length; i++) {
     if (qCorr[i] !== qPairs[i].stem) continue;
     if (full[qCorr[i]] && verbStems[collapse(qCorr[i])]) return true;
+    /* SPEC-DAD-VERIFY1583-03: an -en participle a parent types in a
+       sentence ("my son has bitten two kids") stems to itself, not to
+       the verb stem the bank files ("biting" -> "bit"), so the action
+       hit above missed it and the sentence diluted under the bar
+       while plain "bit" served. The participle base (drop -en, then
+       undouble: bitten -> bitt -> bit) earns the same action hit —
+       but only in an actor frame. A victim frame (a passive helper
+       just before the word: was / were / got / getting / been …, or
+       "by" right after it) earns nothing: "he keeps getting bitten
+       by another kid" and "my daughter was bitten by a kid" stay
+       plain no-matches, as filed. */
+    if (full[qCorr[i]] && qCorr[i].length >= 5 && qCorr[i].slice(-2) === "en") {
+      var enBase = collapse(qCorr[i].slice(0, -2));
+      if (verbStems[enBase]) {
+        var wi = rawWords.indexOf(qPairs[i].raw);
+        var passive = false;
+        if (wi >= 0) {
+          var aux = { was: 1, were: 1, is: 1, are: 1, got: 1, gets: 1, get: 1, getting: 1, been: 1, being: 1 };
+          rawWords.slice(Math.max(0, wi - 2), wi).forEach(function (w) { if (aux[w]) passive = true; });
+          if (rawWords[wi + 1] === "by") passive = true;
+        }
+        if (!passive) return true;
+      }
+    }
   }
   return false;
+}
+/* SPEC-DAD-VERIFY1583-01: the repair frame. A query that names a
+   non-child repair object (an appliance, a vehicle, a device, or a
+   household object) in a fixing frame (fix / repair / broken / broke
+   / cracked / leaking …) is a home-repair situation, not a parenting
+   one — yet the broken+"fix it" stack scored Lesson 41 at a flat 9
+   for every named object, and a black TV/phone "screen" escaped
+   through the parenting topic noun "screen" (Lessons 36/26). The
+   score cannot see the noun, so this gate can: when a named repair
+   object and a fixing frame are both present, the match must rest
+   on a parenting situation anchor — a child subject (she / he /
+   daughter / son / kid / toddler / boy / girl …) or amends words
+   (sorry / apologize / amends / hurt) — the same anchors the
+   in-domain controls carry ("she broke the toy how does she fix
+   it", "he hurt a friend how can he fix it"). With no anchor, no
+   lesson passes the gate on these words alone. Deliberate decision
+   on the bare shape: "it is broken how do I fix it" names no object,
+   so this gate does not fire and it keeps serving Lesson 41 — the
+   bare wording is ambiguous (a child's broken thing, a wrong to
+   mend) and is Lesson 41's home ground, as the SPEC scopes it.
+   A child's own things (a toy) are not repair objects here. */
+function dadRepairNoAnchor(query) {
+  var words = {};
+  dadNorm(query).split(" ").forEach(function (w) { if (!w) return; words[w] = 1; words[w.replace(/'s$/, "")] = 1; });
+  var objects = ["washing", "machine", "washer", "dishwasher", "dryer", "fridge", "refrigerator", "freezer", "oven", "stove", "microwave", "toilet", "sink", "faucet", "pipe", "pipes", "car", "truck", "motorcycle", "motorbike", "bike", "bicycle", "van", "engine", "tire", "tyre", "battery", "laptop", "computer", "phone", "phones", "tv", "television", "screen", "tablet", "ipad", "printer", "router", "wifi", "fence", "gate", "chair", "table", "door", "handle", "glasses", "spectacles", "window", "windows", "garage", "lawnmower", "mower", "lock"];
+  var frame = ["fix", "fixes", "fixing", "fixed", "repair", "repairs", "repairing", "repaired", "broken", "broke", "cracked", "crack", "mend", "mending", "leak", "leaks", "leaking", "jammed", "stuck"];
+  var anchors = ["she", "he", "her", "him", "his", "daughter", "son", "kid", "kids", "child", "children", "toddler", "baby", "boy", "girl", "friend", "friends", "sister", "brother", "sorry", "apologize", "apologise", "apologized", "amends", "hurt", "hurts", "hurting"];
+  var has = function (arr) { return arr.some(function (w) { return words[w]; }); };
+  return has(objects) && has(frame) && !has(anchors);
 }
 function dadScore(lesson, query) {
   var qn = " " + dadNorm(query) + " ";
@@ -565,6 +619,10 @@ function dadScore(lesson, query) {
   else if (denomToks.length > 0 && unmatched.length === 0 && npCount >= 1) pass = true;
   else if (unmatched.length === 1 && DADIO_LIGHT[unmatched[0]] && fullNPCount >= 1) pass = true;
   else if (fullNPCount >= 1 && dadActionHit(lesson, query, qPairs, qCorr, full)) pass = true;
+  /* SPEC-DAD-VERIFY1583-01: a named non-child repair object in a
+     fixing frame, with no parenting situation anchor, passes no
+     gate — the plain-words cap below then tells the truth. */
+  if (dadRepairNoAnchor(query)) pass = false;
   if (!pass && score > 3) score = 3;
   return score;
 }
@@ -611,7 +669,14 @@ function dadTodayAsk(query) {
   if (words.lesson || words.lessons) return true;
   var askWord = words.what || words.things || words.thing || words.ideas || words.idea || words.activities || words.activity || words.something;
   var listWord = words.things || words.thing || words.ideas || words.idea || words.activities || words.activity;
-  var childWord = words.year || words.old || words.toddler || words.kid || words.kids || words.child || words.children || words.daughter || words.son || words.baby || words.we || words["2"] || words["3"] || words["4"] || words["5"];
+  /* SPEC-DAD-VERIFY1583-02: boy / girl and their plurals are child
+     words too — the two plainest words a dad types for his own kid
+     were missing from this set, so "what can I do with my little boy
+     today" dead-ended while the daughter twin served the day's
+     lesson. Compounds ("baby girl", "little boy") arrive as separate
+     words, so the plain forms carry them. The hard-part guard above
+     is untouched. */
+  var childWord = words.year || words.old || words.toddler || words.kid || words.kids || words.child || words.children || words.daughter || words.son || words.baby || words.boy || words.boys || words.girl || words.girls || words.we || words["2"] || words["3"] || words["4"] || words["5"];
   if (words.do && askWord && childWord) return true;
   if (listWord && childWord) return true;
   return false;
