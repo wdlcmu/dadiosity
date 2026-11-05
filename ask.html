@@ -369,10 +369,11 @@ var DADIO_SYN = { scream: "cry", nightmar: "fight", nitemar: "fight", dawdl: "sl
 var DADIO_VOCAB = null;
 function dadVocab() {
   if (DADIO_VOCAB) return DADIO_VOCAB;
-  var tt = {}, all = {}, rawTT = [], rawSeen = {}, phraseSet = {};
+  var tt = {}, all = {}, rawTT = [], rawSeen = {}, phraseSet = {}, phraseHeads = {};
   var addPhrase = function (s) {
     var seq = dadNorm(s).split(" ").filter(function (w) { return !!w && !DADIO_STOP[w]; }).map(function (w) { return dadStem(w); });
     if (seq.length) phraseSet[seq.join(" ")] = 1;
+    if (seq.length > 1) phraseHeads[seq[seq.length - 1]] = 1;
   };
   (window.DADIO_LESSONS || []).forEach(function (lesson) {
     (lesson.topics || []).forEach(function (t) {
@@ -385,7 +386,7 @@ function dadVocab() {
     addPhrase(lesson.title);
     dadTokens(lesson.idea + " " + lesson.move + " " + lesson.play + " " + lesson.why + " " + lesson.core).forEach(function (w) { all[w] = 1; });
   });
-  DADIO_VOCAB = { tt: Object.keys(tt), ttSet: tt, all: all, rawTT: rawTT, phraseSet: phraseSet };
+  DADIO_VOCAB = { tt: Object.keys(tt), ttSet: tt, all: all, rawTT: rawTT, phraseSet: phraseSet, phraseHeads: phraseHeads };
   return DADIO_VOCAB;
 }
 function dadEdit1(a, b) {
@@ -583,7 +584,52 @@ function dadActionHit(lesson, query, qPairs, qCorr, full) {
    fix verbs, and at a determiner (the determiner-led pass above
    owns those), so the bare shape still names no object: in "it is
    broken how do I fix it" the walk back from "is" meets the
-   pronoun "it", a stop word, and stops empty. */
+   pronoun "it", a stop word, and stops empty.
+   SPEC-DAD-VERIFY1608-01 (Nov 5, 2026): the phrase-level carve-out
+   above still leaked through its two widening clauses. The compound
+   clause trusted any phrase whose every word's stem appears
+   ANYWHERE in the bank's topic/title words, so two unrelated
+   filings combined into a fake domain phrase: stem "light" (filed
+   only inside Lesson 32's two-word topic "night light") plus stem
+   "switch" (Lesson 3's transitions topic) carved out "the light
+   switch", and "the morning light" / "the light game" escaped the
+   same way. The begins-with clause carved out any phrase that
+   merely STARTS with a filed phrase: "the night light bulb",
+   "the bedtime routine lamp", "the night light switch". Both
+   clauses are now closed as classes. The compound clause fires
+   only when every word of the phrase is ITSELF a filed one-word
+   phrase (each word alone names a bank situation, as "sleep" and
+   "routine" each do for "sleep routine" / "morning routine") AND
+   the phrase's head word closes a filed multi-word phrase, as
+   "routine" closes "bedtime routine" — a word that appears only
+   inside a longer filed phrase ("light" inside "night light",
+   "game" inside a title) no longer counts, and a stray pairing
+   of two filed words ("sleep switch") names no bank situation
+   either, because "switch" closes no filed phrase.
+   The begins-with clause is removed outright: phrase extraction
+   already stops at stop words, copulas and frame words, so every
+   trailing word that can reach the clause is a content word, and
+   a content word after a filed phrase names a different, longer
+   object that is filed nowhere. The whole-phrase core is
+   unchanged: "the night light is broken" is a filed two-word
+   topic read as a phrase and keeps serving Lesson 32, and
+   "bedtime routine" keeps serving Lesson 6 in every shape.
+   SPEC-DAD-VERIFY1608-02 (Nov 5, 2026): three more slot shapes
+   widened as classes. (1) The relative-clause skip no longer dies
+   on a determiner inside the clause — a determiner can belong to
+   the clause's own subject ("the waffle iron that my wife gave
+   me is broken") or to a phrase inside the clause ("...that I
+   keep by the toy is broken") — and the skip window widens; and
+   an anchor word inside such a clause names the clause's giver,
+   not the repair's actor, so it no longer vetoes the gate (a
+   main-clause anchor still does). (2) The present perfect
+   completes the subject slot like a copula: "has / have" (or
+   "has been") directly before a frame word ends the phrase
+   ("the blender has broken"). (3) A time adverb may sit between
+   a fix verb and its phrase, like a particle ("fix tomorrow my
+   broken rice cooker", "fix in the morning my broken waffle
+   iron"), and the governed look-back widens from four words to
+   six so a full time phrase fits in the gap. */
 function dadRepairNoAnchor(query) {
   var rawWords = dadNorm(query).split(" ").filter(function (w) { return !!w; });
   var words = {};
@@ -592,7 +638,34 @@ function dadRepairNoAnchor(query) {
   var frame = ["fix", "fixes", "fixing", "fixed", "repair", "repairs", "repairing", "repaired", "broken", "broke", "cracked", "crack", "mend", "mending", "leak", "leaks", "leaking", "jammed", "stuck"];
   var anchors = ["she", "he", "her", "him", "his", "daughter", "son", "kid", "kids", "child", "children", "toddler", "baby", "boy", "girl", "friend", "friends", "sister", "brother", "sorry", "apologize", "apologise", "apologized", "amends", "hurt", "hurts", "hurting"];
   var has = function (arr) { return arr.some(function (w) { return words[w]; }); };
-  if (!has(frame) || has(anchors)) return false;
+  if (!has(frame)) return false;
+  /* VERIFY1608-02: an anchor word inside a relative clause that
+     hangs off the named object names the clause's giver, not the
+     repair's actor ("the waffle iron that my brother gave me is
+     broken" must not be vetoed by "brother"). Mark each relative
+     clause span — a relative pronoun after a content word, up to
+     the copula / frame / perfect word that closes the clause —
+     and count an anchor only when some use of it sits outside
+     every span. A main-clause anchor ("she broke the gaming
+     console") still vetoes, exactly as before. */
+  var relPron = { that: 1, which: 1, who: 1, whom: 1 };
+  var frameSetA = {}; frame.forEach(function (w) { frameSetA[w] = 1; });
+  var clauseEnd = { is: 1, are: 1, was: 1, were: 1, has: 1, have: 1 };
+  var inRel = {};
+  for (var ri = 1; ri < rawWords.length; ri++) {
+    if (!relPron[rawWords[ri]] || DADIO_STOP[rawWords[ri - 1]]) continue;
+    for (var rj = ri + 1; rj < rawWords.length && rj < ri + 17; rj++) {
+      inRel[rj] = 1;
+      if (clauseEnd[rawWords[rj]] || frameSetA[rawWords[rj]]) break;
+    }
+  }
+  var anchorSet = {}; anchors.forEach(function (w) { anchorSet[w] = 1; });
+  var hasAnchor = false;
+  rawWords.forEach(function (w, idx) {
+    if (inRel[idx]) return;
+    if (anchorSet[w] || anchorSet[w.replace(/'s$/, "")]) hasAnchor = true;
+  });
+  if (hasAnchor) return false;
   if (has(objects)) return true;
   var det = { the: 1, my: 1, a: 1, an: 1, this: 1, that: 1, our: 1, your: 1 };
   var copula = { is: 1, are: 1, was: 1, were: 1 };
@@ -601,31 +674,57 @@ function dadRepairNoAnchor(query) {
   var adjSkip = { broken: 1, cracked: 1, jammed: 1, stuck: 1, leaking: 1, leaky: 1 };
   var rel = { that: 1, which: 1, who: 1, whom: 1 };
   var particle = { up: 1, off: 1, out: 1 };
+  /* VERIFY1608-02: time adverbs tolerated in the governed gap
+     between a fix verb and its phrase, like particles. */
+  var timeGap = { tomorrow: 1, yesterday: 1, tonight: 1, today: 1, morning: 1, afternoon: 1, evening: 1, night: 1, later: 1, soon: 1 };
   var vocab = dadVocab();
   var ttSet = vocab.ttSet;
-  /* VERIFY1605-01: phrase-level carve-out (see the note above). */
+  /* VERIFY1608-02: the present perfect completes a subject slot
+     like a copula — "has / have" (or "has been") directly before
+     a frame word ends the phrase ("the blender has broken"). */
+  var hasAux = { has: 1, have: 1 };
+  var perfectSlot = function (idx) {
+    if (!hasAux[rawWords[idx]]) return false;
+    var nx = rawWords[idx + 1];
+    if (nx && frameSet[nx]) return true;
+    return nx === "been" && !!rawWords[idx + 2] && !!frameSet[rawWords[idx + 2]];
+  };
+  /* VERIFY1605-01 carve-out, VERIFY1608-01 grain completion: a
+     phrase counts as domain when the phrase AS A WHOLE is filed,
+     or when it is an assembled compound whose every word is
+     itself a filed one-word phrase AND whose head (last) word
+     closes a filed multi-word phrase ("sleep routine", "morning
+     routine" — each word alone names a bank situation, and
+     "routine" closes "bedtime routine"). A word that merely
+     appears inside a longer filed phrase or title ("light" in
+     "night light", "game" in a title) does not count, and a
+     filed phrase plus a trailing content word ("night light
+     bulb") is a longer phrase that is filed nowhere, so no
+     begins-with clause remains. */
   var domainPhrase = function (stems) {
     if (!stems.length) return false;
     if (vocab.phraseSet[stems.join(" ")]) return true;
     if (stems.length < 2) return false;
-    var allFiled = true;
-    stems.forEach(function (st) { if (!ttSet[st]) allFiled = false; });
-    if (allFiled) return true;
-    for (var p = stems.length - 1; p >= 2; p--) {
-      if (vocab.phraseSet[stems.slice(0, p).join(" ")]) return true;
-    }
-    return false;
+    var everyWordFiledAlone = true;
+    stems.forEach(function (st) { if (!vocab.phraseSet[st]) everyWordFiledAlone = false; });
+    return everyWordFiledAlone && !!vocab.phraseHeads[stems[stems.length - 1]];
   };
-  /* The subject slot after a phrase ending at index j: a copula or
-     frame word right there, or a relative clause first (VERIFY1605-02). */
+  /* The subject slot after a phrase ending at index j: a copula,
+     frame word or present perfect right there, or a relative
+     clause first (VERIFY1605-02, widened by VERIFY1608-02: the
+     skip no longer dies on a determiner inside the clause — one
+     can belong to the clause's own subject, "that my wife gave
+     me", or to a phrase inside the clause, "that I keep by the
+     toy" — and the window runs to sixteen words). */
   var slotAfter = function (j) {
     var after = rawWords[j];
     if (after && (copula[after] || frameSet[after])) return true;
+    if (after && perfectSlot(j)) return true;
     if (after && rel[after]) {
-      for (var r = j + 1; r < rawWords.length && r < j + 7; r++) {
+      for (var r = j + 1; r < rawWords.length && r < j + 17; r++) {
         var rw = rawWords[r];
-        if (copula[rw] || frameSet[rw]) return true;
-        if (det[rw] || fixVerb[rw]) break;
+        if (copula[rw] || frameSet[rw] || perfectSlot(r)) return true;
+        if (fixVerb[rw] || rel[rw]) break;
       }
     }
     return false;
@@ -641,17 +740,17 @@ function dadRepairNoAnchor(query) {
     }
     if (!phrase.length || domainPhrase(stems)) continue;
     if (slotAfter(j)) return true;
-    for (var k = Math.max(0, i - 4); k < i; k++) {
+    for (var k = Math.max(0, i - 6); k < i; k++) {
       if (!fixVerb[rawWords[k]]) continue;
       var governed = true;
-      for (var m = k + 1; m < i; m++) { if (!DADIO_STOP[rawWords[m]] && !adjSkip[rawWords[m]] && !particle[rawWords[m]]) governed = false; }
+      for (var m = k + 1; m < i; m++) { if (!DADIO_STOP[rawWords[m]] && !adjSkip[rawWords[m]] && !particle[rawWords[m]] && !timeGap[rawWords[m]]) governed = false; }
       if (governed) return true;
     }
   }
   /* VERIFY1605-02: the determiner-optional subject slot — a content
      phrase directly before a copula or frame word, no determiner. */
   for (var c = 0; c < rawWords.length; c++) {
-    if (!copula[rawWords[c]] && !frameSet[rawWords[c]]) continue;
+    if (!copula[rawWords[c]] && !frameSet[rawWords[c]] && !perfectSlot(c)) continue;
     var bPhrase = [], bStems = [], blocked = false;
     for (var b = c - 1; b >= 0 && bPhrase.length < 8; b--) {
       var bw = rawWords[b];
