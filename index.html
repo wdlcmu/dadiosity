@@ -142,6 +142,7 @@
   .card p { color: var(--body); margin-bottom: 0.875rem; }
   .card p:last-child { margin-bottom: 0; }
   .card p strong { color: var(--ink); }
+  .card .card-photo { display: block; width: 100%; height: auto; border-radius: 0.75rem; margin-bottom: 0.875rem; }
   .share { text-align: center; margin-top: 1.25rem; }
   .arrive { background: #fff; border: 1px solid var(--line); border-radius: 1rem; padding: 1rem 1.25rem; margin-bottom: 1rem; text-align: center; }
   .arrive[hidden] { display: none; }
@@ -620,7 +621,7 @@ window.FLEET_CFG = {
     </div>
     <div class="t-lesson" id="t-lesson-layer">
     <p class="t-lesson-head">Tonight's lesson</p>
-    <img class="t-photo" id="t-photo" src="/assets/table-meal.jpg" width="600" height="400" alt="A dad shares a meal with his toddler at the table." hidden>
+    <img class="t-photo" id="t-photo" width="1200" height="800" alt="" fetchpriority="high" hidden>
     <p class="t-moment" id="t-moment"></p>
     <div class="t-miss" id="t-miss" data-fyg-watch hidden>
       <p class="m-label">The miss</p>
@@ -680,7 +681,7 @@ window.FLEET_CFG = {
       document.getElementById("t-puzzle").hidden = false;
     }
     document.getElementById("t-link").href = "/this-week#l" + today.n;
-    if (today.photo) document.getElementById("t-photo").hidden = false;
+    window.DADIO_TODAY_N = today.n;
     var tPara = document.getElementById("t-tomorrow");
     for (var off = 1; off <= 7; off++) {
       var nd = new Date(now.getFullYear(), now.getMonth(), now.getDate() + off);
@@ -739,6 +740,7 @@ window.FLEET_CFG = {
     function cap(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
     var now = new Date();
     var L = byN(((dayOfYear(now) - 1) % bank.length) + 1);
+    window.DADIO_TODAY_N = L.n;
     document.getElementById("t-day").textContent = "Try this tonight · " + days[now.getDay()] + ", " + months[now.getMonth()] + " " + now.getDate();
     document.getElementById("t-moment").textContent = "Lesson " + L.n + " of " + bank.length;
     document.getElementById("t-title").textContent = L.title;
@@ -858,6 +860,7 @@ window.FLEET_CFG = {
       <p id="sharemsg2" role="status" aria-live="polite"></p>
     </div>
     <article class="card" data-fyg-watch>
+      <img class="card-photo" src="/assets/theme-tidy.jpg" width="1200" height="800" loading="lazy" alt="A dad and his toddler put toys into one basket together.">
       <p class="card-head">Dadiosity Daily, Lesson 13: Tidy to One Song</p>
       <h3>Tidy to One Song</h3>
       <p><strong>The idea:</strong> A big mess can feel too big for a small kid. She may quit before she starts. One short song cuts the job down to a size she can hold and finish.</p>
@@ -1094,6 +1097,68 @@ fleetSessionMarks(); /* session marks fire through the FA loader now (shim above
 </script>
 <script src="/plans.js"></script>
 <script src="/lessons.js"></script>
+<script>
+/* Tonight's card photo (Nov 5, 2026): every bank lesson carries a
+   `moment`; each moment maps to one theme photo of a dad and his
+   toddler, so the first screen shows the moment tonight's lesson is
+   about. Both card paths (hand-built week, bank rotation) set
+   window.DADIO_TODAY_N before this runs. Bath lessons ride the
+   bedtime photo: on this site bath is the first step of the close. */
+document.addEventListener("DOMContentLoaded", function () {
+  var img = document.getElementById("t-photo");
+  var card = document.getElementById("tonight");
+  if (!img || !card || card.hidden) return;
+  var PHOTOS = {
+    bedtime: ["/assets/theme-bedtime.jpg", "A dad reads to his toddler in a chair at bedtime, the lamp low."],
+    meal: ["/assets/table-meal.jpg", "A dad shares a meal with his toddler at the table."],
+    play: ["/assets/play-blocks.jpg", "A dad and his toddler play with blocks on the floor."],
+    tidy: ["/assets/theme-tidy.jpg", "A dad and his toddler put toys into one basket together."],
+    outside: ["/assets/theme-outside.jpg", "A dad walks with his toddler in the park, hand in hand."],
+    feelings: ["/assets/theme-feelings.jpg", "A dad kneels to his toddler's eye level and holds her hands."],
+    morning: ["/assets/theme-morning.jpg", "A dad helps his toddler with her shoes by the front door."]
+  };
+  var BY_MOMENT = {
+    "bedtime": "bedtime", "stories at bedtime": "bedtime", "night fears": "bedtime",
+    "bath time": "bedtime", "brushing teeth": "bedtime",
+    "mealtime": "meal", "presence at meals": "meal",
+    "play": "play", "helping": "play", "kindness": "play",
+    "energy before sitting": "play", "language and talk": "play",
+    "independence": "play", "praise": "play", "sharing": "play",
+    "waiting": "play", "ending screen time": "play",
+    "cleanup": "tidy",
+    "being outside": "outside", "transitions": "outside", "car rides": "outside",
+    "listening": "feelings", "big feelings": "feelings", "tantrums": "feelings",
+    "tantrum prevention": "feelings", "whining": "feelings",
+    "your own calm": "feelings", "repair after you snap": "feelings",
+    "making it right": "feelings", "holding a limit": "feelings",
+    "hitting": "feelings", "redirecting": "feelings",
+    "a new baby coming": "feelings",
+    "mornings": "morning", "separation and goodbyes": "morning",
+    "leaving the house": "morning", "reunions and hellos": "morning"
+  };
+  var moment = "";
+  var bank = window.DADIO_LESSONS || [];
+  var n = window.DADIO_TODAY_N;
+  for (var i = 0; i < bank.length; i++) if (bank[i].n === n) { moment = bank[i].moment || ""; break; }
+  var key = BY_MOMENT[moment];
+  if (!key) {
+    var hay = ((document.getElementById("t-title") || {}).textContent || "") + " " +
+              ((document.getElementById("t-moment") || {}).textContent || "");
+    hay = hay.toLowerCase();
+    if (/bed|night|sleep|dark|bath|teeth/.test(hay)) key = "bedtime";
+    else if (/tidy|clean/.test(hay)) key = "tidy";
+    else if (/eat|meal|dinner|food|bite|table/.test(hay)) key = "meal";
+    else if (/shoe|morning|goodbye|hello|door|leav/.test(hay)) key = "morning";
+    else if (/outside|park|walk|pool|car|go$/.test(hay)) key = "outside";
+    else if (/play|game|blocks|teach/.test(hay)) key = "play";
+    else key = "feelings";
+  }
+  var pick = PHOTOS[key] || PHOTOS.feelings;
+  img.src = pick[0];
+  img.alt = pick[1];
+  img.hidden = false;
+});
+</script>
 <script src="/ask-panel.js"></script>
 <script>
 /* Evenings plan render (Nov 2, 2026, evenings SPEC sections 2, 3, 5):
