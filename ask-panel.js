@@ -345,6 +345,7 @@ var DP_CSS = [
   "#dp-open:active{transform:scale(.98)}",
   "#dp-open{transition:transform .25s ease,opacity .25s ease}",
   "#dp-open.dp-away{transform:translateY(170%);opacity:0;pointer-events:none}",
+  "#dp-open.dp-hidden{display:none}",
   "#dp-scrim{position:fixed;inset:0;z-index:80;background:rgba(26,29,33,.45)}",
   "#dp-sheet[hidden],#dp-scrim[hidden]{display:none}",
   "#dp-sheet{position:fixed;left:0;right:0;bottom:0;z-index:90;background:#ffffff;color:#1a1d21;",
@@ -768,15 +769,33 @@ function dpBuild() {
      panel never yields. Everything outside this block is unchanged. */
   var FYG_SEL = "a[href],button,input,select,textarea,summary,[role=\"button\"],[role=\"link\"],[role=\"tab\"],[role=\"menuitem\"],[tabindex]:not([tabindex=\"-1\"]),[data-fyg-watch]";
   var fygTargets = [], fygYielded = false, fygTick = false, fygResting = null;
+  var fygHideTimer = null;
   function fygSetYield(on) {
     if (on === fygYielded) return;
     fygYielded = on;
-    open.classList.toggle("dp-away", on);
+    if (fygHideTimer) { clearTimeout(fygHideTimer); fygHideTimer = null; }
+    if (on) {
+      open.classList.add("dp-away");
+      /* Fleet sweep 2026-11-04 (PMR SPEC-05 pattern): after the slide-out
+         finishes, remove the pill from layout. Parked below the fold it
+         still had a 52px rect that overlapped tap targets scrolling near
+         the bottom edge under the fleet's rect-based settled sweep
+         (44 covered targets at 390px pre-fix). With display:none the
+         rect is zero and the settled pill can cover nothing. */
+      fygHideTimer = setTimeout(function () {
+        fygHideTimer = null;
+        if (fygYielded) open.classList.add("dp-hidden");
+      }, 300);
+    } else {
+      open.classList.remove("dp-hidden");
+      void open.offsetWidth; /* reflow so the slide back in still animates */
+      open.classList.remove("dp-away");
+    }
   }
   function fygComputeResting() {
     var cs = window.getComputedStyle(open);
     var w = open.offsetWidth, h = open.offsetHeight;
-    if (!w || !h) { fygResting = null; return; }
+    if (!w || !h) { return; } /* Fleet sweep 2026-11-04: pill may be display:none while yielded; keep the last known box */
     var vw = window.innerWidth, vh = window.innerHeight;
     var left = parseFloat(cs.left), right = parseFloat(cs.right);
     var top = parseFloat(cs.top), bottom = parseFloat(cs.bottom);
@@ -834,7 +853,9 @@ function dpBuild() {
     requestAnimationFrame(fygUpdate);
   }
   function fygRelayout() {
-    fygResting = null;
+    /* Fleet sweep 2026-11-04: while the pill is display:none (yielded) it
+       has no size; keep the last known box rather than dropping it. */
+    if (open.offsetWidth) fygResting = null;
     fygCollect();
     fygSchedule();
   }
