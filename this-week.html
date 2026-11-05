@@ -211,26 +211,25 @@
    Nov 1-9, 2026. Outside those dates it is hidden and this page builds
    the current week's seven lessons from the same daily rotation the
    homepage fallback uses, so no past week is ever called "this week"
-   and every /this-week#lN link from the homepage lands on a real card. */
+   and every /this-week#lN link from the homepage lands on a real card.
+   Link-landing fix (SPEC-DAD-VERIFY1599-01): the hidden dated cards
+   used to keep their fragment ids, so a #lN link always resolved to
+   the hidden first match and never scrolled. Now, when the dated
+   week is hidden, its card ids move to data-dated-id (no duplicate
+   ids, no hidden target), and a #lN link for a lesson outside the
+   visible week builds that lesson's card on demand in a visible
+   "lesson you asked for" block. The hash handler only ever scrolls
+   to a visible card. In-window (Nov 1-9) the dated week is untouched;
+   only a link to a lesson with no card at all gets the on-demand
+   block, so dated behaviour is unchanged. */
 (function () {
-  var now = new Date();
-  function key(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
-  var k = key(now);
-  if (k >= "2026-11-01" && k <= "2026-11-09") return;
   var bank = window.DADIO_LESSONS || [];
-  if (!bank.length) return;
-  function doy(d) { return Math.floor((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - Date.UTC(d.getFullYear(), 0, 0)) / 86400000); }
-  function byN(n) { for (var i = 0; i < bank.length; i++) if (bank[i].n === n) return bank[i]; return bank[0]; }
+  function byNExact(n) { for (var i = 0; i < bank.length; i++) if (bank[i].n === n) return bank[i]; return null; }
+  function byN(n) { return byNExact(n) || bank[0]; }
   function cap(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
   function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
-  var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  var monday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - ((now.getDay() + 6) % 7));
-  var host = document.getElementById("ew-cards");
-  var html = "";
-  for (var i = 0; i < 7; i++) {
-    var d = new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + i);
-    var L = byN(((doy(d) - 1) % bank.length) + 1);
-    html += '<p class="wk-moment">' + days[d.getDay()] + '</p>' +
+  function cardHTML(L, label) {
+    return '<p class="wk-moment">' + label + '</p>' +
       '<article class="card" id="l' + L.n + '">' +
       '<p class="card-head">' + esc(L.heading) + '</p>' +
       '<h3>' + esc(L.title) + '</h3>' +
@@ -241,14 +240,66 @@
       '<p><strong>One line to keep:</strong> ' + esc(cap(L.core)) + '</p>' +
       '</article>';
   }
+  function visibleCard(id) {
+    var all = document.querySelectorAll('[id="' + id + '"]');
+    for (var i = 0; i < all.length; i++) if (all[i].offsetParent !== null) return all[i];
+    return null;
+  }
+  function ensureLesson(n) {
+    var id = "l" + n;
+    var vis = visibleCard(id);
+    if (vis) return vis;
+    if (document.getElementById(id)) return null;
+    var L = byNExact(n);
+    if (!L) return null;
+    var host = document.getElementById("requested-lesson");
+    if (!host) {
+      host = document.createElement("div");
+      host.id = "requested-lesson";
+      var door = document.querySelector(".door");
+      door.parentNode.insertBefore(host, door);
+    }
+    host.innerHTML = '<p class="answer"><strong>The lesson you asked for.</strong> It is not in this week\'s seven, so here it is on its own. Each card is the full lesson.</p>' +
+      cardHTML(L, "The lesson you asked for");
+    return document.getElementById(id);
+  }
+  function goHash() {
+    var m = /^#l(\d+)$/.exec(location.hash || "");
+    if (!m) return;
+    var el = ensureLesson(parseInt(m[1], 10));
+    if (el && el.scrollIntoView) el.scrollIntoView();
+  }
+  var now = new Date();
+  function key(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+  var k = key(now);
+  if (k >= "2026-11-01" && k <= "2026-11-09") {
+    goHash();
+    window.addEventListener("hashchange", goHash);
+    return;
+  }
+  if (!bank.length) return;
+  function doy(d) { return Math.floor((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - Date.UTC(d.getFullYear(), 0, 0)) / 86400000); }
+  var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  var monday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - ((now.getDay() + 6) % 7));
+  var datedCards = document.querySelectorAll("#dated-week article.card[id]");
+  for (var c = 0; c < datedCards.length; c++) {
+    datedCards[c].setAttribute("data-dated-id", datedCards[c].id);
+    datedCards[c].removeAttribute("id");
+  }
+  var host = document.getElementById("ew-cards");
+  var html = "";
+  for (var i = 0; i < 7; i++) {
+    var d = new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + i);
+    var L = byN(((doy(d) - 1) % bank.length) + 1);
+    html += cardHTML(L, days[d.getDay()]);
+  }
   host.innerHTML = html;
   document.getElementById("dated-week").hidden = true;
   document.getElementById("evergreen-week").hidden = false;
   document.title = "This Week's Lessons | Dadiosity";
-  if (location.hash) {
-    var tgt = document.querySelector(location.hash);
-    if (tgt && tgt.scrollIntoView) tgt.scrollIntoView();
-  }
+  goHash();
+  window.addEventListener("hashchange", goHash);
+  window.addEventListener("load", goHash);
 })();
 </script>
 <script>
