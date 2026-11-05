@@ -369,17 +369,23 @@ var DADIO_SYN = { scream: "cry", nightmar: "fight", nitemar: "fight", dawdl: "sl
 var DADIO_VOCAB = null;
 function dadVocab() {
   if (DADIO_VOCAB) return DADIO_VOCAB;
-  var tt = {}, all = {}, rawTT = [], rawSeen = {};
+  var tt = {}, all = {}, rawTT = [], rawSeen = {}, phraseSet = {};
+  var addPhrase = function (s) {
+    var seq = dadNorm(s).split(" ").filter(function (w) { return !!w && !DADIO_STOP[w]; }).map(function (w) { return dadStem(w); });
+    if (seq.length) phraseSet[seq.join(" ")] = 1;
+  };
   (window.DADIO_LESSONS || []).forEach(function (lesson) {
     (lesson.topics || []).forEach(function (t) {
       dadTokens(t).forEach(function (w) { tt[w] = 1; all[w] = 1; });
       dadTokenPairs(t).forEach(function (p) { if (!rawSeen[p.raw]) { rawSeen[p.raw] = 1; rawTT.push(p); } });
+      addPhrase(t);
     });
     dadTokens(lesson.title).forEach(function (w) { tt[w] = 1; all[w] = 1; });
     dadTokenPairs(lesson.title).forEach(function (p) { if (!rawSeen[p.raw]) { rawSeen[p.raw] = 1; rawTT.push(p); } });
+    addPhrase(lesson.title);
     dadTokens(lesson.idea + " " + lesson.move + " " + lesson.play + " " + lesson.why + " " + lesson.core).forEach(function (w) { all[w] = 1; });
   });
-  DADIO_VOCAB = { tt: Object.keys(tt), ttSet: tt, all: all, rawTT: rawTT };
+  DADIO_VOCAB = { tt: Object.keys(tt), ttSet: tt, all: all, rawTT: rawTT, phraseSet: phraseSet };
   return DADIO_VOCAB;
 }
 function dadEdit1(a, b) {
@@ -539,7 +545,45 @@ function dadActionHit(lesson, query, qPairs, qCorr, full) {
    names a parenting situation, not a household object, so it
    never counts structurally — "how do I fix the bedtime routine"
    keeps serving the bedtime lesson, and a child's own things stay
-   out of the gate, as the original note above required. */
+   out of the gate, as the original note above required.
+   SPEC-DAD-VERIFY1605-01 (Nov 5, 2026): the carve-out above was
+   WORD-level — one shared stem anywhere in the phrase marked the
+   whole phrase as domain, so a phrase that merely CONTAINS a bank
+   stem escaped: stem "gam" is filed only by Lesson 39's title word
+   "Game" and stem "light" only by Lesson 32's two-word topic
+   "night light", yet "the gaming console", "the porch light" and
+   "the light" all sailed through to Lesson 41. The carve-out is
+   now PHRASE-level, read from the bank's filed phrases
+   (dadVocab().phraseSet — every topic and title as a stem
+   sequence): a phrase counts as domain only when the phrase AS A
+   WHOLE is a filed phrase, or is a compound whose every word the
+   bank files ("sleep routine", "morning routine"), or begins with
+   a filed multi-word phrase ("bedtime routine" plus a trailing
+   word). A lone word counts only when the bank files it as a
+   one-word topic ("tantrum", "toy" via "toys", "routine").
+   Deliberate call on "night light": it IS a filed two-word topic
+   read as a phrase, so "the night light is broken" stays carved
+   out and keeps serving Lesson 32 — while "light" alone, "porch
+   light", "garden lights", "light bulb" and "ceiling light" name
+   no filed phrase and now count as the household objects they are.
+   SPEC-DAD-VERIFY1605-02 (Nov 5, 2026): the slot windows also
+   widened as classes. The phrase window now runs to the
+   copula/frame word (bounded at eight content words) instead of
+   stopping at three, so "the big red waffle iron" counts in the
+   subject slot just as it already did after a fix verb. A relative
+   pronoun (that / which / who / whom) between the phrase and the
+   copula no longer breaks the subject slot — the clause is skipped
+   to the copula or frame word that ends it ("the waffle iron that
+   I bought is broken"). Phrasal particles (up / off / out) may sit
+   between a fix verb and its phrase ("fix up my broken rice
+   cooker"). And the subject slot is determiner-optional: a content
+   phrase sitting directly before a copula or frame word counts
+   with no determiner at all ("blender is broken", "waffle iron
+   broke") — the walk back stops at stop words, copulas, frame and
+   fix verbs, and at a determiner (the determiner-led pass above
+   owns those), so the bare shape still names no object: in "it is
+   broken how do I fix it" the walk back from "is" meets the
+   pronoun "it", a stop word, and stops empty. */
 function dadRepairNoAnchor(query) {
   var rawWords = dadNorm(query).split(" ").filter(function (w) { return !!w; });
   var words = {};
@@ -555,26 +599,69 @@ function dadRepairNoAnchor(query) {
   var frameSet = {}; frame.forEach(function (w) { frameSet[w] = 1; });
   var fixVerb = { fix: 1, fixes: 1, fixing: 1, repair: 1, repairs: 1, repairing: 1, mend: 1, mending: 1 };
   var adjSkip = { broken: 1, cracked: 1, jammed: 1, stuck: 1, leaking: 1, leaky: 1 };
-  var ttSet = dadVocab().ttSet;
+  var rel = { that: 1, which: 1, who: 1, whom: 1 };
+  var particle = { up: 1, off: 1, out: 1 };
+  var vocab = dadVocab();
+  var ttSet = vocab.ttSet;
+  /* VERIFY1605-01: phrase-level carve-out (see the note above). */
+  var domainPhrase = function (stems) {
+    if (!stems.length) return false;
+    if (vocab.phraseSet[stems.join(" ")]) return true;
+    if (stems.length < 2) return false;
+    var allFiled = true;
+    stems.forEach(function (st) { if (!ttSet[st]) allFiled = false; });
+    if (allFiled) return true;
+    for (var p = stems.length - 1; p >= 2; p--) {
+      if (vocab.phraseSet[stems.slice(0, p).join(" ")]) return true;
+    }
+    return false;
+  };
+  /* The subject slot after a phrase ending at index j: a copula or
+     frame word right there, or a relative clause first (VERIFY1605-02). */
+  var slotAfter = function (j) {
+    var after = rawWords[j];
+    if (after && (copula[after] || frameSet[after])) return true;
+    if (after && rel[after]) {
+      for (var r = j + 1; r < rawWords.length && r < j + 7; r++) {
+        var rw = rawWords[r];
+        if (copula[rw] || frameSet[rw]) return true;
+        if (det[rw] || fixVerb[rw]) break;
+      }
+    }
+    return false;
+  };
   for (var i = 0; i < rawWords.length; i++) {
     if (!det[rawWords[i]]) continue;
-    var phrase = [], domain = false, j = i + 1;
-    while (j < rawWords.length && phrase.length < 3) {
+    var phrase = [], stems = [], j = i + 1;
+    while (j < rawWords.length && phrase.length < 8) {
       var w = rawWords[j];
       if (!phrase.length && adjSkip[w]) { j++; continue; }
       if (DADIO_STOP[w] || copula[w] || frameSet[w] || w === "it") break;
-      phrase.push(w); if (ttSet[dadStem(w)]) domain = true; j++;
+      phrase.push(w); stems.push(dadStem(w)); j++;
     }
-    if (!phrase.length || domain) continue;
-    var after = rawWords[j];
-    if (after && copula[after]) return true;
-    if (after && frameSet[after]) return true;
+    if (!phrase.length || domainPhrase(stems)) continue;
+    if (slotAfter(j)) return true;
     for (var k = Math.max(0, i - 4); k < i; k++) {
       if (!fixVerb[rawWords[k]]) continue;
       var governed = true;
-      for (var m = k + 1; m < i; m++) { if (!DADIO_STOP[rawWords[m]] && !adjSkip[rawWords[m]]) governed = false; }
+      for (var m = k + 1; m < i; m++) { if (!DADIO_STOP[rawWords[m]] && !adjSkip[rawWords[m]] && !particle[rawWords[m]]) governed = false; }
       if (governed) return true;
     }
+  }
+  /* VERIFY1605-02: the determiner-optional subject slot — a content
+     phrase directly before a copula or frame word, no determiner. */
+  for (var c = 0; c < rawWords.length; c++) {
+    if (!copula[rawWords[c]] && !frameSet[rawWords[c]]) continue;
+    var bPhrase = [], bStems = [], blocked = false;
+    for (var b = c - 1; b >= 0 && bPhrase.length < 8; b--) {
+      var bw = rawWords[b];
+      if (!bPhrase.length && adjSkip[bw]) continue;
+      if (DADIO_STOP[bw] || copula[bw] || frameSet[bw] || fixVerb[bw] || bw === "it") break;
+      if (det[bw]) { blocked = true; break; }
+      bPhrase.unshift(bw); bStems.unshift(dadStem(bw));
+    }
+    if (blocked || !bPhrase.length || domainPhrase(bStems)) continue;
+    return true;
   }
   return false;
 }
