@@ -16,6 +16,14 @@ function dadStem(w) {
   else if (w.length > 5 && w.slice(-3) === "ing") w = w.slice(0, -3);
   else if (w.length > 4 && w.slice(-2) === "ed") w = w.slice(0, -2);
   else if (w.length > 3 && w.slice(-1) === "s" && w.slice(-2) !== "ss") w = w.slice(0, -1);
+  /* SPEC-DAD-QA1105-04 stem parity: a silent final e is spelling, not
+     meaning. The forms a parent types must land on the stem the bank
+     files: "bites"/"bite" and the filed topic "biting" all land on
+     "bit", as "leaves" and the filed "leaving" land on "leav". The
+     strip runs on bank words and query words alike (one stemmer feeds
+     topics, titles, body text, and the query), so both sides of every
+     comparison move together. */
+  if (w.length > 3 && w.slice(-1) === "e" && w.slice(-2) !== "ee") w = w.slice(0, -1);
   return w;
 }
 function dadTokenPairs(s) {
@@ -48,9 +56,14 @@ function dadTokens(s) {
    store, toddler, time, much, too) name the scene, not the hard
    part, so they never count for or against the gate. */
 var DADIO_NEUTRAL = {};
-("grocery store toddler time much too").split(" ").forEach(function (w) { DADIO_NEUTRAL[w] = 1; });
+("grocery store toddler time much too").split(" ").forEach(function (w) { DADIO_NEUTRAL[dadStem(w)] = 1; });
 var DADIO_LIGHT = {};
-("get take make go come keep give let put try help want").split(" ").forEach(function (w) { DADIO_LIGHT[w] = 1; });
+("get take make go come keep give let put try help want").split(" ").forEach(function (w) { DADIO_LIGHT[dadStem(w)] = 1; });
+/* QA1105-04 stem parity: these sets are only ever looked up with
+   STEMMED tokens, so their keys are filed through dadStem itself —
+   after the silent-e strip, a raw "make"/"store"/"time" key would
+   never meet its stemmed lookup ("mak"/"stor"/"tim") and the word
+   would silently stop counting as light/neutral. */
 /* SPEC-DADIO-ASK-FUZZ-1 tolerance: a dad typing one-handed misspells
    the hard-part word ("lisen", "bedtyme", "tantrm", "diner") or uses a
    plain word the bank does not ("screams" for crying, "nightmare" for
@@ -61,7 +74,9 @@ var DADIO_LIGHT = {};
    letter). It feeds the scorer above; the gate and the bar of 4 are
    unchanged, and a word that already matches anything is never
    rewritten, so an off-topic ask still earns an honest no-match. */
-var DADIO_SYN = { scream: "cry", nightmare: "fight", nitemare: "fight", dawdle: "slow", dawdl: "slow" };
+var DADIO_SYN = { scream: "cry", nightmar: "fight", nitemar: "fight", dawdl: "slow" };
+/* QA1105-04: the map is looked up by stem, so its keys are stems —
+   "nightmare" stems to "nightmar" under the silent-e strip. */
 var DADIO_VOCAB = null;
 function dadVocab() {
   if (DADIO_VOCAB) return DADIO_VOCAB;
@@ -232,10 +247,24 @@ function dadScore(lesson, query) {
   var denomToks = qToks.filter(function (t) { return !DADIO_NEUTRAL[t]; });
   var npCount = Object.keys(np).length, fullNPCount = Object.keys(fullNP).length;
   var unmatched = denomToks.filter(function (t) { return !np[t]; });
+  /* SPEC-DAD-QA1105-03: the two-word gate must rest on the parenting
+     situation, not on a generic action verb or an incidental scene
+     word. "Fix my car it makes a rattling noise" cleared the old gate
+     twice over: Lesson 41 on the generic verb "fix" (its topic "fix
+     it") plus the title word "make", and Lesson 45 on the setting
+     noun "car" plus that same incidental "make". That is the
+     designed stray-word shape one level up, so it takes the same
+     cap: the full-topic anchor must be a situation word (not a light
+     verb, not "fix"), and the corroborating word must be a topic
+     word or a non-generic content word. */
+  var topicNPCount = 0, topicSeen = {};
+  Object.keys(full).concat(Object.keys(partial)).forEach(function (t) { if (!DADIO_NEUTRAL[t] && !topicSeen[t]) { topicSeen[t] = 1; topicNPCount += 1; } });
+  var solidAnchor = Object.keys(fullNP).some(function (t) { return !DADIO_LIGHT[t] && t !== "fix"; });
+  var npNonGeneric = denomToks.filter(function (t) { return np[t] && !DADIO_LIGHT[t] && t !== "fix"; }).length;
   var pass = false;
   if (phraseFull || surfacePhrase) pass = true;
   else if (denomToks.length === 1 && fullNPCount === 1) pass = true;
-  else if (npCount >= 2 && fullNPCount >= 1) pass = true;
+  else if (npCount >= 2 && fullNPCount >= 1 && solidAnchor && (topicNPCount >= 2 || npNonGeneric >= 2)) pass = true;
   else if (npCount >= 3 && denomToks.some(function (t) { return partial[t]; })) pass = true;
   else if (denomToks.length > 0 && unmatched.length === 0 && npCount >= 1) pass = true;
   else if (unmatched.length === 1 && DADIO_LIGHT[unmatched[0]] && fullNPCount >= 1) pass = true;
@@ -243,24 +272,47 @@ function dadScore(lesson, query) {
   if (!pass && score > 3) score = 3;
   return score;
 }
-/* SPEC-COLDQA1103-D2 route: the site's own headline question —
-   "what can I do with my 3-year-old today?" and its plain variants —
-   names no hard part, so the topic scorer finds nothing and both ask
-   doors dead-ended on it. The guide page with that exact title
-   answers it with two written lessons in order: Lesson 22 for right
-   now, Lesson 6 for the end of the day. This route fires only for
-   that today-activity family (today plus an ask word plus a child
-   word, or an ideas/things ask with a child word), only when the
-   query names no hard part (a named hard part keeps its own lesson
-   or its honest no-match), and only when the scorer itself found
-   nothing at the bar of 4 — so every query that already answers
-   keeps its exact answer. */
+/* SPEC-COLDQA1103-D2 route, rebuilt by SPEC-DAD-QA1105-01: a
+   "today" ask — "what is today's lesson", the site's own headline
+   question "what can I do with my 3-year-old today?", and their
+   plain variants — names no hard part, so the topic scorer finds
+   nothing and both ask doors dead-ended on it. The old route then
+   invented an answer: a hard-coded pair (Lessons 22 + 6) served as
+   "today's lesson" on every date. This route now resolves the
+   day's REAL lesson from the same source the homepage card uses:
+   the dated week map for the visitor's local date when it covers
+   that date (the map below mirrors the homepage's DADIO_WEEK,
+   and the homepage's own map wins when it is present), else the
+   same steady daily rotation the homepage fallback uses. No
+   hard-coded lesson pair stands in for a date. The route fires
+   only for the today family (a lesson ask, or today plus an ask
+   word plus a child word, or an ideas/things ask with a child
+   word) and only when the query names no hard part — a named
+   hard part keeps its own lesson or its honest no-match. */
+var DADIO_WEEK_MAP = { "2026-11-01": 3, "2026-11-02": 27, "2026-11-03": 27, "2026-11-04": 21, "2026-11-05": 31, "2026-11-06": 2, "2026-11-07": 25, "2026-11-08": 25, "2026-11-09": 12 };
+function dadTodayLesson() {
+  var bank = window.DADIO_LESSONS || [];
+  if (!bank.length) return null;
+  var now = new Date();
+  function key(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+  var n = null;
+  var wk = window.DADIO_WEEK || null;
+  if (wk && wk[key(now)] && wk[key(now)].n) n = wk[key(now)].n;
+  if (n === null && DADIO_WEEK_MAP[key(now)]) n = DADIO_WEEK_MAP[key(now)];
+  if (n === null) {
+    var doy = Math.floor((Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) - Date.UTC(now.getFullYear(), 0, 0)) / 86400000);
+    n = ((doy - 1) % bank.length) + 1;
+  }
+  for (var i = 0; i < bank.length; i++) { if (bank[i].n === n) return bank[i]; }
+  return bank[0];
+}
 function dadTodayAsk(query) {
   var words = {};
-  dadNorm(query).split(" ").forEach(function (w) { if (w) words[w] = 1; });
+  dadNorm(query).split(" ").forEach(function (w) { if (!w) return; words[w] = 1; words[w.replace(/'s$/, "")] = 1; });
   if (!words.today) return false;
   var hard = ["bedtime", "sleep", "sleeping", "listen", "listening", "tantrum", "meltdown", "cry", "crying", "scream", "screaming", "hit", "hits", "hitting", "bite", "biting", "yell", "yelling", "fight", "fights", "eat", "eating", "food", "dinner", "teeth", "potty", "sick", "fever"];
   for (var i = 0; i < hard.length; i++) { if (words[hard[i]]) return false; }
+  if (words.lesson || words.lessons) return true;
   var askWord = words.what || words.things || words.thing || words.ideas || words.idea || words.activities || words.activity || words.something;
   var listWord = words.things || words.thing || words.ideas || words.idea || words.activities || words.activity;
   var childWord = words.year || words.old || words.toddler || words.kid || words.kids || words.child || words.children || words.daughter || words.son || words.baby || words.we || words["2"] || words["3"] || words["4"] || words["5"];
@@ -296,12 +348,9 @@ function dadRank(query) {
   var scored = bank.map(function (lesson) { return { lesson: lesson, score: dadScore(lesson, query) }; });
   scored = scored.filter(function (r) { return r.score > 0; });
   scored.sort(function (a, b) { return (b.score - a.score) || (a.lesson.n - b.lesson.n); });
-  if (dadTodayAsk(query) && (!scored.length || scored[0].score < 4)) {
-    var byN = {};
-    bank.forEach(function (l) { byN[l.n] = l; });
-    if (byN[22] && byN[6]) {
-      return [{ lesson: byN[22], score: 8 }, { lesson: byN[6], score: 6 }];
-    }
+  if (dadTodayAsk(query)) {
+    var tl = dadTodayLesson();
+    if (tl) return [{ lesson: tl, score: 8 }];
   }
   return scored;
 }
