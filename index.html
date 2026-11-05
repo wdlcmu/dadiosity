@@ -279,12 +279,23 @@
   .tonight .t-season .s-fit { font-size: 1rem; color: var(--body); line-height: 1.55; margin-bottom: 0.375rem; }
   .tonight .t-season .s-label { font-size: 0.9375rem; font-weight: 700; color: var(--ink); margin-bottom: 0.25rem; }
   .tonight .t-season .s-text { font-size: 1rem; color: var(--body); line-height: 1.55; margin-bottom: 0.25rem; }
-  /* The puzzle's answer, printed with its question (Addendum 1439,
-     SPEC-DADIO-VERIFY1437-01): the move rides inside the plan block's
-     lesson box so the gap opens and closes on the same screen. */
+  /* The puzzle's answer layer (SPEC-DAD-QA1105-06): the move sits
+     hidden inside the plan block's lesson box, under a tap-to-reveal
+     button, so the gap opens first and closes on the same screen. */
   .tonight .t-season .s-move { font-size: 1rem; color: var(--body); line-height: 1.5; margin-bottom: 0.25rem; }
   .tonight .t-season .s-move[hidden] { display: none; }
   .tonight .t-season .s-move strong { color: var(--ink); }
+  .tonight .t-season button.s-reveal {
+    flex: none; width: 100%; min-height: 48px; margin: 0.375rem 0 0.25rem;
+    background: #fff; color: var(--accent); border: 2px solid var(--accent);
+    border-radius: 0.75rem; font-size: 1rem; font-weight: 700; cursor: pointer;
+  }
+  .tonight .t-season button.s-reveal:hover { background: var(--tint); }
+  .static-floor { width: 100%; max-width: 26rem; text-align: left; border-top: 1px solid var(--line); padding-top: 1.25rem; margin-bottom: 2.5rem; }
+  .static-floor h2 { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .static-floor h3 { font-size: 1.375rem; font-weight: 800; margin: 1rem 0 0.5rem; }
+  .static-floor p { color: var(--body); margin-bottom: 0.625rem; }
+  .static-floor p strong { color: var(--ink); }
   .tonight .t-season a, .tonight .t-veto-row a { color: var(--accent); font-weight: 700; text-decoration: none; display: inline-block; padding: 12px 6px; min-height: 44px; }
   .tonight .t-season a:hover, .tonight .t-veto-row a:hover { text-decoration: underline; }
   .tonight .t-veto-row { margin-top: 0.875rem; }
@@ -326,12 +337,11 @@
     main { padding-top: 0.75rem; }
     /* Weekend phone order (SPEC-DADIO-VERIFY1437-02): on Sat/Sun
        before 5 PM a daytime "Today" block renders above the Tonight
-       block and pushed tonight's puzzle question and its printed move
-       below the fold (question y928-1079 at 390px). On phone only,
-       Tonight takes the spot right under the identity line and the
-       Today block follows it, so the puzzle opens and closes on
-       screen one on weekends too. Everything else keeps its order;
-       desktop is untouched. */
+       block and pushed tonight's puzzle question below the fold
+       (question y928-1079 at 390px). On phone only, Tonight takes
+       the spot right under the identity line and the Today block
+       follows it, so the puzzle opens on screen one on weekends
+       too. Everything else keeps its order; desktop is untouched. */
     main > * { order: 3; }
     main > .idbar { order: 0; }
     main > .tonight { order: 1; }
@@ -348,9 +358,8 @@
     .tonight .t-season { margin-top: 0.375rem; }
     /* Phone-only cut (Addendum 1439, SPEC-DADIO-VERIFY1437-01): the
        explainer line "The block is the activity..." hides on small
-       screens so the puzzle question and its printed move both fit
-       on screen one; the move now printed in the box makes the line
-       plain on its face. Desktop keeps the line. Nothing else cut. */
+       screens so the puzzle question fits on screen one. Desktop
+       keeps the line. Nothing else cut. */
     .tonight .t-season .s-fit { display: none; }
     .tonight .t-season .s-text { margin-bottom: 0.125rem; }
     .tonight .t-season .s-move { margin-bottom: 0.125rem; }
@@ -590,6 +599,7 @@ window.FLEET_CFG = {
             <p class="s-label">Tonight's lesson: <span id="s-title"></span></p>
             <p class="s-text" id="s-puzzle"></p>
             <p class="s-move" id="s-move" hidden><strong>The move:</strong> <span id="s-move-text"></span></p>
+            <p><button type="button" class="s-reveal" id="s-reveal" aria-expanded="false" aria-controls="s-move" hidden>Show the move</button></p>
             <p class="s-full-row"><a href="#t-lesson-layer" id="s-full">The full lesson</a></p>
           </div>
           <p class="t-veto-row"><button type="button" class="t-veto" id="t-veto">Another one</button></p>
@@ -776,6 +786,21 @@ window.FLEET_CFG = {
     });
   });
   </script>
+  <noscript>
+  <section class="static-floor" aria-label="Tonight's plan and a first lesson">
+    <h2>Tonight, 6 to 9</h2>
+    <p><strong>Dinner:</strong> Eat together. When dinner ends, the phone charges outside the room until she is down.</p>
+    <p><strong>The one block:</strong> Kitchen dance party. One song, her pick, full volume. You have to dance. That is the whole game. About 10 minutes. Grab: a speaker.</p>
+    <p><strong>Then:</strong> Bath, as play. The close. Two books, lights out. Your hour. One episode, chosen at dinner. Ends at 9.</p>
+    <h3>Dadiosity Daily, Lesson 1: Get Down Low</h3>
+    <p><strong>The idea:</strong> Your kid hears you best when you are close. Standing tall makes your voice feel far away. Getting low makes it near and calm. Small kids read your face more than your words.</p>
+    <p><strong>Try this tonight:</strong> Tonight, pick one moment at home, like greeting time or dinner time. Get down on one knee or sit on the floor. Come to her eye level. Say her name, wait for her eyes, then speak.</p>
+    <p><strong>Tonight's play:</strong> Sit on the floor with a soft ball. Roll it to her and wait. When she rolls it back, cheer like it is a big win. Let the game stay slow and silly.</p>
+    <p><strong>Why it works:</strong> A close face feels safe, and safe kids listen better. Eye level also slows you down. That calm is the first lesson she copies from you.</p>
+    <p><strong>One line to keep:</strong> Get to eye level before you speak.</p>
+    <p>Scripts are off, so this page cannot pick today's lesson. This real first lesson and plan still work tonight.</p>
+  </section>
+  </noscript>
   <section class="wknd" id="t-weekend" hidden aria-label="This weekend, already picked">
     <h2>This weekend</h2>
     <div class="wk-pick" data-fyg-watch>
@@ -795,10 +820,10 @@ window.FLEET_CFG = {
       <p><button type="button" class="t-veto" id="w-sun-veto">Another one</button></p>
     </div>
   </section>
-  <section class="planweek" id="plan-week" hidden aria-label="This week's evenings, already picked">
+  <section class="planweek" id="plan-week" aria-label="This week's evenings, already picked">
     <h2>This week's evenings</h2>
-    <p class="pw-intro">Every night this week is already picked. Tap a night to read its lesson.</p>
-    <ul id="pw-list"></ul>
+    <p class="pw-intro">Every night this week is already picked.</p>
+    <p><a class="t-link-door" href="/this-week" style="display:inline-block;font-weight:700;color:var(--accent);text-decoration:none;padding:12px 6px;min-height:44px">Read this week's lessons</a></p>
   </section>
   <section class="hero">
     <form id="signup" method="post" action="/signup" novalidate>
@@ -808,16 +833,11 @@ window.FLEET_CFG = {
         <button type="submit" id="go">Join</button>
       </div>
       <p class="fine">Daily emails have not started yet. The first group is small, picked from this list.</p>
-      <p class="fine">We never sell your email.</p>
-      <p class="fine">The first 45 lessons are written.</p>
       <p class="msg" id="msg" role="status" aria-live="polite"></p>
     </form>
     <section class="confirm" id="confirm" hidden role="status" aria-live="polite" aria-label="Signup confirmation">
       <h2>You are in.</h2>
-      <p>We saved your email.</p>
-      <p>No email is sent today.</p>
-      <p>First lessons go to a small first group.</p>
-      <p>Then one lesson each day.</p>
+      <p>We saved your email. No email is sent today.</p>
       <p><a href="#sample">Read the sample lesson</a></p>
     </section>
     <p class="fine"><a class="sample-first" href="#sample">Read a sample lesson.</a></p>
@@ -825,36 +845,6 @@ window.FLEET_CFG = {
       <source media="(max-width: 40rem)" srcset="/assets/hero-reading-portrait.jpg" width="725" height="801">
       <img class="photo" src="/assets/hero-reading.jpg" width="1200" height="801" alt="A dad reads a picture book to his toddler in bed.">
     </picture>
-  </section>
-  <section class="week" aria-label="This week at home">
-    <h2>This week at home</h2>
-    <p class="wk-intro">Grandparents are coming and going this week, and work starts again soon. Each row shows the one thing to try. Tap one to read the full lesson.</p>
-    <ul>
-      <li><a href="/this-week#l3"><span class="wk-moment">Sunday · Leaving the pool</span><span class="wk-title">Warn Her Before It Ends</span><span class="wk-lesson">Lesson 3</span></a></li>
-      <li><a href="/this-week#l27"><span class="wk-moment">Monday and Tuesday · For the people coming and going</span><span class="wk-title">Make a Gift for Someone</span><span class="wk-lesson">Lesson 27</span></a></li>
-      <li><a href="/this-week#l21"><span class="wk-moment">Wednesday · When Grandma arrives</span><span class="wk-title">Make Hello a Big Deal</span><span class="wk-lesson">Lesson 21</span></a></li>
-      <li><a href="/this-week#l31"><span class="wk-moment">Thursday · Before the goodbye</span><span class="wk-title">Check Her Needs Before You Go</span><span class="wk-lesson">Lesson 31</span></a></li>
-      <li><a href="/this-week#l2"><span class="wk-moment">Friday · When she is sad someone left</span><span class="wk-title">Name It First</span><span class="wk-lesson">Lesson 2</span></a></li>
-      <li><a href="/this-week#l25"><span class="wk-moment">The weekend · While Grandma is here</span><span class="wk-title">When You Were Small</span><span class="wk-lesson">Lesson 25</span></a></li>
-      <li><a href="/this-week#l12"><span class="wk-moment">Next Monday · Dad's first morning back at work</span><span class="wk-title">Start the Morning Slow</span><span class="wk-lesson">Lesson 12</span></a></li>
-    </ul>
-  </section>
-  <section class="how" aria-label="How it works">
-    <h2>How it works</h2>
-    <ol>
-      <li><strong>1. Join:</strong> Add your email. Nothing else.</li>
-      <li><strong>2. First group:</strong> Emails have not started yet. A small group of dads goes first.</li>
-      <li><strong>3. Read daily:</strong> One short lesson. A minute each.</li>
-    </ol>
-  </section>
-  <section class="trust" aria-label="What we don't do and our guarantees">
-    <h2>What we don't do</h2>
-    <p><strong>Email only.</strong> The form takes one email address.</p>
-    <p><strong>Nothing else asked.</strong> No name, phone, or payment.</p>
-    <p><strong>Nothing to buy.</strong> The lessons are free.</p>
-    <p><strong>No long reads.</strong> No courses or ebooks.</p>
-    <h2 class="guarantees">Our guarantees</h2>
-    <p><strong>Leave any time.</strong> Email hello@dadiosity.com today.</p>
   </section>
   <section class="sample" id="sample" aria-label="A sample daily lesson">
     <p class="sample-label">A sample lesson</p>
@@ -880,7 +870,6 @@ window.FLEET_CFG = {
       <button type="button" id="sharebtn">Share this lesson</button>
       <p id="sharemsg" role="status" aria-live="polite"></p>
     </div>
-    <p class="join-next"><a href="#email">Join for daily lessons</a></p>
   </section>
   <section class="askdoor" aria-label="Ask for a lesson that fits tonight">
     <h2>Dealing with something tonight?</h2>
@@ -902,66 +891,21 @@ window.FLEET_CFG = {
     <h2>Questions dads ask</h2>
     <ul>
       <li><a href="/what-can-i-do-with-my-3-year-old-today">What can I do with my 3-year-old today?</a></li>
-      <li><a href="/things-to-do-with-a-3-year-old-at-home">Things to do with a 3-year-old at home</a></li>
-      <li><a href="/how-to-play-with-a-toddler">How to play with a toddler</a></li>
       <li><a href="/how-to-make-bedtime-easier-with-a-toddler">How to make bedtime easier with a toddler</a></li>
-      <li><a href="/how-to-be-a-more-present-dad">How to be a more present dad</a></li>
       <li><a href="/what-to-do-when-your-toddler-wont-listen">What to do when your toddler won't listen</a></li>
-      <li><a href="/what-to-do-when-your-toddler-has-a-tantrum">What to do when your toddler has a tantrum</a></li>
-      <li><a href="/how-to-get-a-toddler-to-bed-without-a-fight">How to get a toddler to bed without a fight</a></li>
-      <li><a href="/things-to-do-with-a-toddler-at-the-grocery-store">Things to do with a toddler at the grocery store</a></li>
-      <li><a href="/how-to-play-outside-with-a-toddler">How to play outside with a toddler</a></li>
-      <li><a href="/what-to-say-when-your-toddler-hits">What to say when your toddler hits</a></li>
-      <li><a href="/how-to-make-mornings-easier-with-a-toddler">How to make mornings easier with a toddler</a></li>
-      <li><a href="/what-to-do-after-you-yell-at-your-toddler">What to do after you yell at your toddler</a></li>
-      <li><a href="/how-to-get-a-toddler-to-sit-at-the-table">How to get a toddler to sit at the table</a></li>
-          <li><a href="/how-to-get-a-toddler-to-clean-up-toys">How to get a toddler to clean up toys</a></li>
-</ul>
-  </section>
-  <section class="moments" aria-label="Small moments from dad life">
-    <h2>Two moments from the day</h2>
-    <div class="strip">
-      <figure>
-        <img src="/assets/play-blocks.jpg" width="900" height="600" loading="lazy" alt="A dad plays with wooden blocks beside his toddler.">
-        <figcaption>Playing with blocks on the floor</figcaption>
-      </figure>
-      <figure>
-        <img src="/assets/table-meal.jpg" width="600" height="400" loading="lazy" alt="A dad shares a meal with his toddler at the table.">
-        <figcaption>Eating together at the table</figcaption>
-      </figure>
-    </div>
+    </ul>
   </section>
 </main>
-<!-- Works with your AI (fleet AI section, 2026-11-04) -->
+<!-- Works with your AI: compact door (SPEC-DAD-QA1105-08). Full
+     setup steps live in llms.txt; the homepage keeps the door only. -->
 <section class="works-with-ai" aria-label="Works with your AI" style="max-width:44rem;margin:2.5rem auto;padding:1.25rem 1rem;border:1px solid rgba(127,127,127,.45);border-radius:14px;font-family:inherit;line-height:1.55">
 <h2 style="margin:.1rem 0 .5rem;font-size:1.35rem">Works with your AI</h2>
-<p style="margin:.4rem 0">Your AI can fetch tonight's whole evening plan: dinner, the phone-free moment, and the wind-down, in order, the same plan this site shows.</p>
-<p style="margin:.4rem 0">Connect this site to Claude, Cursor, or any other MCP client. It is free, and it takes about a minute.</p>
-<p style="margin:.8rem 0 .3rem"><strong>1. Copy the server address</strong></p>
+<p style="margin:.4rem 0">Your AI can fetch tonight's plan. Connect this free server, then ask it for tonight's plan:</p>
 <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:stretch">
 <code id="wai-url" style="flex:1 1 16rem;display:flex;align-items:center;padding:.6rem .7rem;border:1px solid rgba(127,127,127,.45);border-radius:10px;word-break:break-all">https://mcp.dadiosity.com/mcp</code>
 <button type="button" class="wai-copy" data-copy-target="wai-url" style="min-height:44px;min-width:44px;padding:.6rem 1.1rem;border-radius:10px;border:1px solid rgba(127,127,127,.55);background:transparent;color:inherit;font:inherit;cursor:pointer">Copy</button>
 </div>
-<p style="margin:.9rem 0 .3rem"><strong>2. Add it to your AI</strong></p>
-<details>
-<summary style="min-height:44px;display:flex;align-items:center;cursor:pointer;font-weight:600">Claude Code: one command</summary>
-<pre style="overflow-x:auto;padding:.7rem;border:1px solid rgba(127,127,127,.35);border-radius:10px"><code>claude mcp add --transport http dadiosity https://mcp.dadiosity.com/mcp</code></pre>
-</details>
-<details>
-<summary style="min-height:44px;display:flex;align-items:center;cursor:pointer;font-weight:600">Claude Desktop or Cursor: paste into the MCP settings</summary>
-<pre style="overflow-x:auto;padding:.7rem;border:1px solid rgba(127,127,127,.35);border-radius:10px"><code>{
-  "mcpServers": {
-    "dadiosity": {
-      "url": "https://mcp.dadiosity.com/mcp"
-    }
-  }
-}</code></pre>
-</details>
-<p style="margin:.8rem 0 .2rem"><strong>3. Ask your AI:</strong> &ldquo;What is tonight's plan with my toddler?&rdquo;</p>
 </section>
-<script>
-(function(){var b=document.querySelector('.wai-copy');if(!b)return;b.addEventListener('click',function(){var el=document.getElementById(b.getAttribute('data-copy-target'));var t=el?el.textContent.trim():'';function done(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy';},2000);}function failed(){if(el){try{var r=document.createRange();r.selectNodeContents(el);var s=window.getSelection();s.removeAllRanges();s.addRange(r);}catch(e){}}b.textContent='Select + copy manually';setTimeout(function(){b.textContent='Copy';},4000);}function fallback(){var ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();var ok=false;try{ok=document.execCommand('copy');}catch(e){ok=false;}document.body.removeChild(ta);if(ok){done();}else{failed();}}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,fallback);}else{fallback();}});})();
-</script>
 <footer>
   <p>Built with Muse.</p>
   <p><a href="/privacy">Privacy</a> <a href="/terms">Terms</a></p>
@@ -1254,12 +1198,23 @@ document.addEventListener("DOMContentLoaded", function () {
   if (title && puzzleTxt) {
     document.getElementById("s-title").textContent = title;
     document.getElementById("s-puzzle").textContent = puzzleTxt;
-    /* The answer rides with the question (Addendum 1439): copy the
-       lesson layer's move verbatim into the plan block's lesson box. */
+    /* Guess-then-reveal (SPEC-DAD-QA1105-06): the move text is loaded
+       into the hidden answer layer, but it is NOT shown with the
+       question. One tap on "Show the move" (>=48px) reveals it in
+       place; a second tap hides it again. This box is the one puzzle
+       placement on both render paths (dated and fallback). */
     var moveTxt = document.getElementById("t-move").textContent;
     if (moveTxt) {
       document.getElementById("s-move-text").textContent = moveTxt;
-      document.getElementById("s-move").hidden = false;
+      var revealBtn = document.getElementById("s-reveal");
+      revealBtn.hidden = false;
+      revealBtn.addEventListener("click", function () {
+        var mv = document.getElementById("s-move");
+        var open = mv.hidden;
+        mv.hidden = !open;
+        revealBtn.textContent = open ? "Hide the move" : "Show the move";
+        revealBtn.setAttribute("aria-expanded", open ? "true" : "false");
+      });
     }
     document.getElementById("t-season").hidden = false;
   }
@@ -1361,54 +1316,10 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("today-block").hidden = false;
   }
 
-  /* The week view: seven rows, Monday to Sunday, read-only proof that
-     no deciding is coming. A row tap opens that day's lesson. */
-  var WEEK = window.DADIO_WEEK || {};
-  var bank = window.DADIO_LESSONS || [];
-  function lessonN(d) {
-    var hit = WEEK[key(d)];
-    if (hit) return hit.n;
-    if (bank.length) return ((doy(d) - 1) % bank.length) + 1;
-    return null;
-  }
-  var monday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - ((now.getDay() + 6) % 7));
-  var list = document.getElementById("pw-list");
-  for (var i = 0; i < 7; i++) {
-    var d = new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + i);
-    var li = document.createElement("li");
-    var a = document.createElement("a");
-    var n = lessonN(d);
-    a.href = n ? "/this-week#l" + n : "#plan-week";
-    var daySpan = document.createElement("span");
-    daySpan.className = "pw-day";
-    daySpan.textContent = days[d.getDay()] + ", " + months[d.getMonth()] + " " + d.getDate();
-    if (key(d) === todayKey) {
-      var pill = document.createElement("span");
-      pill.className = "t-pill";
-      pill.textContent = "Tonight";
-      daySpan.appendChild(pill);
-    }
-    var anchorSpan = document.createElement("span");
-    anchorSpan.className = "pw-anchor";
-    anchorSpan.id = "pw-anchor-" + key(d);
-    anchorSpan.textContent = P.anchors[anchorIdx(d)].name;
-    a.appendChild(daySpan);
-    a.appendChild(anchorSpan);
-    if (d.getDay() === 6 || d.getDay() === 0) {
-      var pickSpan = document.createElement("span");
-      pickSpan.className = "pw-pick";
-      pickSpan.id = "pw-pick-" + key(d);
-      var pk = d.getDay() === 6 ? satPick : sunPick;
-      var base = d.getDay() === 6 ? pickIdx(sat, 0) : pickIdx(sat, 1);
-      var isThisWeekendDay = key(d) === key(sat) || key(d) === key(sun);
-      pickSpan.textContent = "Weekend pick: " + P.weekend[isThisWeekendDay ? pk.idx : base].name;
-      a.appendChild(pickSpan);
-    }
-    li.appendChild(a);
-    list.appendChild(li);
-  }
+  /* Week view (SPEC-DAD-QA1105-05/08): the seven nights now live
+     only on /this-week behind the door above, so no dated-week rows
+     are built here and nothing on this page can go stale. */
   renderAnchor();
-  document.getElementById("plan-week").hidden = false;
 
   /* F5: clock rollover — a tab left open must not serve yesterday's
      plan or file vetoes under yesterday's date key. Check every 5s

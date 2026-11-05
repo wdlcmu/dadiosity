@@ -74,6 +74,7 @@
 <body>
 <p class="brand"><a href="/">Dadiosity</a></p>
 <h1>This week at home</h1>
+<div id="dated-week">
 <p class="answer"><strong>A week of hellos and goodbyes.</strong> Grandparents are coming and going this week, and Dad is heading back to work. Seven written lessons fit the week. They are below in the order the week brings them. Each card is the full lesson.</p>
 
 <p class="wk-moment">Leaving the pool</p>
@@ -166,9 +167,14 @@
   <p><strong>One line to keep:</strong> Sit with her for the first five minutes of the day and ask for nothing yet.</p>
 </article>
 
+</div>
+<div id="evergreen-week" hidden>
+<p class="answer"><strong>Seven lessons for this week.</strong> One written lesson for each night, picked from the daily rotation. Each card is the full lesson.</p>
+<div id="ew-cards"></div>
+</div>
 <div class="door">
   <h2>One short lesson a day, starting small</h2>
-  <p>Dadiosity is a daily email for dads of little kids. A small pilot group starts first, picked from this list. Everyone else gets their first lesson at the full launch. The first 45 lessons are written.</p>
+  <p>Dadiosity is one lesson a day for dads of little kids. Daily emails have not started yet; a small first group goes first.</p>
   <p><a class="joinlink" href="/#email">Join the list</a></p>
   <p class="tagline-line">Stay curious. She's only three once.</p>
 </div>
@@ -199,6 +205,52 @@
   <p><a href="/privacy">Privacy</a> <a href="/terms">Terms</a></p>
   <p>More family tools: <a href="https://pickmycostume.com">Pick My Costume</a> &middot; <a href="https://thepresentpicker.com">The Present Picker</a></p>
 </footer>
+<script src="/lessons.js"></script>
+<script>
+/* Date guard (SPEC-DAD-QA1105-05): the dated week above is only true
+   Nov 1-9, 2026. Outside those dates it is hidden and this page builds
+   the current week's seven lessons from the same daily rotation the
+   homepage fallback uses, so no past week is ever called "this week"
+   and every /this-week#lN link from the homepage lands on a real card. */
+(function () {
+  var now = new Date();
+  function key(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+  var k = key(now);
+  if (k >= "2026-11-01" && k <= "2026-11-09") return;
+  var bank = window.DADIO_LESSONS || [];
+  if (!bank.length) return;
+  function doy(d) { return Math.floor((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - Date.UTC(d.getFullYear(), 0, 0)) / 86400000); }
+  function byN(n) { for (var i = 0; i < bank.length; i++) if (bank[i].n === n) return bank[i]; return bank[0]; }
+  function cap(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
+  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+  var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  var monday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - ((now.getDay() + 6) % 7));
+  var host = document.getElementById("ew-cards");
+  var html = "";
+  for (var i = 0; i < 7; i++) {
+    var d = new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + i);
+    var L = byN(((doy(d) - 1) % bank.length) + 1);
+    html += '<p class="wk-moment">' + days[d.getDay()] + '</p>' +
+      '<article class="card" id="l' + L.n + '">' +
+      '<p class="card-head">' + esc(L.heading) + '</p>' +
+      '<h3>' + esc(L.title) + '</h3>' +
+      '<p><strong>The idea:</strong> ' + esc(L.idea) + '</p>' +
+      '<p><strong>Try this tonight:</strong> ' + esc(L.move) + '</p>' +
+      '<p><strong>Tonight\'s play:</strong> ' + esc(L.play) + '</p>' +
+      '<p><strong>Why it works:</strong> ' + esc(L.why) + '</p>' +
+      '<p><strong>One line to keep:</strong> ' + esc(cap(L.core)) + '</p>' +
+      '</article>';
+  }
+  host.innerHTML = html;
+  document.getElementById("dated-week").hidden = true;
+  document.getElementById("evergreen-week").hidden = false;
+  document.title = "This Week's Lessons | Dadiosity";
+  if (location.hash) {
+    var tgt = document.querySelector(location.hash);
+    if (tgt && tgt.scrollIntoView) tgt.scrollIntoView();
+  }
+})();
+</script>
 <script>
 "use strict";
 /* Fleet analytics, PostHog: counts and enums only, no personal data. */
