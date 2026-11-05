@@ -225,15 +225,69 @@ function dadActionHit(lesson, query, qPairs, qCorr, full) {
    so this gate does not fire and it keeps serving Lesson 41 — the
    bare wording is ambiguous (a child's broken thing, a wrong to
    mend) and is Lesson 41's home ground, as the SPEC scopes it.
-   A child's own things (a toy) are not repair objects here. */
+   A child's own things (a toy) are not repair objects here.
+   SPEC-DAD-VERIFY1593-01 (Nov 5, 2026): the object list below is a
+   CLOSED list, and unlisted appliances of exactly the same kind
+   (blender, kettle, vacuum, coffee maker, air conditioner, water
+   heater) sailed through it at the same pre-fix scores. Extending
+   the list would only move the hole, so the class is now closed
+   STRUCTURALLY, by sentence shape, with the list kept unchanged as
+   one signal among two: a named object is a determiner-led noun
+   phrase (the / my / a / an / this / that / our / your plus up to
+   three content words, a frame adjective like "broken" skipped)
+   sitting in an object or subject slot — right before a copula
+   (is / are / was / were: "the blender is broken"), right before
+   a frame word ("the lamp broke"), or right after a fix / repair /
+   mend verb ("fix my broken vacuum cleaner", "how do I fix a
+   broken blender"). Any noun at all can fill that slot, listed or
+   not, so the class closes for objects nobody has typed yet. The
+   bare-shape decision above is preserved by the same shape: in
+   "it is broken how do I fix it" the only candidate word is the
+   pronoun "it", which never starts a determiner phrase, so no
+   object is named and the gate still does not fire. One carve-out,
+   read from the bank itself: a phrase whose words the bank files
+   as a lesson topic or title (bedtime, tantrum, routine, toy …)
+   names a parenting situation, not a household object, so it
+   never counts structurally — "how do I fix the bedtime routine"
+   keeps serving the bedtime lesson, and a child's own things stay
+   out of the gate, as the original note above required. */
 function dadRepairNoAnchor(query) {
+  var rawWords = dadNorm(query).split(" ").filter(function (w) { return !!w; });
   var words = {};
-  dadNorm(query).split(" ").forEach(function (w) { if (!w) return; words[w] = 1; words[w.replace(/'s$/, "")] = 1; });
+  rawWords.forEach(function (w) { words[w] = 1; words[w.replace(/'s$/, "")] = 1; });
   var objects = ["washing", "machine", "washer", "dishwasher", "dryer", "fridge", "refrigerator", "freezer", "oven", "stove", "microwave", "toilet", "sink", "faucet", "pipe", "pipes", "car", "truck", "motorcycle", "motorbike", "bike", "bicycle", "van", "engine", "tire", "tyre", "battery", "laptop", "computer", "phone", "phones", "tv", "television", "screen", "tablet", "ipad", "printer", "router", "wifi", "fence", "gate", "chair", "table", "door", "handle", "glasses", "spectacles", "window", "windows", "garage", "lawnmower", "mower", "lock"];
   var frame = ["fix", "fixes", "fixing", "fixed", "repair", "repairs", "repairing", "repaired", "broken", "broke", "cracked", "crack", "mend", "mending", "leak", "leaks", "leaking", "jammed", "stuck"];
   var anchors = ["she", "he", "her", "him", "his", "daughter", "son", "kid", "kids", "child", "children", "toddler", "baby", "boy", "girl", "friend", "friends", "sister", "brother", "sorry", "apologize", "apologise", "apologized", "amends", "hurt", "hurts", "hurting"];
   var has = function (arr) { return arr.some(function (w) { return words[w]; }); };
-  return has(objects) && has(frame) && !has(anchors);
+  if (!has(frame) || has(anchors)) return false;
+  if (has(objects)) return true;
+  var det = { the: 1, my: 1, a: 1, an: 1, this: 1, that: 1, our: 1, your: 1 };
+  var copula = { is: 1, are: 1, was: 1, were: 1 };
+  var frameSet = {}; frame.forEach(function (w) { frameSet[w] = 1; });
+  var fixVerb = { fix: 1, fixes: 1, fixing: 1, repair: 1, repairs: 1, repairing: 1, mend: 1, mending: 1 };
+  var adjSkip = { broken: 1, cracked: 1, jammed: 1, stuck: 1, leaking: 1, leaky: 1 };
+  var ttSet = dadVocab().ttSet;
+  for (var i = 0; i < rawWords.length; i++) {
+    if (!det[rawWords[i]]) continue;
+    var phrase = [], domain = false, j = i + 1;
+    while (j < rawWords.length && phrase.length < 3) {
+      var w = rawWords[j];
+      if (!phrase.length && adjSkip[w]) { j++; continue; }
+      if (DADIO_STOP[w] || copula[w] || frameSet[w] || w === "it") break;
+      phrase.push(w); if (ttSet[dadStem(w)]) domain = true; j++;
+    }
+    if (!phrase.length || domain) continue;
+    var after = rawWords[j];
+    if (after && copula[after]) return true;
+    if (after && frameSet[after]) return true;
+    for (var k = Math.max(0, i - 4); k < i; k++) {
+      if (!fixVerb[rawWords[k]]) continue;
+      var governed = true;
+      for (var m = k + 1; m < i; m++) { if (!DADIO_STOP[rawWords[m]] && !adjSkip[rawWords[m]]) governed = false; }
+      if (governed) return true;
+    }
+  }
+  return false;
 }
 function dadScore(lesson, query) {
   var qn = " " + dadNorm(query) + " ";
