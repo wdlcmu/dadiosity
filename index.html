@@ -324,6 +324,18 @@
      land on screen one. Desktop layout is untouched. */
   @media (max-width: 40rem) {
     main { padding-top: 0.75rem; }
+    /* Weekend phone order (SPEC-DADIO-VERIFY1437-02): on Sat/Sun
+       before 5 PM a daytime "Today" block renders above the Tonight
+       block and pushed tonight's puzzle question and its printed move
+       below the fold (question y928-1079 at 390px). On phone only,
+       Tonight takes the spot right under the identity line and the
+       Today block follows it, so the puzzle opens and closes on
+       screen one on weekends too. Everything else keeps its order;
+       desktop is untouched. */
+    main > * { order: 3; }
+    main > .idbar { order: 0; }
+    main > .tonight { order: 1; }
+    main > .todayblk { order: 2; }
     .idbar { margin-bottom: 0.625rem; }
     .idbar .id-line { margin-top: 0.25rem; }
     .tonight { padding-top: 0.625rem; }
