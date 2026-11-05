@@ -422,6 +422,39 @@ function dadCanon(pairs) {
   dadCanonPairs(pairs).forEach(function (w) { if (!seen[w]) { seen[w] = 1; out.push(w); } });
   return out;
 }
+/* SPEC-DADIO-COLDQA-COMP-02 (Nov 4, 2026): a child doing an action
+   the bank files in verb forms — "my toddler hit her cousin at the
+   park" — was capped as a no-match because the people and place words
+   around the action match nothing, even though the action word itself
+   is a full topic match (Lesson 35 files hit, hits, and hitting).
+   This helper names that shape from the bank's own filing, not from
+   the query's words: the query names a child, and one of its words —
+   the visitor's own word, never a synonym swap or a spelling
+   correction — fully matches a topic the lesson itself files in an
+   -ing or -ed form as well (hitting, biting, pushing, kicking). The
+   scene words around the action cannot veto that match. Noun topics
+   (car, tomorrow) file no verb forms, so the designed stray-word caps
+   ("weather tomorrow", "fix my car") are untouched. */
+function dadActionHit(lesson, query, qPairs, qCorr, full) {
+  var child = { toddler: 1, kid: 1, kids: 1, child: 1, children: 1, daughter: 1, son: 1, baby: 1, she: 1, he: 1, her: 1, him: 1, his: 1 };
+  var hasChild = false;
+  dadNorm(query).split(" ").forEach(function (w) { if (child[w]) hasChild = true; });
+  if (!hasChild) return false;
+  var collapse = function (w) {
+    return (w.length >= 3 && w.charAt(w.length - 1) === w.charAt(w.length - 2) && "aeiou".indexOf(w.charAt(w.length - 1)) < 0) ? w.slice(0, -1) : w;
+  };
+  var verbStems = {};
+  (lesson.topics || []).forEach(function (t) {
+    dadNorm(t).split(" ").forEach(function (w) {
+      if (/(ing|ed)$/.test(w)) verbStems[collapse(dadStem(w))] = 1;
+    });
+  });
+  for (var i = 0; i < qPairs.length; i++) {
+    if (qCorr[i] !== qPairs[i].stem) continue;
+    if (full[qCorr[i]] && verbStems[collapse(qCorr[i])]) return true;
+  }
+  return false;
+}
 function dadScore(lesson, query) {
   var qn = " " + dadNorm(query) + " ";
   var qPairs = dadTokenPairs(query);
@@ -495,6 +528,7 @@ function dadScore(lesson, query) {
   else if (npCount >= 3 && denomToks.some(function (t) { return partial[t]; })) pass = true;
   else if (denomToks.length > 0 && unmatched.length === 0 && npCount >= 1) pass = true;
   else if (unmatched.length === 1 && DADIO_LIGHT[unmatched[0]] && fullNPCount >= 1) pass = true;
+  else if (fullNPCount >= 1 && dadActionHit(lesson, query, qPairs, qCorr, full)) pass = true;
   if (!pass && score > 3) score = 3;
   return score;
 }
