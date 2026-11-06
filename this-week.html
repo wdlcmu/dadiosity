@@ -73,9 +73,9 @@
 </head>
 <body>
 <p class="brand"><a href="/">Dadiosity</a></p>
-<h1>This week at home</h1>
+<h1 id="tw-h1">This week at home — week of Nov 2, 2026</h1>
 <div id="dated-week">
-<p class="answer"><strong>A week of hellos and goodbyes.</strong> Grandparents are coming and going this week, and Dad is heading back to work. Seven written lessons fit the week. They are below in the order the week brings them. Each card is the full lesson.</p>
+<p class="answer"><strong>A week of hellos and goodbyes — the week of Nov 2, 2026.</strong> Grandparents are coming and going this week, and Dad is heading back to work. Seven written lessons fit the week. They are below in the order the week brings them. Each card is the full lesson.</p>
 
 <p class="wk-moment">Leaving the pool</p>
 <article class="card" id="l3">
@@ -169,7 +169,7 @@
 
 </div>
 <div id="evergreen-week" hidden>
-<p class="answer"><strong>Seven lessons for this week.</strong> One written lesson for each night, picked from the daily rotation. Each card is the full lesson.</p>
+<p class="answer"><strong>Seven lessons for this week.</strong><span id="ew-weekof"></span> One written lesson for each night, picked from the daily rotation. Each card is the full lesson.</p>
 <div id="ew-cards"></div>
 </div>
 <div class="door">
@@ -297,6 +297,15 @@
   document.getElementById("dated-week").hidden = true;
   document.getElementById("evergreen-week").hidden = false;
   document.title = "This Week's Lessons | Dadiosity";
+  /* Date stamp (SPEC-DAD-COLDQA1106-04): the rotating week carries
+     its own Monday's date in the H1 and lede, the same stamp the
+     dated week shows in-window, so this page is never undated. */
+  var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  var weekOf = months[monday.getMonth()] + " " + monday.getDate() + ", " + monday.getFullYear();
+  var h1 = document.getElementById("tw-h1");
+  if (h1) h1.textContent = "This week at home — week of " + weekOf;
+  var ew = document.getElementById("ew-weekof");
+  if (ew) ew.textContent = " Week of " + weekOf + ".";
   goHash();
   window.addEventListener("hashchange", goHash);
   window.addEventListener("load", goHash);

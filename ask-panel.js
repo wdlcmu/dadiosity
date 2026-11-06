@@ -1,8 +1,11 @@
 /* Dadiosity ask panel (SPEC-DADIO-ASKPANEL-1): the /ask lesson matcher,
    in place on the homepage and the question pages. The matcher block
    below is byte-identical to the one ask.html runs (extracted, never
-   retyped); the panel tail only adds the door and the sheet. The match
-   runs on the visitor's device. Nothing typed is sent or saved. */
+   retyped); the panel tail only adds the door and the sheet. The
+   matcher itself runs on the visitor's device; the panel's chat door
+   sends the words to /api/chat, and nothing is saved there
+   (SPEC-DAD-COLDQA1106-02: one privacy story, said plainly on both
+   surfaces — /ask sends nothing, this button sends to the AI chat). */
 (function () {
 "use strict";
 var DADIO_STOP = {};
@@ -726,7 +729,7 @@ function dadLabel(text) {
    matcher exactly as it did before, and says so. Chat turns are sent
    to the site's own chat worker; nothing typed is stored there. ---- */
 var DP_CSS = [
-  "#dp-open{position:fixed;right:1rem;bottom:1rem;z-index:70;min-height:52px;padding:0 1.25rem;",
+  "#dp-open{position:fixed;right:1rem;bottom:calc(1rem + env(safe-area-inset-bottom));z-index:70;min-height:52px;padding:0 1.25rem;",
   "border:0;border-radius:999px;background:#0b5e57;color:#fff;font-size:1rem;font-weight:700;",
   "font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;",
   "box-shadow:0 4px 18px rgba(26,29,33,.30);cursor:pointer}",
@@ -952,7 +955,24 @@ function dpBubble(who, text, me) {
   thread.appendChild(d);
   return d;
 }
-function dpRenderChat(j) {
+/* Topic grounding for the chat door (SPEC-DAD-COLDQA1106-01): the
+   chat's honest-no is only honest when the bank's own filing finds
+   nothing. If the chat says there is no lesson but this page's
+   matcher — the bank's topic index, on this device — finds one at
+   the bar, the filed lesson is the answer, never the false no. The
+   run-off safety family keeps its honest-no (dadRunOffSafety runs
+   first, exactly as in dpAskLocal), and the count question is not a
+   lesson serve. Returns the matcher's top hit or null. */
+function dpGroundLesson(q) {
+  if (!q || !dadNorm(q)) return null;
+  if (dadCountAsk(q)) return null;
+  if (dadRunOffSafety(q)) return null;
+  var ranked = dadRank(q);
+  var top = ranked.length ? ranked[0] : null;
+  if (!top || top.score < DADIO_THRESHOLD) return null;
+  return top;
+}
+function dpRenderChat(j, msg) {
   var answer = document.getElementById("dp-answer");
   var lessons = j.lessons || [];
   var nearest = j.nearest || [];
@@ -969,11 +989,30 @@ function dpRenderChat(j) {
     }
     dpTrackAnswered({ tool: "dad-ask", lesson: lessons[0].n, via: "chat" });
   } else {
-    dpBubble("DADIOSITY'S AI", lead || "Something went wrong. Try again.");
-    if (/There isn't a written lesson on that yet/.test(lead)) {
-      dpTrackFallback({ tool: "dad-ask", missing: "match", via: "chat" });
+    var grounded = null;
+    if (/There isn't a written lesson on that yet|No written lesson fits/.test(lead)) {
+      grounded = dpGroundLesson(msg);
+    }
+    if (grounded) {
+      /* The chat said no lesson; the bank's filing on this page says
+         otherwise. Serve the filed lesson and say plainly that the
+         page's own match found it — the false no never renders. */
+      dpBubble("DADIOSITY'S AI", "The chat said there is no written lesson on that, but the match on this page found one in the bank. Here it is.");
+      answer.appendChild(dpLabel("Closest lesson for tonight"));
+      answer.appendChild(dpCard(grounded.lesson));
+      var grest = dadRank(msg).slice(1, 3).filter(function (r) { return r.score >= 3; });
+      if (grest.length) {
+        answer.appendChild(dpLabel("Also close"));
+        grest.forEach(function (r) { answer.appendChild(dpCard(r.lesson)); });
+      }
+      dpTrackAnswered({ tool: "dad-ask", lesson: grounded.lesson.n, via: "chat-grounded" });
     } else {
-      dpTrackAnswered({ tool: "dad-ask", via: "chat" });
+      dpBubble("DADIOSITY'S AI", lead || "Something went wrong. Try again.");
+      if (/There isn't a written lesson on that yet/.test(lead)) {
+        dpTrackFallback({ tool: "dad-ask", missing: "match", via: "chat" });
+      } else {
+        dpTrackAnswered({ tool: "dad-ask", via: "chat" });
+      }
     }
   }
   if (nearest.length) {
@@ -1038,7 +1077,7 @@ function dpSend(text) {
     dpChatHistory.push({ role: "user", text: msg });
     dpChatHistory.push({ role: "assistant", text: (j.reply || "").slice(0, 400), lesson: (j.lessons && j.lessons[0] && j.lessons[0].n) || undefined });
     if (dpChatHistory.length > 8) dpChatHistory = dpChatHistory.slice(-8);
-    dpRenderChat(j);
+    dpRenderChat(j, msg);
   }).catch(function () {
     if (done) return;
     done = true;
@@ -1094,7 +1133,7 @@ function dpBuild() {
   bodyEl.className = "dp-body";
   var promise = document.createElement("p");
   promise.className = "dp-promise";
-  promise.textContent = "Chat with Dadiosity's AI. It answers only from the 45 written lessons on this site. If there is no written lesson on something, it will say so, in plain words. Nothing you type is saved.";
+  promise.textContent = "Chat with Dadiosity's AI. Your words are sent to the chat, which answers only from the 45 written lessons on this site. If there is no written lesson on something, it will say so, in plain words. Nothing you type is saved. (The /ask page is different: it matches on your device and sends nothing.)";
   bodyEl.appendChild(promise);
   var photo = document.createElement("img");
   photo.className = "dp-photo";

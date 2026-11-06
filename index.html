@@ -470,6 +470,15 @@
   footer p { margin-bottom: 0.5rem; }
   footer a { color: var(--accent); font-weight: 600; text-decoration: none; display: inline-block; padding: 12px 6px; min-height: 44px; }
   footer a:hover { text-decoration: underline; }
+  /* Reduced motion (SPEC-DAD-COLDQA1106-05): a visitor who asks for
+     reduced motion gets no smooth scrolling and no transitions on
+     this page — the tonight rail's scrollIntoView included (its JS
+     also checks matchMedia and drops the smooth behavior). */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .tonight .tn-track { scroll-behavior: auto; }
+    * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+  }
 </style>
 
 <script>
@@ -675,7 +684,7 @@ window.FLEET_CFG = {
           </div>
         </article>
         <article class="tn-card" data-tn-card data-tn-name="The one block" data-fyg-watch>
-          <img class="tn-photo" src="/assets/play-blocks.jpg" width="900" height="600" alt="A dad and his toddler play with blocks on the floor.">
+          <img class="tn-photo" id="p-anchor-photo" src="/assets/theme-feelings.jpg" width="1200" height="800" alt="A dad kneels to his toddler's eye level and holds her hands.">
           <div class="tn-body">
             <p class="tl-name">The one block</p>
             <h3 class="tl-anchor" id="p-anchor-name"></h3>
@@ -1342,12 +1351,39 @@ document.addEventListener("DOMContentLoaded", function () {
     aIdx = anchorIdx(now);
     if (saved !== null) store(aKey, String(aIdx));
   }
+  /* Anchor photo (SPEC-DAD-COLDQA1106-03): the photo follows the
+     anchor family or claims nothing. Food anchors (a snack, pizza,
+     a picnic, a tea party) get the table photo; the book anchor gets
+     the reading-chair photo; every other anchor gets the neutral
+     eye-level photo, which shows a dad with his toddler and names no
+     activity. The blocks photo is gone from this card: no anchor in
+     the bench is a blocks activity, so it claimed the wrong activity
+     on 27 of 27 nights. The Bath card's photo is a separate, named
+     blocker (no bath photo exists in the site assets) — see the
+     coldqa-fixes-2026-11-06 report. */
+  var ANCHOR_PHOTOS = {
+    meal: ["/assets/table-meal.jpg", "A dad shares a meal with his toddler at the table."],
+    book: ["/assets/theme-bedtime.jpg", "A dad reads a picture book to his toddler in a chair, the lamp low."],
+    neutral: ["/assets/theme-feelings.jpg", "A dad kneels to his toddler's eye level and holds her hands."]
+  };
+  function anchorPhoto(a) {
+    var hay = (a.name + " " + a.how).toLowerCase();
+    if (/pizza|snack|picnic|tea party/.test(hay)) return ANCHOR_PHOTOS.meal;
+    if (/book/.test(hay)) return ANCHOR_PHOTOS.book;
+    return ANCHOR_PHOTOS.neutral;
+  }
   function renderAnchor() {
     var a = P.anchors[aIdx];
     document.getElementById("p-anchor-name").textContent = a.name + ".";
     document.getElementById("p-anchor-how").textContent = a.how;
     document.getElementById("p-anchor-min").textContent = "About " + a.minutes + " minutes.";
     document.getElementById("p-anchor-grab").textContent = a.grab + ".";
+    var photo = document.getElementById("p-anchor-photo");
+    if (photo) {
+      var pick = anchorPhoto(a);
+      if (photo.getAttribute("src") !== pick[0]) photo.src = pick[0];
+      photo.alt = pick[1];
+    }
     var row = document.getElementById("pw-anchor-" + todayKey);
     if (row) row.textContent = a.name;
   }
@@ -1523,8 +1559,10 @@ document.addEventListener("DOMContentLoaded", function () {
   var count = document.getElementById("tn-count");
   if (!cards.length || !dotsWrap || !count) return;
   var dots = [];
+  var reduceMotion = false;
+  try { reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
   function goTo(i) {
-    if (cards[i]) cards[i].scrollIntoView({ behavior: "smooth", inline: "start", block: "nearest" });
+    if (cards[i]) cards[i].scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", inline: "start", block: "nearest" });
   }
   for (var i = 0; i < cards.length; i++) {
     (function (idx) {
