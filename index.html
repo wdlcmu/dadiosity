@@ -416,6 +416,14 @@
        the gap move, and only on phone. */
     .tonight .tn-track { gap: 0.25rem; }
     .tonight .tn-card:first-child { flex-basis: 35%; }
+    /* Completion (same SPEC, fix lane coldqa1105-01-02): narrowing
+       card 1 alone leaves the hero headline's 240px box 15px past
+       the screen edge, and 4 of the 47 anchors in plans.js still
+       cut a word at rest (longest first lines fill the box). The
+       hero card's text box narrows by the same 24px, so the whole
+       box — and with it every anchor name in the bank — sits on
+       screen at rest. Card 2 only; nothing else moves. */
+    .tonight .tn-card:nth-child(2) .tn-body { padding-right: 2.5rem; }
     .tonight .tl-how { margin-bottom: 0.375rem; }
     .tonight .t-season { margin-top: 0.375rem; }
     /* Phone-only cut (Addendum 1439, SPEC-DADIO-VERIFY1437-01): the
