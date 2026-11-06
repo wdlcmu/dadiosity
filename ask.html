@@ -199,7 +199,13 @@ window.FLEET_CFG = {
           if (done) return;
           if (vis(el) && txt(el).length >= (cp.minText || 1)) {
             done = true;
-            track("tool_complete", {surface: cp.surface || "tool"});
+            var ks = cp.surface || "tool";
+            /* MEASURE-1 guard: a complete never fires for a surface
+               with no start yet in this page view — fire the start
+               immediately before it (the completed surface rendered
+               on load, so its render is its start). */
+            if (!started[ks]) { started[ks] = true; track("tool_start", {surface: ks}); }
+            track("tool_complete", {surface: ks});
           }
         }
         new MutationObserver(check).observe(el, {childList: true, subtree: true, characterData: true, attributes: true});
@@ -1008,6 +1014,7 @@ function dadLabel(text) {
   return p;
 }
 var dadAskCompleted = false;
+var dadAskStarted = false;
 function dadAsk() {
   try { fleetTrack("ask_asked", { tool: "dad-ask", surface: "ask" }); } catch (e) {}
   var q = document.getElementById("q").value;
@@ -1072,7 +1079,7 @@ function dadAsk() {
     rest.forEach(function (r) { answer.appendChild(dadCard(r.lesson)); });
   }
   try { fleetTrack("ask_answered", { tool: "dad-ask", lesson: top.lesson.n }); } catch (e) {}
-  if (!dadAskCompleted) { dadAskCompleted = true; try { fleetTrack("tool_complete", { tool: "dad-ask", surface: "ask" }); } catch (e) {} }
+  if (!dadAskCompleted) { dadAskCompleted = true; if (!dadAskStarted) { dadAskStarted = true; try { fleetTrack("tool_start", { tool: "dad-ask", surface: "ask", entry: "ask-page" }); } catch (e) {} } try { fleetTrack("tool_complete", { tool: "dad-ask", surface: "ask" }); } catch (e) {} }
   var first = answer.querySelector(".card");
   if (first) { try { first.scrollIntoView({ block: "nearest" }); } catch (e) {} }
 }

@@ -481,6 +481,14 @@ window.FLEET_CFG = {
     {sel: "#t-link", surface: "lesson"},
     {sel: "#t-tomorrow-link", surface: "lesson"}
   ],
+  /* MEASURE-1 (Nov 5, 2026): the tonight plan is Dadiosity's tool
+     surface. It renders in full on load, so the render is both the
+     start and the completion of the flow; the FA completes guard
+     fires the start immediately before the complete, so this pair
+     can never land as a complete without a start. */
+  completes: [
+    {sel: "#t-plan", surface: "tonight"}
+  ],
 };
 </script>
 <!-- Fleet analytics — shared instrumentation (Nov 1, 2026; taxonomy:
@@ -567,7 +575,13 @@ window.FLEET_CFG = {
           if (done) return;
           if (vis(el) && txt(el).length >= (cp.minText || 1)) {
             done = true;
-            track("tool_complete", {surface: cp.surface || "tool"});
+            var ks = cp.surface || "tool";
+            /* MEASURE-1 guard: a complete never fires for a surface
+               with no start yet in this page view — fire the start
+               immediately before it (the completed surface rendered
+               on load, so its render is its start). */
+            if (!started[ks]) { started[ks] = true; track("tool_start", {surface: ks}); }
+            track("tool_complete", {surface: ks});
           }
         }
         new MutationObserver(check).observe(el, {childList: true, subtree: true, characterData: true, attributes: true});
@@ -1132,14 +1146,21 @@ fleetSessionMarks(); /* session marks fire through the FA loader now (shim above
   var conf = document.getElementById("confirm"), done = false;
   if (conf && window.MutationObserver){
     var check = function(){
-      if (!conf.hidden && !done){
+      /* MEASURE-1 (Nov 5, 2026): the signup complete counts only
+         after this page view's start (the email focus/input above),
+         and latches once per page view — a second submit in the
+         same view used to reset `done` on hide and fire a second
+         complete against the one latched start. A returning joined
+         user whose panel is already showing fires neither event;
+         return_visit carries that signal. */
+      if (!conf.hidden && !done && started){
         done = true;
         try { localStorage.setItem("dadiosity_joined_v1", "1"); } catch (e) {}
         fleetTrack("tool_complete", {tool: "dad-lessons"});
       }
-      if (conf.hidden) done = false;
     };
     new MutationObserver(check).observe(conf, {attributes: true, attributeFilter: ["hidden"]});
+    check();
   }
   var sb = document.getElementById("sharebtn");
   if (sb) sb.addEventListener("click", function(){

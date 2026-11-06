@@ -818,10 +818,19 @@ var dpChatHistory = [];
    non-standard ask_no_match is retired), and tool_complete fires once
    per page, on the first answered chat, as the observer used to do. */
 var dpAskCompleted = false;
+var dpAskStarted = false;
 function dpTrackAnswered(props) {
   try { fleetTrack("ask_answered", props); } catch (e) {}
   if (!dpAskCompleted) {
     dpAskCompleted = true;
+    /* MEASURE-1 (Nov 5, 2026): the ask complete used to fire with
+       no tool_start for surface "ask" anywhere on the page. Fire
+       the start immediately before the first complete so the ask
+       cohort can never show a complete without a start. */
+    if (!dpAskStarted) {
+      dpAskStarted = true;
+      try { fleetTrack("tool_start", { tool: "dad-ask", surface: "ask", entry: "ask-panel" }); } catch (e) {}
+    }
     try { fleetTrack("tool_complete", { tool: "dad-ask", surface: "ask" }); } catch (e) {}
   }
 }
