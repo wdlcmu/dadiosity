@@ -944,6 +944,33 @@ function dadCountAsk(query) {
   if (words.do && words.you && words.have) return true;
   return false;
 }
+/* Run-off / street-safety class (SPEC-DAD-COLDQA1105-01, Nov 5,
+   2026): the on-page mirror of the chat worker's safety route.
+   No written lesson covers running off, bolting, or staying safe
+   near cars, streets, or parking lots, and the word "hand" in a
+   hand-holding sentence used to pull the hitting lesson to the
+   top as if it were the answer. The class, not one phrasing: a
+   danger place with run-off motion or a hand-holding struggle, a
+   hand-holding escape with run-off motion, or a bolt/dart verb
+   aimed at a child outside a play frame. Hand-holding alone and
+   run-off verbs alone never fire, and a hitting ask with no
+   danger place keeps the hitting lesson. */
+function dadRunOffSafety(query) {
+  var t = String(query || "");
+  var place = /\b(parking lot|parking|street|streets|road|roads|traffic|driveway|crosswalk|car park)\b/i.test(t);
+  var runOff = /\b(bolt(?:s|ed|ing)?|dart(?:s|ed|ing)?|dash(?:es|ed|ing)?|runs? (?:off|away|out)|ran (?:off|away|out)|running (?:off|away|out)|takes? off|took off|gets? away|pulls? away|into (?:the )?(?:street|road|traffic)|across (?:the )?(?:parking lot|street|road))\b/i.test(t);
+  var anyRun = /\b(run|runs|ran|running|race|races|racing|chase|chasing|escape|escapes|escaped|wander\w*)\b/i.test(t);
+  var handHold = /\b(hold(?:s|ing)? (?:my|her|his) hands?|held my hand|holding hands|hand[- ]holding|lets? go of (?:my |her |his )?hand|let go of (?:my |her |his )?hand|rips? (?:out )?(?:her |his )?hand|pull(?:s|ed|ing)? (?:her |his )?hand (?:out|free|away)|won['’]?t hold (?:my |her |his )?hand|refuses? to hold (?:my |her |his )?hand)\b/i.test(t)
+    || (/\bhands?\b/i.test(t) && (runOff || place));
+  var crossing = /\bcross(?:ing|es|ed)? (?:the )?(?:road|street)\b/i.test(t) || /\bcrosswalk\b/i.test(t);
+  if (place && (runOff || anyRun || handHold)) return true;
+  if (crossing && handHold) return true;
+  if (handHold && runOff) return true;
+  if (/\b(bolt(?:s|ed|ing)?|dart(?:s|ed|ing)?)\b/i.test(t)
+      && /\b(kid|kids|toddler|child|children|daughter|son|baby|she|he|her|him|year old)\b/i.test(t)
+      && !/\b(play|playing|game|games|dance|dancing)\b/i.test(t)) return true;
+  return false;
+}
 function dadRank(query) {
   var bank = window.DADIO_LESSONS || [];
   var scored = bank.map(function (lesson) { return { lesson: lesson, score: dadScore(lesson, query) }; });
@@ -1005,6 +1032,20 @@ function dadAsk() {
     cbox.appendChild(cp1); cbox.appendChild(cp2);
     answer.appendChild(cbox);
     try { fleetTrack("ask_answered", { tool: "dad-ask", via: "count" }); } catch (e) {}
+    return;
+  }
+  if (dadRunOffSafety(q)) {
+    var sbox = document.createElement("div");
+    sbox.className = "nomatch";
+    var sp1 = document.createElement("p");
+    var ss1 = document.createElement("strong");
+    ss1.textContent = "No written lesson fits those words yet.";
+    sp1.appendChild(ss1);
+    var sp2 = document.createElement("p");
+    sp2.textContent = "No written lesson covers running off, bolting, or staying safe near cars, streets, or parking lots. The 45 lessons cover bedtime, play, food, feelings, mornings, fears, sharing, screens, and hard moments. Try a few plain words for another hard part, or tap an example above.";
+    sbox.appendChild(sp1); sbox.appendChild(sp2);
+    answer.appendChild(sbox);
+    try { fleetTrack("ask_fallback", { tool: "dad-ask", missing: "safety-runoff" }); } catch (e) {}
     return;
   }
   var ranked = dadRank(q);

@@ -407,6 +407,15 @@
     .tonight .tl-step { padding-bottom: 0.875rem; }
     .tonight .tl-text, .tonight .tl-line { line-height: 1.5; }
     .tonight .tl-anchor { font-size: 1.625rem; margin-bottom: 0.25rem; }
+    /* Peek geometry (SPEC-DAD-COLDQA1105-02, Nov 5, 2026): on phone
+       the Dinner card narrows and the rail gap tightens so the hero
+       card's move name — the plan's concrete example — reads in
+       full at rest instead of showing a 63px mid-word slice of its
+       240px headline. The rail, the five cards, the snap, the dots
+       and every ID are unchanged; only the first card's width and
+       the gap move, and only on phone. */
+    .tonight .tn-track { gap: 0.25rem; }
+    .tonight .tn-card:first-child { flex-basis: 35%; }
     .tonight .tl-how { margin-bottom: 0.375rem; }
     .tonight .t-season { margin-top: 0.375rem; }
     /* Phone-only cut (Addendum 1439, SPEC-DADIO-VERIFY1437-01): the
@@ -1503,10 +1512,19 @@ document.addEventListener("DOMContentLoaded", function () {
   var current = 0;
   function activeIdx() {
     if (cards.length < 2) return 0;
-    var step = cards[1].offsetLeft - cards[0].offsetLeft;
-    if (!step) return 0;
-    var idx = Math.round(track.scrollLeft / step);
-    return Math.max(0, Math.min(cards.length - 1, idx));
+    /* Nearest snap position wins. (SPEC-DAD-COLDQA1105-02: the
+       phone peek geometry narrows the first card, so a single
+       uniform step between cards 1 and 2 no longer describes the
+       later snap points — the old step math showed "4 of 5" while
+       the third card was on screen. With equal card widths this
+       nearest-snap read is the same count the step math gave.) */
+    var base = cards[0].offsetLeft;
+    var best = 0, bestDist = Infinity;
+    for (var i = 0; i < cards.length; i++) {
+      var d = Math.abs(track.scrollLeft - (cards[i].offsetLeft - base));
+      if (d < bestDist) { bestDist = d; best = i; }
+    }
+    return best;
   }
   function paint() {
     var idx = activeIdx();
