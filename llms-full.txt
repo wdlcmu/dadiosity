@@ -1,46 +1,27 @@
 # Dadiosity: full page text
 
-> Complete text of dadiosity.com: the homepage, the ask page, the question pages, privacy, and terms.
+> Complete text of dadiosity.com: the homepage, this week at home, the ask page, the question pages, privacy, and terms.
 > Dadiosity runs a dad's evenings and weekends: a fixed evening plan with tonight's activity already picked, plus one small lesson each day, for dads of little kids. Lessons are live on the site; the daily email has not started.
 > A small pilot group starts first.
-> Text captured from the live pages, 2026-11-01.
+> Text captured from the live pages, 2026-11-01; the homepage section refreshed from the live page 2026-11-06.
 
 ## Homepage (https://dadiosity.com/)
 
 Tonight (top of the homepage, changes each day): tonight's running plan for 6 to 9, the fixed skeleton (dinner, one block, bath as play, the close, your hour) with tonight's anchor block already picked by rotation and the phone line printed in the dinner block. The day's lesson rides inside the anchor block as a seasoning strip (its title and puzzle line), and the full lesson sits directly below the plan on the same card, opening with the miss, then the move and why it works, the full lesson one tap away, and tomorrow's lesson named. On days outside the hand-built week, the lesson fills from the same 45-lesson bank on a daily rotation, puzzle included. Friday to Sunday the card also shows this weekend's two picks, and the week view below shows all seven nights already picked.
 Dadiosity
+One lesson a day for dads of little kids.
 Being present is the job. We bring the activities.
-Tonight's plan for 6 to 9 is on the card, already picked, with one lesson inside it.
-For dads of little kids. Free. A minute to read.
 Read a sample lesson.
 Sign up for daily lessons.
 Join
-A small pilot group starts first, picked from this list. The first 45 lessons are written.
-No spam. No ads. We never sell your email.
+Daily emails have not started yet. The first group is small, picked from this list.
 You are in.
 We saved your email.
 No email is sent today.
-First lessons go to a small pilot group.
-Then one lesson each day.
 Read the sample lesson
 This week's evenings
 Every night this week is already picked.
 Read this week's lessons
-How it works
-1. Join: Add your email. Nothing else.
-2. Pilot: A small group of dads starts first.
-3. Start: Your first lesson comes at the full launch, or sooner in the pilot.
-4. Read daily: One short lesson. A minute each.
-What we don't do
-Not sending yet. Daily emails have not started.
-Email only. The form takes one email address.
-Nothing else asked. No name, phone, or payment.
-Nothing to buy. The lessons are free.
-Short only. One short lesson each day.
-No long reads. No courses or ebooks.
-Our guarantees
-Leave any time. Email hello@dadiosity.com today.
-Stop link. Every lesson carries one.
 A sample lesson
 A dad sent you this lesson. (Shown only to readers who arrive on a shared link.)
 Dadiosity is one short lesson a day by email. For dads of little kids. Free.
@@ -58,16 +39,21 @@ Join for daily lessons
 Dealing with something tonight?
 Say it in your own words. Get the written lesson that fits.
 Ask here
-No email needed. Nothing you type is sent or saved.
+No email needed. Nothing you type is saved.
 Each lesson: five parts.
 - 1. The idea: one dad skill, in small steps.
 - 2. Try this tonight: one real moment.
 - 3. Tonight's play: short game.
 - 4. Why it works: clear, honest reason.
 - 5. One line to keep: the whole lesson, in one line.
-Small moments.
-Floor time
-Table time
+Questions dads ask
+What can I do with my 3-year-old today?
+How to make bedtime easier with a toddler
+What to do when your toddler won't listen
+Works with your AI
+Your AI can fetch tonight's plan. Connect this free server, then ask it for tonight's plan:
+https://mcp.dadiosity.com/mcp
+Copy
 Built with Muse.
 Privacy Terms
 More family tools: Pick My Costume · The Present Picker
