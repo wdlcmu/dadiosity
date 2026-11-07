@@ -73,6 +73,14 @@ var DADIO_NEUTRAL = {};
 ("grocery store toddler time much too easier easy easily chaos chaotic").split(" ").forEach(function (w) { DADIO_NEUTRAL[dadStem(w)] = 1; });
 var DADIO_LIGHT = {};
 ("get take make go come keep give let put try help want").split(" ").forEach(function (w) { DADIO_LIGHT[dadStem(w)] = 1; });
+/* SPEC-DAD-VERIFY1894-02 (Nov 7, 2026): the ease/chaos words filed
+   neutral by SPEC-DAD-COLDQA1106B-01, stemmed the same way. A query
+   that carries one of these words is describing how a filed moment
+   feels (chaos at dinner, a chaotic bedtime); the gate branch in
+   dadScore below reads this set to tell that shape apart from a
+   plain unmatched word with no feeling word at all. */
+var DADIO_FEELING = {};
+("easier easy easily chaos chaotic").split(" ").forEach(function (w) { DADIO_FEELING[dadStem(w)] = 1; });
 /* QA1105-04 stem parity: these sets are only ever looked up with
    STEMMED tokens, so their keys are filed through dadStem itself —
    after the silent-e strip, a raw "make"/"store"/"time" key would
@@ -489,6 +497,45 @@ function dadRepairNoAnchor(query) {
   }
   return false;
 }
+/* SPEC-DAD-VERIFY1894-01 (Nov 7, 2026): the dose-seeking shape.
+   "How much medicine should I give her" and "what dose of ibuprofen
+   should I give my child" served Lesson 27 ("Make a Gift for
+   Someone") at exactly the bar: "give" stems to "giv", which fully
+   matches the gift lesson's filed topic "giving", and the child word
+   carried it through the action-hit gate. No written lesson answers
+   a dose question — the chat worker declines these on its medical
+   route — so the on-device matcher must answer its honest no-match,
+   the way the filed dose control already behaves. The shape is read
+   structurally, not by filed strings: a dose cue (a dose word, a
+   dose unit, or a how-much / how-many quantity ask) together with a
+   medicine word (a generic medicine word or a common named one),
+   or "give" beside a dose word or unit, or "give" in a quantity ask
+   whose object is a word the bank files nowhere (a named medicine
+   is exactly that: ibuprofen and tylenol appear in no lesson's
+   topics, title, or text). A quantity ask with no medicine, no
+   "give", and no unknown object — "how many lessons are there" —
+   is untouched, as is every serving query: no filed query carries
+   this shape. When the shape fires, no lesson passes the gate. */
+function dadDoseAsk(query) {
+  var rawWords = dadNorm(query).split(" ").filter(function (w) { return !!w; });
+  var words = {};
+  rawWords.forEach(function (w) { words[w] = 1; });
+  var has = function (arr) { return arr.some(function (w) { return words[w]; }); };
+  var doseWord = has(["dose", "doses", "dosage", "dosing"]);
+  var unitWord = has(["milligram", "milligrams", "mg", "milliliter", "milliliters", "millilitre", "millilitres", "ml", "teaspoon", "teaspoons", "tsp", "tablespoon", "tablespoons", "tbsp", "cc"]);
+  var medWord = has(["medicine", "medicines", "medication", "medications", "drug", "drugs", "ibuprofen", "tylenol", "acetaminophen", "paracetamol", "advil", "motrin", "benadryl", "diphenhydramine", "cetirizine", "zyrtec", "claritin", "loratadine", "amoxicillin"]);
+  var giveWord = has(["give", "gives", "giving", "gave", "given"]);
+  var nq = " " + dadNorm(query) + " ";
+  var quantity = nq.indexOf(" how much ") >= 0 || nq.indexOf(" how many ") >= 0;
+  if (!doseWord && !unitWord && !quantity) return false;
+  if (medWord) return true;
+  if (giveWord && (doseWord || unitWord)) return true;
+  var vocab = dadVocab();
+  var unknown = dadTokens(query).some(function (t) { return !vocab.all[t] && !DADIO_NEUTRAL[t] && !DADIO_LIGHT[t]; });
+  if (giveWord && quantity && unknown) return true;
+  if (unitWord && unknown) return true;
+  return false;
+}
 function dadScore(lesson, query) {
   var qn = " " + dadNorm(query) + " ";
   var qPairs = dadTokenPairs(query);
@@ -584,10 +631,37 @@ function dadScore(lesson, query) {
   else if (denomToks.length > 0 && unmatched.length === 0 && npCount >= 1) pass = true;
   else if (unmatched.length === 1 && DADIO_LIGHT[unmatched[0]] && fullNPCount >= 1) pass = true;
   else if (fullNPCount >= 1 && dadActionHit(lesson, query, qPairs, qCorr, full)) pass = true;
+  /* SPEC-DAD-VERIFY1894-02 (Nov 7, 2026): the one-anchor feeling
+     shape. "Dinner is chaos" served Lesson 29, but "dinner is total
+     chaos" capped at 3 — the intensifier "total" is a plain unmatched
+     word and vetoed the single solid anchor, the same dilution the
+     bedtime compounds showed ("bedtime is chaotic at our house",
+     top Lesson 6 at 3, the scene word "house" unmatched). When the
+     query carries an ease/chaos feeling word and the match rests on
+     a solid full-topic anchor, up to two plain unmatched words (an
+     intensifier, a scene word, a mess) no longer veto it. The fences
+     keep the honesty promise: no anchor, no pass (gibberish, car,
+     weather, and bitcoin beside "chaos" still match nothing); no
+     feeling word, no pass ("my toddler screams at bedtime" and "our
+     mornings are a mess" keep their honest no-match — neither names
+     ease or chaos); bare "easier" / "chaos" alone still find no
+     anchor and serve nothing. One more fence: an unmatched word
+     that is itself a filed one-word topic ("mess", the tidy
+     lesson's own anchor) is a competing anchor, not a plain word —
+     it is tolerated only when this lesson's own score is already
+     strong (5 or more), so "bedtime is a chaotic mess" serves the
+     bedtime lesson (raw 6) while "dinner is a chaotic mess" stays
+     an honest no-match instead of tipping to the tidy lesson on a
+     tie. The bar itself is unchanged. */
+  else if (fullNPCount >= 1 && solidAnchor && unmatched.length >= 1 && unmatched.length <= 2 && qToks.some(function (t) { return DADIO_FEELING[t]; }) && (score >= 5 || unmatched.every(function (t) { return !dadVocab().phraseSet[t]; }))) pass = true;
   /* SPEC-DAD-VERIFY1583-01: a named non-child repair object in a
      fixing frame, with no parenting situation anchor, passes no
      gate — the plain-words cap below then tells the truth. */
   if (dadRepairNoAnchor(query)) pass = false;
+  /* SPEC-DAD-VERIFY1894-01: a dose-seeking shape (dadDoseAsk above)
+     passes no gate either — the plain-words cap below then tells
+     the truth and the matcher answers its honest no-match. */
+  if (dadDoseAsk(query)) pass = false;
   if (!pass && score > 3) score = 3;
   return score;
 }
