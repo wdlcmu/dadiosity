@@ -373,8 +373,25 @@ function dadTokens(s) {
    "easier" received — no score weights change, the bar stays 4, and
    alone they still serve nothing: bare "simpler" / "simple" find no
    anchor and stay honest no-matches. */
+/* SPEC-DAD-COLDQA1106B-04 (Nov 7, 2026): "please" is politeness
+   filler, not a hard part, but it sat in no set at all, so it
+   counted as a plain unmatched word everywhere. On its own it
+   vetoed nothing ("please make bedtime simpler" served at 9) and
+   one scene word on its own was excused by the feeling branch
+   below ("make bedtime simpler at our house" served at 9) — but
+   together, "please" plus "make" plus "house" are three unmatched
+   words beside the one solid anchor ("bedtime"), one past that
+   branch's two-word allowance, so "please make bedtime simpler
+   at our house" capped at 3 while its "easier" twin served at
+   14 on the full filed phrase "make bedtime easier". "please"
+   now joins the neutral set, with the scene words: it appears in
+   no lesson's topics, title, or text, so it earns no score; it
+   simply never counts for or against the gate. No score weights
+   change, the bar stays 4, and the honesty promise is unchanged:
+   "please" beside a dose, car, weather, or bitcoin ask names no
+   anchor and still serves nothing. */
 var DADIO_NEUTRAL = {};
-("grocery store toddler time much too easier easy easily simpler simple chaos chaotic").split(" ").forEach(function (w) { DADIO_NEUTRAL[dadStem(w)] = 1; });
+("grocery store toddler time much too easier easy easily simpler simple chaos chaotic please").split(" ").forEach(function (w) { DADIO_NEUTRAL[dadStem(w)] = 1; });
 var DADIO_LIGHT = {};
 ("get take make go come keep give let put try help want").split(" ").forEach(function (w) { DADIO_LIGHT[dadStem(w)] = 1; });
 /* SPEC-DAD-VERIFY1894-02 (Nov 7, 2026): the ease/chaos words filed
