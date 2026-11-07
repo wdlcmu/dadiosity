@@ -390,8 +390,32 @@ function dadTokens(s) {
    change, the bar stays 4, and the honesty promise is unchanged:
    "please" beside a dose, car, weather, or bitcoin ask names no
    anchor and still serves nothing. */
+/* SPEC-DAD-VERIFY1935-01 (Nov 7, 2026): the rest of the request
+   frame is the same politeness class one ring further out. "help"
+   (with "us" — "me" and "you" are stop words and never tokenize),
+   "kindly", "pls", and "thanks" / "thank you" each sat outside the
+   neutral set, so any one of them beside a "simpler" anchor plus
+   a scene word was again the third unmatched word past the
+   feeling branch's two-word allowance: "help me make bedtime
+   simpler at our house", "kindly make bedtime simpler at our
+   house", "thank you please make bedtime simpler at our house"
+   all capped at 3 while their "easier" twins served on the full
+   filed phrase. Each word was checked the way "please" was:
+   "kindly" and "pls" appear in no lesson's topics, title, or
+   text and earn no score anywhere; "help" earns score only as a
+   filed topic of Lessons 10 and 16 (it was already a light verb,
+   never a solid anchor) and in body text; "us" earns only one
+   body word in Lesson 17; "thanks" earns only one body word in
+   Lesson 10. None earns any score in the lessons these shapes
+   anchor to, so as neutral words they simply never count for or
+   against the gate; no score weights change and the bar stays 4.
+   One honest consequence: bare "help" used to serve Lesson 10 on
+   the word alone; it now names no situation and stays a
+   no-match, like bare "easier". Beside a dose, car, weather, or
+   bitcoin ask every one of these words names no anchor and
+   still serves nothing. */
 var DADIO_NEUTRAL = {};
-("grocery store toddler time much too easier easy easily simpler simple chaos chaotic please").split(" ").forEach(function (w) { DADIO_NEUTRAL[dadStem(w)] = 1; });
+("grocery store toddler time much too easier easy easily simpler simple chaos chaotic please help us kindly pls thanks").split(" ").forEach(function (w) { DADIO_NEUTRAL[dadStem(w)] = 1; });
 var DADIO_LIGHT = {};
 ("get take make go come keep give let put try help want").split(" ").forEach(function (w) { DADIO_LIGHT[dadStem(w)] = 1; });
 /* SPEC-DAD-VERIFY1894-02 (Nov 7, 2026): the ease/chaos words filed
