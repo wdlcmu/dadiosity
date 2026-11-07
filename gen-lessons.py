@@ -59,7 +59,20 @@ TOPICS = {
     19: ["teach me", "let her teach", "she teaches", "learn from her", "her turn to lead"],
     20: ["wiggles", "energy", "restless", "shake it out", "calm body", "sit still", "move first"],
     21: ["hello", "coming home", "greeting", "big hello", "arrive home", "reunion"],
-    22: ["things to do at home", "things to do with a 3 year old at home", "play at home", "activities at home", "rainy day", "rainy", "rainy day activity", "rainy activity", "indoor", "indoor activity", "play", "how to play", "pretend", "follow her lead", "play with her", "playtime", "toys"],
+    # SPEC-DAD-VERIFY1935-02 (Nov 7, 2026): "inside" is the everyday
+    # synonym of the "indoor" filed by SPEC-DAD-COLDQA1106B-03, but it
+    # was filed nowhere, so "things to do inside" and "inside
+    # activities for a toddler" dead-ended while the indoor twins
+    # served. Bare "inside" alone closes only the one-content-word
+    # shape ("what to do inside with my toddler"); the phrase forms
+    # mirror the indoor filings ("inside activity" beside "indoor
+    # activity", "things to do inside" beside "things to do at
+    # home"), and "pouring" is the rain word in "what to do inside
+    # when it pours all day" — the same weather-word class as the
+    # "rainy" already filed here. Fences hold: "inside pool hours
+    # near me" still names no second anchor and stays a no-match,
+    # as do the rain-statement questions.
+    22: ["things to do at home", "things to do with a 3 year old at home", "play at home", "activities at home", "rainy day", "rainy", "rainy day activity", "rainy activity", "indoor", "indoor activity", "inside", "inside activity", "things to do inside", "pouring", "play", "how to play", "pretend", "follow her lead", "play with her", "playtime", "toys"],
     23: ["breathe", "breathing", "calm down", "slow breath", "big feelings", "settle"],
     24: ["tantrum", "meltdown", "melt down", "check the body", "hungry", "tired", "fell apart", "body first", "won't listen"],
     25: ["story", "when you were small", "your childhood", "tell her a story", "stories about you"],
