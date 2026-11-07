@@ -72,7 +72,15 @@ TOPICS = {
     # "rainy" already filed here. Fences hold: "inside pool hours
     # near me" still names no second anchor and stays a no-match,
     # as do the rain-statement questions.
-    22: ["things to do at home", "things to do with a 3 year old at home", "play at home", "activities at home", "rainy day", "rainy", "rainy day activity", "rainy activity", "indoor", "indoor activity", "inside", "inside activity", "things to do inside", "pouring", "play", "how to play", "pretend", "follow her lead", "play with her", "playtime", "toys"],
+    # SPEC-DAD-VERIFY1945-02 (Nov 7, 2026): the bare phrase with
+    # "indoors" was never filed — only "things to do inside" was —
+    # so "things to do indoors" dead-ended at 3 while every
+    # neighbouring indoors shape served on the "indoor" stem.
+    # Both bare phrase forms are filed here, mirroring "things to
+    # do inside": "things to do indoors" and its singular twin
+    # "things to do indoor". Fences hold: "inside pool hours near
+    # me" and "will it pour tomorrow" stay no-matches.
+    22: ["things to do at home", "things to do with a 3 year old at home", "play at home", "activities at home", "rainy day", "rainy", "rainy day activity", "rainy activity", "indoor", "indoor activity", "inside", "inside activity", "things to do inside", "things to do indoors", "things to do indoor", "pouring", "play", "how to play", "pretend", "follow her lead", "play with her", "playtime", "toys"],
     23: ["breathe", "breathing", "calm down", "slow breath", "big feelings", "settle"],
     24: ["tantrum", "meltdown", "melt down", "check the body", "hungry", "tired", "fell apart", "body first", "won't listen"],
     25: ["story", "when you were small", "your childhood", "tell her a story", "stories about you"],

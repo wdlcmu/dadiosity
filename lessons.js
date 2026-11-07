@@ -668,6 +668,8 @@ window.DADIO_LESSONS = [
    "inside",
    "inside activity",
    "things to do inside",
+   "things to do indoors",
+   "things to do indoor",
    "pouring",
    "play",
    "how to play",
