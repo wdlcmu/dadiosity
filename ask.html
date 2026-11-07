@@ -361,8 +361,20 @@ function dadTokens(s) {
    is unchanged); they simply never count for or against the gate,
    like the scene words below. Alone they serve nothing: "easier" or
    "chaos" by itself still finds no anchor and stays a no-match. */
+/* SPEC-DAD-COLDQA1106B-02 (Nov 7, 2026): "simpler" / "simple" are the
+   same ease family one word over — "make bedtime simpler for us",
+   "how to make dinner simpler", and "make bath time simpler" capped
+   at 3 exactly as the "easier" shapes did before the fix above,
+   because the word sat in no lesson's topics and was not neutral, so
+   it vetoed the single solid anchor ("bedtime", "dinner", "bath").
+   The morning shapes already passed only because a routine/topic
+   filing carried a second anchor. "simpler" / "simple" now join the
+   neutral set and the feeling set below, the same class treatment
+   "easier" received — no score weights change, the bar stays 4, and
+   alone they still serve nothing: bare "simpler" / "simple" find no
+   anchor and stay honest no-matches. */
 var DADIO_NEUTRAL = {};
-("grocery store toddler time much too easier easy easily chaos chaotic").split(" ").forEach(function (w) { DADIO_NEUTRAL[dadStem(w)] = 1; });
+("grocery store toddler time much too easier easy easily simpler simple chaos chaotic").split(" ").forEach(function (w) { DADIO_NEUTRAL[dadStem(w)] = 1; });
 var DADIO_LIGHT = {};
 ("get take make go come keep give let put try help want").split(" ").forEach(function (w) { DADIO_LIGHT[dadStem(w)] = 1; });
 /* SPEC-DAD-VERIFY1894-02 (Nov 7, 2026): the ease/chaos words filed
@@ -370,9 +382,14 @@ var DADIO_LIGHT = {};
    that carries one of these words is describing how a filed moment
    feels (chaos at dinner, a chaotic bedtime); the gate branch in
    dadScore below reads this set to tell that shape apart from a
-   plain unmatched word with no feeling word at all. */
+   plain unmatched word with no feeling word at all.
+   SPEC-DAD-COLDQA1106B-02 (Nov 7, 2026): "simpler" / "simple" join
+   this set too — a "make X simpler" ask carries up to two plain
+   unmatched words beside its anchor ("for us" in "make bedtime
+   simpler for us"), and this branch is what keeps those plain words
+   from vetoing the anchor, exactly as it already did for "easier". */
 var DADIO_FEELING = {};
-("easier easy easily chaos chaotic").split(" ").forEach(function (w) { DADIO_FEELING[dadStem(w)] = 1; });
+("easier easy easily simpler simple chaos chaotic").split(" ").forEach(function (w) { DADIO_FEELING[dadStem(w)] = 1; });
 /* QA1105-04 stem parity: these sets are only ever looked up with
    STEMMED tokens, so their keys are filed through dadStem itself —
    after the silent-e strip, a raw "make"/"store"/"time" key would
