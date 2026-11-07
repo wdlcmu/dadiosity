@@ -122,8 +122,36 @@ function dadTokens(s) {
    no-match, like bare "easier". Beside a dose, car, weather, or
    bitcoin ask every one of these words names no anchor and
    still serves nothing. */
+/* SPEC-DAD-VERIFY1945-01 (Nov 7, 2026): greeting and attention
+   openers and the wider thanking frame are the same politeness
+   class one ring further out again. "excuse" (the "excuse me"
+   framing — "me" is a stop word and never tokenizes), "hey",
+   "hi", "pardon", "yo", and the thanking expansions "lot" (in
+   "thanks a lot"), "many" (in "many thanks"), "bunch" (in
+   "thanks a bunch"), and "appreciated" (in "much appreciated"
+   — "much" was already neutral) each sat outside the neutral
+   set, so any one of them beside a "simpler" anchor plus a
+   scene word was again the unmatched word past the feeling
+   branch's allowance: "excuse me make bedtime simpler at our
+   house", "hey make bedtime simpler at our house", "thanks a
+   lot make bedtime simpler at our house" all capped at 3 while
+   their "easier" twins served on the full filed phrase. Each
+   word was checked the way "please" was: "excuse", "hey",
+   "hi", "many", "pardon", "yo", "bunch", and "appreciated"
+   appear in no lesson's topics, title, or text and earn no
+   score anywhere; "lot" earns only body words in Lessons 17,
+   20, and 27. None earns any score in the lessons these shapes
+   anchor to, so as neutral words they simply never count for
+   or against the gate; no score weights change and the bar
+   stays 4. Two neighbours are deliberately NOT in this class:
+   "sorry" and "hello" carry their own lesson anchors (the
+   apology lesson and the greeting lesson), and "there" is a
+   stop word that never tokenizes ("hey there" needs no
+   filing). Beside a dose, car, weather, or bitcoin ask every
+   one of these words names no anchor and still serves
+   nothing. */
 var DADIO_NEUTRAL = {};
-("grocery store toddler time much too easier easy easily simpler simple chaos chaotic please help us kindly pls thanks").split(" ").forEach(function (w) { DADIO_NEUTRAL[dadStem(w)] = 1; });
+("grocery store toddler time much too easier easy easily simpler simple chaos chaotic please help us kindly pls thanks excuse hey hi pardon yo lot many bunch appreciated").split(" ").forEach(function (w) { DADIO_NEUTRAL[dadStem(w)] = 1; });
 var DADIO_LIGHT = {};
 ("get take make go come keep give let put try help want").split(" ").forEach(function (w) { DADIO_LIGHT[dadStem(w)] = 1; });
 /* SPEC-DAD-VERIFY1894-02 (Nov 7, 2026): the ease/chaos words filed
