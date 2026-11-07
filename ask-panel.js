@@ -1001,7 +1001,17 @@ function dpRenderChat(j, msg) {
     dpTrackAnswered({ tool: "dad-ask", lesson: lessons[0].n, via: "chat" });
   } else {
     var grounded = null;
-    if (/There isn't a written lesson on that yet|No written lesson fits/.test(lead)) {
+    /* SPEC-DAD-COLDQA1106B-01 (Nov 7, 2026): the chat has two
+       no-lesson leads — the no-match lead below and the off-scope
+       lead ("It is outside the written lessons…"). The ground check
+       must hear both: "things to do with a 3 year old at home" drew
+       the off-scope lead even though the bank files that exact title
+       under Lesson 22, so the filed lesson never surfaced in the
+       panel. Grounding itself is unchanged — dpGroundLesson still
+       serves only when this page's matcher clears the bar, so a
+       truly off-scope ask (bitcoin, weather) still renders the
+       chat's no, exactly as before. */
+    if (/There isn't a written lesson on that yet|No written lesson fits|outside the written lessons/.test(lead)) {
       grounded = dpGroundLesson(msg);
     }
     if (grounded) {
