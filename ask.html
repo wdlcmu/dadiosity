@@ -350,8 +350,19 @@ function dadTokens(s) {
    topic ("play") still answers. Setting and filler words (grocery,
    store, toddler, time, much, too) name the scene, not the hard
    part, so they never count for or against the gate. */
+/* SPEC-DAD-COLDQA1106B-01 (Nov 7, 2026): ease and chaos words name
+   how hard a moment feels, not the moment itself — "easier" / "easy" /
+   "easily" in "make bedtime easier", "chaos" / "chaotic" in "morning
+   routine is chaos". They sat in no lesson's topics, so a query whose
+   only other words were one solid topic anchor ("bedtime", "morning",
+   "bath") failed the gate on the strength of a modifier and capped at
+   3, one under the bar — the site's own question-page titles dead-
+   ended. As neutral words they still score (body/title/topic weight
+   is unchanged); they simply never count for or against the gate,
+   like the scene words below. Alone they serve nothing: "easier" or
+   "chaos" by itself still finds no anchor and stays a no-match. */
 var DADIO_NEUTRAL = {};
-("grocery store toddler time much too").split(" ").forEach(function (w) { DADIO_NEUTRAL[dadStem(w)] = 1; });
+("grocery store toddler time much too easier easy easily chaos chaotic").split(" ").forEach(function (w) { DADIO_NEUTRAL[dadStem(w)] = 1; });
 var DADIO_LIGHT = {};
 ("get take make go come keep give let put try help want").split(" ").forEach(function (w) { DADIO_LIGHT[dadStem(w)] = 1; });
 /* QA1105-04 stem parity: these sets are only ever looked up with

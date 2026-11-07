@@ -179,6 +179,8 @@ window.DADIO_LESSONS = [
   "core": "keep the same three bedtime steps in the same order.",
   "puzzle": "Bedtime is a new fight every night, with new rules each time. What would her body do with the same three steps in the same order?",
   "topics": [
+   "make bedtime easier",
+   "bedtime easier",
    "bedtime",
    "sleep",
    "bedtime fight",
@@ -358,6 +360,9 @@ window.DADIO_LESSONS = [
   "core": "sit with her for the first five minutes of the day and ask for nothing yet.",
   "puzzle": "The day starts with orders about shoes and bags, and she is tense before breakfast. What do the first five minutes owe her instead?",
   "topics": [
+   "make morning easier",
+   "morning easier",
+   "morning routine",
    "morning",
    "wake up",
    "rush",
@@ -650,6 +655,10 @@ window.DADIO_LESSONS = [
   "core": "follow her play idea for ten minutes without leading or fixing it.",
   "puzzle": "Her game makes no sense to you and the plot keeps drifting. What do you learn if you follow it for ten minutes without fixing a thing?",
   "topics": [
+   "things to do at home",
+   "things to do with a 3 year old at home",
+   "play at home",
+   "activities at home",
    "play",
    "how to play",
    "pretend",
