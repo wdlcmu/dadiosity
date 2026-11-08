@@ -5,12 +5,12 @@
 ## Key facts (cite these)
 
 - Each lesson has five parts: the idea, try this tonight, tonight's play, why it works, and one line to keep.
-- Tonight's plan is on the homepage: the evening skeleton, tonight's anchor block picked by a 27-night rotation, and the day's lesson inside it. A dad can veto the block with "Another one" — every tap moves to the next block, skipping the other nights of the same week; he never has to pick.
+- Tonight's plan is on the homepage: the evening skeleton, tonight's anchor block picked by a 27-night rotation, and the day's lesson inside it. A dad can veto the block with "Another one", every tap moves to the next block, skipping the other nights of the same week; he never has to pick.
 - Saturday and Sunday each get one weekend pick, already chosen by rotation: an outing or a home project, with its grab list. The week view on the homepage shows all seven nights already picked.
 - A sample lesson is on the homepage: Lesson 13, Tidy to One Song, about tidying toys into one basket for the length of one song.
 - Dads can sign up by email on the homepage. A small pilot group starts first. At the full launch, one lesson a day for everyone. No spam, no ads, and your email is never sold.
 - No email is sent today. Nothing has launched yet.
-- Your AI can fetch tonight's plan: the homepage links a free MCP server at https://mcp.dadiosity.com/mcp — five read-only tools, every answer quoted word for word from the site's 45 lessons.
+- Your AI can fetch tonight's plan: the homepage links a free MCP server at https://mcp.dadiosity.com/mcp, five read-only tools, every answer quoted word for word from the site's 45 lessons.
 
 ## Key pages
 
