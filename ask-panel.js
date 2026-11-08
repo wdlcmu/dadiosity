@@ -806,7 +806,27 @@ function dadTodayAsk(query) {
      like its listed singular. Without this, the widened day gate
      would pull "lesson for tonight about tantrums" to the day
      lesson while its singular twin stayed with the topic matcher. */
-  for (var k in words) { if (hard.indexOf(dadStem(k)) !== -1) return false; }
+  /* SPEC-DAD-VERIFY2134-01: stem alignment — the loop above checks
+     each word's stem against the RAW hard list, but dadStem strips a
+     silent final e, so dadStem("bites") is "bit" and
+     dadStem("bedtimes") is "bedtim", neither of which is a raw entry
+     ("bite" / "bedtime" are), and the two plurals escaped the veto.
+     The veto now checks every candidate form of a word — the word
+     itself, its stem, its plain deplural (trailing s stripped), its
+     -es deplural, and the stems of those — against BOTH the raw hard
+     list and the stemmed hard list, so a plural vetoes exactly like
+     its singular, including the double-plural shapes a full
+     hard-list probe turns up ("hitss", "bitees"). A candidate must
+     equal a hard entry or a hard stem exactly, so ordinary day-ask
+     words cannot trip it. */
+  var hardStems = [];
+  for (var j = 0; j < hard.length; j++) { var hs = dadStem(hard[j]); if (hardStems.indexOf(hs) === -1) hardStems.push(hs); }
+  for (var k in words) {
+    var cands = [k, dadStem(k)];
+    var des = k.replace(/s+$/, ""); if (des && des !== k) { cands.push(des); cands.push(dadStem(des)); }
+    var dee = k.replace(/es$/, ""); if (dee && dee !== k) { cands.push(dee); cands.push(dadStem(dee)); }
+    for (var c = 0; c < cands.length; c++) { if (hard.indexOf(cands[c]) !== -1 || hardStems.indexOf(cands[c]) !== -1) return false; }
+  }
   if (words.lesson || words.lessons) return true;
   /* SPEC-DAD-COLDQA1108-02 (cont.): "card" is the site's own word
      for the same dated lesson (the chat door: "Tonight's card on
@@ -841,6 +861,17 @@ function dadTodayAsk(query) {
   dadNorm(query).split(" ").forEach(function (w) { if (!w) return; if (!plainOk[w] && !plainOk[w.replace(/'s$/, "")]) plain = false; });
   if (plain && words.do && askWord) return true;
   if (plain && listWord) return true;
+  /* SPEC-DAD-VERIFY2134-02: a plain "something + day word" ask names
+     the same job with no do/list word at all — "something for
+     tonight", "give me something tonight" — and dead-ended while
+     its twin "something to do tonight" served the day lesson.
+     Under the same every-word-plain guard, "something" alone is
+     enough: the hard-part veto above has already fired for any
+     named hard part, and any other content word breaks the plain
+     guard, so a topic ask ("something about bites tonight",
+     "something for my car tonight") still stays with the topic
+     matcher or its honest no-match. */
+  if (plain && words.something) return true;
   return false;
 }
 /* SPEC-COLDQA1103-D3 route: a bank-size question — "how many lessons
