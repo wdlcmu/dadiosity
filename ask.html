@@ -1113,10 +1113,31 @@ function dadTodayLesson() {
 function dadTodayAsk(query) {
   var words = {};
   dadNorm(query).split(" ").forEach(function (w) { if (!w) return; words[w] = 1; words[w.replace(/'s$/, "")] = 1; });
-  if (!words.today) return false;
+  /* SPEC-DAD-COLDQA1108-02: the day word is the whole day family —
+     "today", "todays" (no apostrophe), and "tonight" / "tonights"
+     (the 's-strip above already yields "tonight" from "tonight's").
+     This site is a tonight product, so a dad asking for "tonight's
+     lesson" names the same dated lesson as "today's lesson"; the
+     old gate accepted only "today" and dead-ended every tonight
+     phrasing while the chat door served it. The hard-part veto
+     below is unchanged, so a tonight ask naming a hard part still
+     routes to the topic matcher, never to the day lesson. */
+  if (!words.today && !words.todays && !words.tonight && !words.tonights) return false;
   var hard = ["bedtime", "sleep", "sleeping", "listen", "listening", "tantrum", "meltdown", "cry", "crying", "scream", "screaming", "hit", "hits", "hitting", "bite", "biting", "yell", "yelling", "fight", "fights", "eat", "eating", "food", "dinner", "teeth", "potty", "sick", "fever"];
   for (var i = 0; i < hard.length; i++) { if (words[hard[i]]) return false; }
+  /* SPEC-DAD-COLDQA1108-02 (veto parity): the veto list above is
+     unchanged, but it is also checked against each word's stem,
+     so a plural hard part ("tantrums", "screams") vetoes exactly
+     like its listed singular. Without this, the widened day gate
+     would pull "lesson for tonight about tantrums" to the day
+     lesson while its singular twin stayed with the topic matcher. */
+  for (var k in words) { if (hard.indexOf(dadStem(k)) !== -1) return false; }
   if (words.lesson || words.lessons) return true;
+  /* SPEC-DAD-COLDQA1108-02 (cont.): "card" is the site's own word
+     for the same dated lesson (the chat door: "Tonight's card on
+     the homepage is Lesson 25"), so a card ask anchored by a day
+     word serves it too. */
+  if (words.card) return true;
   var askWord = words.what || words.things || words.thing || words.ideas || words.idea || words.activities || words.activity || words.something;
   var listWord = words.things || words.thing || words.ideas || words.idea || words.activities || words.activity;
   /* SPEC-DAD-VERIFY1583-02: boy / girl and their plurals are child
@@ -1129,6 +1150,22 @@ function dadTodayAsk(query) {
   var childWord = words.year || words.old || words.toddler || words.kid || words.kids || words.child || words.children || words.daughter || words.son || words.baby || words.boy || words.boys || words.girl || words.girls || words.we || words["2"] || words["3"] || words["4"] || words["5"];
   if (words.do && askWord && childWord) return true;
   if (listWord && childWord) return true;
+  /* SPEC-DAD-COLDQA1108-02 (cont.): a do/ask or list ask anchored
+     by the day word alone still names this site's one job —
+     "what should i do tonight" carries no child word and no
+     lesson word, and it is the most natural way to ask a tonight
+     product for tonight's lesson. This last branch fires only
+     when every word in the ask is a plain day-ask word: any
+     other content word (a named situation, hard or not) keeps
+     the ask with the topic matcher or its honest no-match, so
+     "what should i do tonight when she screams" is NOT pulled
+     to the day lesson, and off-topic asks ("what is the weather
+     tonight") name no do/ask or list word here and stay honest. */
+  var plainOk = { what: 1, should: 1, can: 1, could: 1, would: 1, do: 1, does: 1, did: 1, i: 1, we: 1, you: 1, me: 1, my: 1, our: 1, us: 1, a: 1, an: 1, the: 1, is: 1, it: 1, to: 1, of: 1, and: 1, or: 1, for: 1, with: 1, on: 1, in: 1, at: 1, tonight: 1, tonights: 1, today: 1, todays: 1, this: 1, give: 1, show: 1, get: 1, something: 1, things: 1, thing: 1, ideas: 1, idea: 1, activities: 1, activity: 1, lesson: 1, lessons: 1, card: 1, please: 1, now: 1 };
+  var plain = true;
+  dadNorm(query).split(" ").forEach(function (w) { if (!w) return; if (!plainOk[w] && !plainOk[w.replace(/'s$/, "")]) plain = false; });
+  if (plain && words.do && askWord) return true;
+  if (plain && listWord) return true;
   return false;
 }
 /* SPEC-COLDQA1103-D3 route: a bank-size question — "how many lessons
