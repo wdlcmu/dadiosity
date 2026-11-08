@@ -1113,9 +1113,9 @@ window.FLEET_CFG = {
     } else if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(url).then(function () {
         msg.textContent = 'Link copied. Send it to a dad.';
-      }, function () { msg.textContent = url; });
+      }, function () { msg.textContent = 'Sharing did not work on this device. Copy the address from your browser bar to send it.'; });
     } else {
-      msg.textContent = url;
+      msg.textContent = 'Sharing did not work on this device. Copy the address from your browser bar to send it.';
     }
   }
   if (shareBtn) {
