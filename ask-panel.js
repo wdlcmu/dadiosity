@@ -832,13 +832,26 @@ function dadTodayAsk(query) {
      is strictly shorter than its source, so it terminates) until a
      hard entry or hard stem is reached or no new form appears.
      Matching stays exact, so ordinary day-ask words cannot trip it. */
+  /* SPEC-DAD-VERIFY2152-01: the closure still missed the misspelled
+     plurals of the two y-final hard entries that keep the y and add
+     "ies" — "cryies", "cryssies", "pottyieses". dadStem("cryssies")
+     strands at "cryssy": its ies->y step fires on the whole word and
+     yields a double-y form no shorter transform moves, and stripping
+     suffixes from the end never reaches "cry" / "potty" either. The
+     transform list now carries the ies step itself, applied inside
+     the closure like every other transform: ies->y (the correct-
+     plural step, "cries" -> "cry") and ies stripped outright (the
+     misspelled-plural step, "cryies" -> "cry", "cryssies" ->
+     "cryss" -> "cry"). Both forms are strictly shorter than their
+     source, so the bounded closure still terminates, and matching
+     stays exact, so ordinary day-ask words cannot trip it. */
   for (var k in words) {
     var cands = [k];
     for (var r = 0; r < 8; r++) {
       var added = [];
       for (var ci = 0; ci < cands.length; ci++) {
         var x = cands[ci];
-        var forms = [dadStem(x), x.replace(/s+$/, ""), x.replace(/es$/, ""), x.replace(/s$/, "")];
+        var forms = [dadStem(x), x.replace(/s+$/, ""), x.replace(/es$/, ""), x.replace(/s$/, ""), x.replace(/ies$/, "y"), x.replace(/ies$/, "")];
         for (var fi = 0; fi < forms.length; fi++) { var f = forms[fi]; if (f && cands.indexOf(f) === -1 && added.indexOf(f) === -1) added.push(f); }
       }
       if (!added.length) break;
