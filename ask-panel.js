@@ -685,6 +685,68 @@ function dadSceneMismatch(lesson, query) {
   }
   return false;
 }
+/* SPEC-DADIO-ADV1108-06 (Nov 8, 2026): two coverage helpers.
+   (1) The screen-scene hit. Screens are a named coverage area of
+   this site and Lesson 36 files the screen words (screen, screens,
+   tablet, tv, ipad), but the natural dad wording for the moment is
+   a watching sentence — "how do i stop my toddler watching so
+   much tv" — and "watching" is filed nowhere, so the filed anchor
+   ("tv") stood alone beside unmatched words (stop, watching) and
+   capped at 3: a covered topic found nothing. The hit is read from
+   the bank's own filing, the way the action hit above is: the
+   query names a watching word (watch / watches / watching /
+   watched, the forms a parent types) AND one of this lesson's own
+   filed screen anchors fully matches — the dad named the same
+   screen thing the lesson files. A watching word with no screen
+   anchor ("watching the rain") earns nothing, and a screen anchor
+   with no watching word keeps the gate it already had ("screen
+   time" still passes on its filed phrase, bare "tv" on the
+   one-word rule). Only lessons filing a screen anchor can take
+   the hit; the phone-at-meals lesson (Lesson 26) also files
+   "screen", so it can take the hit only when the dad named the
+   screen itself, and Lesson 36 outscores it there on its own
+   filing (its tv / tablet / screen-time entries).
+   (2) The stated-age note. "My 5 year old refuses to brush his
+   teeth" served Lesson 37 "Teeth Get a Song" at 14, a lesson filed
+   for ages 2 to 4, with nothing on the serve saying it was written
+   for younger kids. The lesson may still help; the serve now says
+   so. dadStatedAge reads only the age the dad himself stated (a
+   number with "year old" / "years old" / "month old" / "months
+   old" / "yo", or after "age" / "aged"); dadAgeNote returns the
+   plain-words note when that age sits outside the lesson's filed
+   range, and null inside it, so in-range serves render exactly as
+   before. The note never changes a score or a serve — it is
+   rendered on the card by dadCard when a query is passed. */
+function dadScreenHit(lesson, query, full) {
+  var watch = { watch: 1, watches: 1, watching: 1, watched: 1 };
+  var hasWatch = dadNorm(query).split(" ").some(function (w) { return !!watch[w]; });
+  if (!hasWatch) return false;
+  var anchors = { tv: 1, screen: 1, tablet: 1, ipad: 1, television: 1 };
+  var namedAnchor = false;
+  (lesson.topics || []).forEach(function (t) {
+    dadTokens(t).forEach(function (s) { if (anchors[s] && full[s]) namedAnchor = true; });
+  });
+  return namedAnchor;
+}
+function dadStatedAge(query) {
+  var nq = " " + dadNorm(query) + " ";
+  var m = nq.match(/ (\d+) months? old /);
+  if (m) return { years: parseInt(m[1], 10) / 12, label: m[1] + "-month-old" };
+  m = nq.match(/ (\d+) years? old /) || nq.match(/ (\d+)yo /) || nq.match(/ aged? (\d+) /);
+  if (m) return { years: parseInt(m[1], 10), label: m[1] + "-year-old" };
+  return null;
+}
+function dadAgeNote(lesson, query) {
+  if (!lesson || !lesson.age || lesson.age.length < 2) return null;
+  var stated = dadStatedAge(query);
+  if (!stated) return null;
+  var lo = lesson.age[0], hi = lesson.age[1];
+  if (stated.years >= lo && stated.years <= hi) return null;
+  var range = lo === hi ? "age " + lo : "ages " + lo + " to " + hi;
+  return stated.years > hi
+    ? "Written for " + range + ", younger than the " + stated.label + " you named. It can still help; expect to stretch it a little."
+    : "Written for " + range + ", older than the " + stated.label + " you named. It can still help; expect to simplify it a little.";
+}
 function dadScore(lesson, query) {
   var qn = " " + dadNorm(query) + " ";
   var qPairs = dadTokenPairs(query);
@@ -780,6 +842,12 @@ function dadScore(lesson, query) {
   else if (denomToks.length > 0 && unmatched.length === 0 && npCount >= 1) pass = true;
   else if (unmatched.length === 1 && DADIO_LIGHT[unmatched[0]] && fullNPCount >= 1) pass = true;
   else if (fullNPCount >= 1 && dadActionHit(lesson, query, qPairs, qCorr, full)) pass = true;
+  /* SPEC-DADIO-ADV1108-06: the screen-scene hit (dadScreenHit
+     above) passes the same way the action hit does — the dad named
+     the moment (watching) and the thing (a screen anchor this
+     lesson files), so the unmatched words around them (stop, all
+     day, always) cannot veto the filed lesson. */
+  else if (fullNPCount >= 1 && dadScreenHit(lesson, query, full)) pass = true;
   /* SPEC-DAD-VERIFY1894-02 (Nov 7, 2026): the one-anchor feeling
      shape. "Dinner is chaos" served Lesson 29, but "dinner is total
      chaos" capped at 3 — the intensifier "total" is a plain unmatched
@@ -1091,13 +1159,29 @@ function dadRank(query) {
 }
 window.DADIO_MATCH = { score: dadScore, rank: dadRank, THRESHOLD: 4 };
 var DADIO_THRESHOLD = 4;
-function dadCard(lesson) {
+function dadCard(lesson, query) {
   var art = document.createElement("article");
   art.className = "card";
   var head = document.createElement("p");
   head.className = "card-head";
   head.textContent = lesson.heading;
   art.appendChild(head);
+  /* SPEC-DADIO-ADV1108-06: an out-of-range serve carries its age
+     note on the card itself (dadAgeNote above), so a dad who named
+     an age outside this lesson's filed range sees that it was
+     written for younger (or older) kids before he reads it. Only
+     the query-led serves pass a query; dated and sample cards pass
+     none and render exactly as before. */
+  var ageNote = query ? dadAgeNote(lesson, query) : null;
+  if (ageNote) {
+    var ageP = document.createElement("p");
+    ageP.className = "age-note";
+    var ageS = document.createElement("strong");
+    ageS.textContent = "Age note:";
+    ageP.appendChild(ageS);
+    ageP.appendChild(document.createTextNode(" " + ageNote));
+    art.appendChild(ageP);
+  }
   [["The idea:", lesson.idea], ["Try this tonight:", lesson.move], ["Tonight's play:", lesson.play], ["Why it works:", lesson.why], ["One line to keep:", lesson.core]].forEach(function (part) {
     var p = document.createElement("p");
     var strong = document.createElement("strong");
@@ -1169,6 +1253,7 @@ var DP_CSS = [
   "#dp-answer .dp-card p{color:#2e3338;margin:0 0 .875rem}",
   "#dp-answer .dp-card p:last-child{margin-bottom:0}",
   "#dp-answer .dp-card p strong{color:#1a1d21}",
+  "#dp-answer .dp-card .age-note{font-weight:600;color:#1a1d21}",
   "#dp-answer .dp-card{cursor:pointer}",
   "#dp-answer .dp-card:focus-visible{outline:2px solid #0b5e57;outline-offset:2px}",
   "#dp-answer .dp-nomatch{background:#ffffff;border:1px solid #e2e7ea;border-radius:1rem;padding:1.5rem 1.25rem}",
@@ -1233,8 +1318,8 @@ function dpTrackAnswered(props) {
 function dpTrackFallback(props) {
   try { fleetTrack("ask_fallback", props); } catch (e) {}
 }
-function dpCard(lesson) {
-  var art = dadCard(lesson);
+function dpCard(lesson, query) {
+  var art = dadCard(lesson, query);
   art.className = "dp-card";
   var head = art.querySelector(".card-head");
   if (head) head.className = "dp-card-head";
@@ -1349,11 +1434,11 @@ function dpAskLocal() {
     return;
   }
   answer.appendChild(dpLabel("Closest lesson for tonight"));
-  answer.appendChild(dpCard(top.lesson));
+  answer.appendChild(dpCard(top.lesson, q.value));
   var rest = ranked.slice(1, 3).filter(function (r) { return r.score >= 3; });
   if (rest.length) {
     answer.appendChild(dpLabel("Also close"));
-    rest.forEach(function (r) { answer.appendChild(dpCard(r.lesson)); });
+    rest.forEach(function (r) { answer.appendChild(dpCard(r.lesson, q.value)); });
   }
   dpTrackAnswered({ tool: "dad-ask", lesson: top.lesson.n });
   var first = answer.querySelector(".dp-card");
@@ -1411,10 +1496,10 @@ function dpRenderChat(j, msg) {
     lead = idx > 0 ? lead.slice(0, idx).trim() : "";
     if (lead) dpBubble("DADIOSITY'S AI", lead);
     answer.appendChild(dpLabel("Closest lesson for tonight"));
-    answer.appendChild(dpCard(lessons[0]));
+    answer.appendChild(dpCard(lessons[0], msg));
     if (lessons.length > 1) {
       answer.appendChild(dpLabel("Also close"));
-      lessons.slice(1).forEach(function (l) { answer.appendChild(dpCard(l)); });
+      lessons.slice(1).forEach(function (l) { answer.appendChild(dpCard(l, msg)); });
     }
     dpTrackAnswered({ tool: "dad-ask", lesson: lessons[0].n, via: "chat" });
   } else {
@@ -1438,11 +1523,11 @@ function dpRenderChat(j, msg) {
          page's own match found it — the false no never renders. */
       dpBubble("DADIOSITY'S AI", "The chat said there is no written lesson on that, but the match on this page found one in the bank. Here it is.");
       answer.appendChild(dpLabel("Closest lesson for tonight"));
-      answer.appendChild(dpCard(grounded.lesson));
+      answer.appendChild(dpCard(grounded.lesson, msg));
       var grest = dadRank(msg).slice(1, 3).filter(function (r) { return r.score >= 3; });
       if (grest.length) {
         answer.appendChild(dpLabel("Also close"));
-        grest.forEach(function (r) { answer.appendChild(dpCard(r.lesson)); });
+        grest.forEach(function (r) { answer.appendChild(dpCard(r.lesson, msg)); });
       }
       dpTrackAnswered({ tool: "dad-ask", lesson: grounded.lesson.n, via: "chat-grounded" });
     } else {
@@ -1456,7 +1541,7 @@ function dpRenderChat(j, msg) {
   }
   if (nearest.length) {
     answer.appendChild(dpLabel("Nearest written lessons"));
-    nearest.forEach(function (l) { answer.appendChild(dpCard(l)); });
+    nearest.forEach(function (l) { answer.appendChild(dpCard(l, msg)); });
   }
   var first = answer.querySelector(".dp-card, .dp-bubble");
   if (first) { try { first.scrollIntoView({ block: "nearest" }); } catch (e) {} }
