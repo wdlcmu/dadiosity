@@ -956,6 +956,59 @@ function dadRunOffSafety(query) {
       && !/\b(play|playing|game|games|dance|dancing)\b/i.test(t)) return true;
   return false;
 }
+/* SPEC-DADIO-ADV1108-01 + SPEC-DADIO-ADV1108-02 routes (Nov 8, 2026):
+   the on-device mirror of the chat carrier's hard-scope pins. The
+   chat door routes child emergencies to seek-care words and a dad's
+   urge to hurt his child to a crisis stand-down, deterministically,
+   before any lesson matching. This carrier had neither route: a
+   swallowed coin, a laundry pod, and a fever of 102 drew the generic
+   no-match, and "i feel like shaking her when she wont stop crying"
+   served Lesson 2 "Name It First" — a lesson about naming the
+   child's feeling, handed to a dad describing an urge to shake her.
+   Both routes are checked at the doors before the count route, the
+   run-off route, and ranking, in the chat pins' own order (crisis
+   first, then medical). Neither route serves a lesson, and neither
+   gives medical advice of its own: each only points, in plain
+   words, at the people who can help right now. The render copy at
+   the doors carries the same words the chat pins use. */
+function dadCrisisSafety(query) {
+  var t = String(query || "");
+  /* The dad himself: the chat carrier's crisis-self shapes. */
+  if (/\b(hurt\w* myself|kill\w* myself|harm\w* myself|end my life|suicidal|don'?t want to (be here|live))\b/i.test(t)) return "self";
+  /* The dad's urge toward his child. Every pattern needs the dad's
+     own urge frame, or a first-person report of harm done. A child
+     shaking, hitting, or throwing something never fires: "she
+     shakes her head", "shaking a rattle", "she could hit her baby
+     sister", and the movement lesson's own "shake it off" carry no
+     first-person urge frame aimed at a child, and the weak frames
+     (could / might / almost / nearly) count only in the dad's own
+     first person. */
+  if (/\b(?:feel(?:s|ing)? like|want(?:s|ed)? to|going to|gonna|about to|tempted to|urge to)\s+(?:\w+\s+){0,2}?(?:shak\w*|shook|shaken|hit\w*|hurt\w*|harm\w*|smack\w*)\s+(?:her|him|them|my (?:baby|kid|child|daughter|son|toddler)|the (?:baby|kid|child))\b/i.test(t)) return "child";
+  if (/\bi\s+(?:could|might|almost|nearly)\s+(?:\w+\s+){0,2}?(?:shak\w*|shook|shaken|hit\w*|hurt\w*|harm\w*|smack\w*)\s+(?:her|him|them|my (?:baby|kid|child|daughter|son|toddler)|the (?:baby|kid|child))\b/i.test(t)) return "child";
+  if (/\bshake my (baby|kid|child)\b/i.test(t)) return "child";
+  if (/\bi (?:shook|hit|hurt) (?:her|him|my (?:baby|kid|child|daughter|son))\b/i.test(t)) return "child";
+  return null;
+}
+function dadMedicalSafety(query) {
+  var t = String(query || "");
+  /* Poison first: a named pod or poison on its own, or an eating /
+     drinking / swallowing verb on a substance. The chat door leads
+     these with Poison Control; this route does the same. */
+  if (/\b(laundry pods?|detergent pods?|tide pods?|poison\w*)\b/i.test(t)) return "poison";
+  var ingest = /\b(ate|eat|eating|eaten|swallowed|swallowing|drank|drink|drinking|took|chewed|licked)\b/i.test(t);
+  var substance = /\b(laundry (?:pod|detergent)|detergent (?:pod|pack)|tide pods?|dishwasher (?:pod|tablet)|bleach|cleaners?|cleaning (?:fluid|products?|supplies)|poison\w*|antifreeze|medicines?|medications?|pills?|tablets?|capsules?|ibuprofen|tylenol|acetaminophen|advil|motrin|benadryl|paint|glue|hand sanitizer|sanitizer)\b/i.test(t);
+  if (ingest && substance) return "poison";
+  /* The chat carrier's medical class: a swallowed object on its own
+     verb, fever, choking, and the rest of its seek-care list. The
+     dose words (dose, dosage, and bare medicine names with no
+     ingestion) are the one deliberate carve-out: they keep the
+     honest no-match the dose gate (dadDoseAsk) already gives them,
+     exactly as before. */
+  if (/\bswallow(?:ed|ing|s)?\b/i.test(t)) return "medical";
+  if (/\b(fever|temperature of|choking|choked|vomit\w*|diarrhea|rash|ear infection|cough\w*|allergic|allergy|bleeding|broken bone|concussion|seizure|doctor|pediatrician|emergency|urgent care|er visit)\b/i.test(t)) return "medical";
+  if (/\b10[234](?:\.\d+)?\s*(?:degrees|°|temp(?:erature)?|fever)\b/i.test(t)) return "medical";
+  return null;
+}
 function dadRank(query) {
   var bank = window.DADIO_LESSONS || [];
   var scored = bank.map(function (lesson) { return { lesson: lesson, score: dadScore(lesson, query) }; });
@@ -1148,6 +1201,40 @@ function dpAskLocal() {
     q.focus();
     return;
   }
+  var crisisKind = dadCrisisSafety(q.value);
+  if (crisisKind) {
+    var kbox = document.createElement("div");
+    kbox.className = "dp-nomatch";
+    var kp1 = document.createElement("p");
+    var ks1 = document.createElement("strong");
+    ks1.textContent = crisisKind === "self" ? "Please call or text 988 right now." : "Stop. Put her down somewhere safe first.";
+    kp1.appendChild(ks1);
+    var kp2 = document.createElement("p");
+    kp2.textContent = crisisKind === "self"
+      ? "That line is free, day and night, and a person will talk with you. If you can, put your kid somewhere safe and step into another room while you call."
+      : "Put her down somewhere safe, like her crib or bed, and step into another room for a few minutes. Breathe. That pause is the safe move. If you feel close to hurting her, call or text 988 right now, or call a trusted person. A person will talk with you, free, day and night.";
+    kbox.appendChild(kp1); kbox.appendChild(kp2);
+    answer.appendChild(kbox);
+    dpTrackFallback({ tool: "dad-ask", missing: "crisis-" + crisisKind });
+    return;
+  }
+  var medicalKind = dadMedicalSafety(q.value);
+  if (medicalKind) {
+    var mbox = document.createElement("div");
+    mbox.className = "dp-nomatch";
+    var mp1 = document.createElement("p");
+    var ms1 = document.createElement("strong");
+    ms1.textContent = medicalKind === "poison" ? "Call Poison Control now." : "Get medical help now.";
+    mp1.appendChild(ms1);
+    var mp2 = document.createElement("p");
+    mp2.textContent = medicalKind === "poison"
+      ? "Call Poison Control at 1-800-222-1222 (in the US) or your local emergency number right now. Do not wait for symptoms. Dadiosity's written lessons are not medical advice, and no lesson here covers poisoning."
+      : "That is a health question, and Dadiosity's written lessons are not medical advice. A pediatrician, an urgent care line, or 911 for an emergency is the right call for that one.";
+    mbox.appendChild(mp1); mbox.appendChild(mp2);
+    answer.appendChild(mbox);
+    dpTrackFallback({ tool: "dad-ask", missing: medicalKind === "poison" ? "poison" : "medical" });
+    return;
+  }
   if (dadCountAsk(q.value)) {
     var cbox = document.createElement("div");
     cbox.className = "dp-nomatch";
@@ -1236,6 +1323,8 @@ function dpBubble(who, text, me) {
    lesson serve. Returns the matcher's top hit or null. */
 function dpGroundLesson(q) {
   if (!q || !dadNorm(q)) return null;
+  if (dadCrisisSafety(q)) return null;
+  if (dadMedicalSafety(q)) return null;
   if (dadCountAsk(q)) return null;
   if (dadRunOffSafety(q)) return null;
   var ranked = dadRank(q);
