@@ -858,7 +858,7 @@ window.FLEET_CFG = {
       "2026-11-06": { n: 2, moment: "When she is sad someone left", title: "Name It First", move: "Name the feeling before you fix the problem.", photo: true, why: "She calms faster when she hears that you know what she feels.", miss: "We try to fix the sad feeling fast, before we ever name it.", puzzle: "She is sad that someone left and the feeling has no words yet. What does she need to hear before she needs fixing?" },
       "2026-11-07": { n: 28, moment: "While Grandma is here", title: "Pick One Thing for Tomorrow", move: "At bedtime, let her pick one small thing to look forward to tomorrow.", why: "Grandma is here this weekend, and her days here are few. One small thing picked tonight is a plan the two of them can wake up to tomorrow.", miss: "The days with Grandma drift by on errands and meals, and her visit is nearly over before anyone picked the one thing.", puzzle: "Grandma is here, and tomorrow is one of her last days. What one small thing could she pick tonight to look forward to with Grandma?" },
       "2026-11-08": { n: 25, moment: "While Grandma is here", title: "When You Were Small", move: "Tell her one short true story from when you were her age, with a feeling in it.", why: "Grandma is here this weekend, and nobody remembers your small days the way she does.", miss: "She hears our rules all day. She never hears that we were small once too.", puzzle: "Grandma remembers your small days better than anyone. What story could the two of you hand her tonight?" },
-      "2026-11-09": { n: 12, moment: "Dad's first morning back at work", title: "Start the Morning Slow", move: "Sit with her for the first five minutes of the day and ask for nothing yet.", why: "Work mornings start again today, so five slow minutes keep the change small for her.", miss: "The day starts with orders about shoes and bags from the very first minute.", puzzle: "Work mornings start again today. What do the first five minutes owe her before the shoes and the bags?" }
+      "2026-11-09": { n: 12, moment: "Dad's first morning back at work", title: "Start the Morning Slow", move: "Plan tonight for a calm start in the morning. Lay out clothes and cups before bed. When she wakes, sit with her for five minutes and ask for nothing yet.", why: "Work mornings start again today, so five slow minutes keep the change small for her.", miss: "The day starts with orders about shoes and bags from the very first minute.", puzzle: "Work mornings start again today. What do the first five minutes owe her before the shoes and the bags?" }
     };
     window.DADIO_WEEK = WEEK;
     function key(d) {
@@ -867,6 +867,45 @@ window.FLEET_CFG = {
     var now = new Date();
     var today = WEEK[key(now)];
     var card = document.getElementById("tonight");
+    /* SPEC-DADIO-COLDQA1109-02: shared tomorrow resolver. The dated
+       week map ends Nov 9, 2026; past its end the preview falls
+       through to the same daily rotation the fallback card and
+       /this-week use (day-of-year over the lesson bank), so a
+       Tomorrow line always renders. The bank loads later in this
+       page, so a caller that runs before it defers to
+       DOMContentLoaded, when the bank is in. */
+    window.DADIO_ROT_NEXT = function (d, skipN) {
+      var bank = window.DADIO_LESSONS || [];
+      if (!bank.length) return null;
+      var doy = Math.floor((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - Date.UTC(d.getFullYear(), 0, 0)) / 86400000);
+      var want = ((doy - 1) % bank.length) + 1;
+      for (var i = 0; i < bank.length; i++) {
+        if (bank[i].n === want) return bank[i].n === skipN ? null : { n: bank[i].n, title: bank[i].title };
+      }
+      return null;
+    };
+    window.DADIO_FILL_TOMORROW = function (base, skipN) {
+      var hit = null;
+      for (var off = 1; off <= 7 && !hit; off++) {
+        var nd = new Date(base.getFullYear(), base.getMonth(), base.getDate() + off);
+        var nx = WEEK[key(nd)];
+        if (nx && nx.n !== skipN) hit = { n: nx.n, title: nx.title, off: off, date: nd };
+      }
+      for (var off2 = 1; off2 <= 7 && !hit; off2++) {
+        var rd = new Date(base.getFullYear(), base.getMonth(), base.getDate() + off2);
+        var r = window.DADIO_ROT_NEXT(rd, skipN);
+        if (r) hit = { n: r.n, title: r.title, off: off2, date: rd };
+      }
+      if (!hit) return false;
+      var tLink = document.getElementById("t-tomorrow-link");
+      var tPara = document.getElementById("t-tomorrow");
+      if (!tLink || !tPara) return false;
+      tLink.textContent = hit.title;
+      tLink.href = "/this-week#l" + hit.n;
+      tPara.childNodes[0].textContent = (hit.off === 1 ? "Tomorrow" : days[hit.date.getDay()]) + ": ";
+      tPara.hidden = false;
+      return true;
+    };
     if (!today || !card) return;
     var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -885,18 +924,10 @@ window.FLEET_CFG = {
     }
     document.getElementById("t-link").href = "/this-week#l" + today.n;
     window.DADIO_TODAY_N = today.n;
-    var tPara = document.getElementById("t-tomorrow");
-    for (var off = 1; off <= 7; off++) {
-      var nd = new Date(now.getFullYear(), now.getMonth(), now.getDate() + off);
-      var nx = WEEK[key(nd)];
-      if (nx && nx.n !== today.n) {
-        var tLink = document.getElementById("t-tomorrow-link");
-        tLink.textContent = nx.title;
-        tLink.href = "/this-week#l" + nx.n;
-        tPara.childNodes[0].textContent = (off === 1 ? "Tomorrow" : days[nd.getDay()]) + ": ";
-        tPara.hidden = false;
-        break;
-      }
+    if (!window.DADIO_FILL_TOMORROW(now, today.n)) {
+      document.addEventListener("DOMContentLoaded", function () {
+        window.DADIO_FILL_TOMORROW(now, today.n);
+      });
     }
     card.hidden = false;
     document.addEventListener("DOMContentLoaded", function () {
@@ -968,19 +999,9 @@ window.FLEET_CFG = {
       link.textContent = open ? "Hide the full lesson" : "Read the full lesson";
       link.setAttribute("aria-expanded", open ? "true" : "false");
     });
-    var tPara = document.getElementById("t-tomorrow");
-    for (var off = 1; off <= 7; off++) {
-      var nd = new Date(now.getFullYear(), now.getMonth(), now.getDate() + off);
-      var nx = WEEK[key(nd)];
-      if (nx && nx.n !== L.n) {
-        var tLink = document.getElementById("t-tomorrow-link");
-        tLink.textContent = nx.title;
-        tLink.href = "/this-week#l" + nx.n;
-        tPara.childNodes[0].textContent = (off === 1 ? "Tomorrow" : days[nd.getDay()]) + ": ";
-        tPara.hidden = false;
-        break;
-      }
-    }
+    /* SPEC-DADIO-COLDQA1109-02: same shared resolver as the dated
+       card above (week map first, daily rotation after it). */
+    if (window.DADIO_FILL_TOMORROW) window.DADIO_FILL_TOMORROW(now, L.n);
     var weekSec = document.querySelector(".week");
     if (weekSec) weekSec.hidden = true;
     card.hidden = false;
@@ -1103,9 +1124,57 @@ window.FLEET_CFG = {
 <h2 style="margin:.1rem 0 .5rem;font-size:1.35rem">Works with your AI</h2>
 <p style="margin:.4rem 0">Your AI can fetch tonight's plan. Connect this free server, then ask it for tonight's plan:</p>
 <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:stretch">
-<code id="wai-url" style="flex:1 1 16rem;display:flex;align-items:center;padding:.6rem .7rem;border:1px solid rgba(127,127,127,.45);border-radius:10px;word-break:break-all">https://mcp.dadiosity.com/mcp</code>
-<button type="button" class="wai-copy" data-copy-target="wai-url" style="min-height:44px;min-width:44px;padding:.6rem 1.1rem;border-radius:10px;border:1px solid rgba(127,127,127,.55);background:transparent;color:inherit;font:inherit;cursor:pointer">Copy</button>
+<code id="wai-url" data-url="https://mcp.dadiosity.com/mcp" style="flex:1 1 16rem;display:flex;align-items:center;padding:.6rem .7rem;border:1px solid rgba(127,127,127,.45);border-radius:10px;word-break:break-all">Dadiosity server address</code>
+<button type="button" class="wai-copy" data-copy-target="wai-url" style="min-height:44px;min-width:44px;padding:.6rem 1.1rem;border-radius:10px;border:1px solid rgba(127,127,127,.55);background:transparent;color:inherit;font:inherit;cursor:pointer">Copy the address</button>
+<button type="button" class="wai-show" aria-expanded="false" style="min-height:44px;min-width:44px;padding:.6rem 1.1rem;border-radius:10px;border:1px solid rgba(127,127,127,.55);background:transparent;color:inherit;font:inherit;cursor:pointer">Show the address</button>
 </div>
+<p class="wai-msg" role="status" aria-live="polite" style="margin:.5rem 0 0"></p>
+<script>
+/* SPEC-DADIO-COLDQA1109-03: the raw server address is no longer
+   printed as page text. Copy reads it from the code box's data-url
+   (this also restores the copy handler, which the current page had
+   lost), and Show reveals it on request for manual setup. If copy
+   fails, the address is revealed so it can be copied by hand. */
+(function () {
+  var box = document.getElementById("wai-url");
+  var copyBtn = document.querySelector(".wai-copy");
+  var showBtn = document.querySelector(".wai-show");
+  var msg = document.querySelector(".wai-msg");
+  if (!box || !copyBtn) return;
+  var url = box.getAttribute("data-url") || "";
+  var label = box.textContent;
+  var shown = false;
+  function reveal() {
+    box.textContent = url;
+    shown = true;
+    if (showBtn) { showBtn.textContent = "Hide the address"; showBtn.setAttribute("aria-expanded", "true"); }
+  }
+  function hide() {
+    box.textContent = label;
+    shown = false;
+    if (showBtn) { showBtn.textContent = "Show the address"; showBtn.setAttribute("aria-expanded", "false"); }
+  }
+  if (showBtn) showBtn.addEventListener("click", function () { if (shown) hide(); else reveal(); });
+  copyBtn.addEventListener("click", function () {
+    function done() { if (msg) msg.textContent = "Address copied. Paste it into your AI to connect."; }
+    function fallback() {
+      var ta = document.createElement("textarea");
+      ta.value = url;
+      document.body.appendChild(ta);
+      ta.select();
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta);
+      if (ok) { done(); return; }
+      reveal();
+      if (msg) msg.textContent = "Copy did not work here. The address is shown above, ready to copy by hand.";
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(done, fallback);
+    } else { fallback(); }
+  });
+})();
+</script>
 </section>
 <footer>
   <p>Built with Muse.</p>
