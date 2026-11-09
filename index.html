@@ -178,6 +178,10 @@ localStorage.setItem("fleet_ft2",JSON.stringify(ft));
   .arrive button { flex: 0 1 auto; }
   #sharemsg2 { font-size: 0.875rem; color: var(--muted); }
   #sharemsg2:not(:empty) { margin-top: 0.5rem; }
+  .arrive .arrive-actions + .arrive-actions { margin-top: 0.25rem; }
+  .share-tonight { text-align: left; margin-top: 1rem; }
+  #sharemsg-tonight { font-size: 0.875rem; color: var(--muted); }
+  #sharemsg-tonight:not(:empty) { margin-top: 0.5rem; }
   .askdoor { width: 100%; max-width: 26rem; text-align: center; margin-top: 2.75rem; }
   .askdoor h2 { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; }
   .askdoor p { color: var(--body); margin-bottom: 0.75rem; }
@@ -835,6 +839,10 @@ window.FLEET_CFG = {
       <p><strong>One line to keep:</strong> <span id="t-keep"></span></p>
     </div>
     <p><a class="t-link" id="t-link" href="/this-week">Read the full lesson</a></p>
+    <div class="share share-tonight">
+      <button type="button" id="sharebtn-tonight">Share tonight's lesson</button>
+      <p id="sharemsg-tonight" role="status" aria-live="polite"></p>
+    </div>
     <p class="t-tomorrow" id="t-tomorrow" hidden>Tomorrow: <a id="t-tomorrow-link" href="/this-week"></a></p>
     </div>
   </section>
@@ -1046,10 +1054,15 @@ window.FLEET_CFG = {
     <p class="sample-label">A sample lesson</p>
     <div class="arrive" id="arrive" data-fyg-watch hidden>
       <p><strong>A dad sent you this lesson.</strong></p>
-      <p>Dadiosity is one short lesson a day by email. For dads of little kids. Free.</p>
+      <p id="arrive-lesson" hidden><strong id="arrive-lesson-title"></strong></p>
+      <p>Dadiosity is one short lesson a day for dads of little kids. Free.</p>
+      <div class="arrive-actions">
+        <a href="/this-week" id="arrive-sent" hidden>See the lesson he sent</a>
+        <a href="#tonight" id="arrive-tonight">See tonight's lesson</a>
+        <a href="/ask">Ask for a lesson that fits tonight</a>
+      </div>
       <div class="arrive-actions">
         <a href="#email">Join for daily lessons</a>
-        <button type="button" id="sharebtn2">Share this lesson</button>
       </div>
       <p id="sharemsg2" role="status" aria-live="polite"></p>
     </div>
@@ -1158,26 +1171,56 @@ window.FLEET_CFG = {
 <script>
   var shareBtn = document.getElementById('sharebtn');
   var shareMsg = document.getElementById('sharemsg');
-  function doShare(msg) {
-    var url = 'https://dadiosity.com/?via=share#sample';
-    var data = { title: 'Dadiosity Daily, Lesson 13: Tidy to One Song', text: 'Tidy to One Song. A sample Dadiosity lesson.', url: url };
+  function shareWith(data, msg) {
     if (navigator.share) {
       navigator.share(data).catch(function () {});
     } else if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(url).then(function () {
+      navigator.clipboard.writeText(data.url).then(function () {
         msg.textContent = 'Link copied. Send it to a dad.';
       }, function () { msg.textContent = 'Sharing did not work on this device. Copy the address from your browser bar to send it.'; });
     } else {
       msg.textContent = 'Sharing did not work on this device. Copy the address from your browser bar to send it.';
     }
   }
+  function doShare(msg) {
+    var url = 'https://dadiosity.com/?via=share#sample';
+    var data = { title: 'Dadiosity Daily, Lesson 13: Tidy to One Song', text: 'Tidy to One Song. A sample Dadiosity lesson.', url: url };
+    shareWith(data, msg);
+  }
+  /* SPEC-DADIO-ADV1108-04: tonight's lesson shares itself. The payload is
+     built at click time from the lesson actually served on this page
+     (the rendered title + move and the served lesson number), and the
+     link lands the recipient on that lesson (#tonight, with the lesson
+     number carried in the query so the arrival can name it and link to
+     its full card even if the day has rolled). */
+  function tonightShareData() {
+    var n = window.DADIO_TODAY_N || null;
+    var tEl = document.getElementById('t-title');
+    var mEl = document.getElementById('t-move');
+    var title = tEl ? tEl.textContent.replace(/\s+/g, ' ').trim() : '';
+    var move = mEl ? mEl.textContent.replace(/\s+/g, ' ').trim() : '';
+    if (!n || !title) return null;
+    return {
+      title: 'Dadiosity Daily, Lesson ' + n + ': ' + title,
+      text: title + '. ' + move + ' Tonight\u2019s lesson from Dadiosity \u2014 one short lesson a day for dads of little kids.',
+      url: 'https://dadiosity.com/?via=share&lesson=' + n + '#tonight'
+    };
+  }
+  function doShareTonight(msg) {
+    var data = tonightShareData();
+    if (!data) {
+      msg.textContent = 'Tonight\u2019s lesson is still loading. Try again in a moment.';
+      return;
+    }
+    shareWith(data, msg);
+  }
   if (shareBtn) {
     shareBtn.addEventListener('click', function () { doShare(shareMsg); });
   }
-  var shareBtn2 = document.getElementById('sharebtn2');
-  var shareMsg2 = document.getElementById('sharemsg2');
-  if (shareBtn2) {
-    shareBtn2.addEventListener('click', function () { doShare(shareMsg2); });
+  var shareBtnT = document.getElementById('sharebtn-tonight');
+  var shareMsgT = document.getElementById('sharemsg-tonight');
+  if (shareBtnT) {
+    shareBtnT.addEventListener('click', function () { doShareTonight(shareMsgT); });
   }
   try {
     if (new URLSearchParams(window.location.search).get('via') === 'share') {
@@ -1185,6 +1228,42 @@ window.FLEET_CFG = {
       if (arriveBox) arriveBox.hidden = false;
     }
   } catch (e) {}
+  /* Recipient arrival (SPEC-DADIO-ADV1108-04): name the lesson that was
+     sent, point the first actions at it / at tonight's lesson / at the
+     Ask (all ahead of the email ask below them in the banner), and —
+     when the recipient landed on #tonight rather than the sample —
+     move the banner to just above tonight's card so it is on the
+     screen they actually land on. Runs on DOMContentLoaded so the
+     lesson bank (lessons.js) is available for the title lookup. */
+  document.addEventListener('DOMContentLoaded', function () {
+    try {
+      var params = new URLSearchParams(window.location.search);
+      if (params.get('via') !== 'share') return;
+      var box = document.getElementById('arrive');
+      if (!box) return;
+      var ln = parseInt(params.get('lesson') || '', 10);
+      if (ln && ln >= 1) {
+        var title = '';
+        var bank = window.DADIO_LESSONS || [];
+        for (var i = 0; i < bank.length; i++) { if (bank[i].n === ln) { title = bank[i].title; break; } }
+        if (!title && window.DADIO_WEEK) {
+          for (var k in window.DADIO_WEEK) { if (window.DADIO_WEEK[k].n === ln) { title = window.DADIO_WEEK[k].title; break; } }
+        }
+        if (title) {
+          var lt = document.getElementById('arrive-lesson-title');
+          var lr = document.getElementById('arrive-lesson');
+          if (lt && lr) { lt.textContent = 'Lesson ' + ln + ': ' + title; lr.hidden = false; }
+          var sent = document.getElementById('arrive-sent');
+          if (sent) { sent.href = '/this-week#l' + ln; sent.hidden = false; }
+        }
+      }
+      if (window.location.hash && window.location.hash !== '#sample') {
+        var tonightSec = document.getElementById('tonight');
+        if (tonightSec && tonightSec.parentNode) tonightSec.parentNode.insertBefore(box, tonightSec);
+      }
+      box.hidden = false;
+    } catch (e) {}
+  });
 </script>
 <script>
 "use strict";
@@ -1256,6 +1335,10 @@ fleetSessionMarks(); /* session marks fire through the FA loader now (shim above
   var sb2 = document.getElementById("sharebtn2");
   if (sb2) sb2.addEventListener("click", function(){
     fleetTrack("share_intent", {tool: "dad-lessons", channel: navigator.share ? "native" : "clipboard"});
+  });
+  var sbt = document.getElementById("sharebtn-tonight");
+  if (sbt) sbt.addEventListener("click", function(){
+    fleetTrack("share_intent", {tool: "dad-lessons", channel: navigator.share ? "native" : "clipboard", lesson: window.DADIO_TODAY_N || 0});
   });
 })();
 </script>
