@@ -622,6 +622,69 @@ function dadDoseAsk(query) {
   if (unitWord && unknown) return true;
   return false;
 }
+/* SPEC-DADIO-ADV1108-05 (Nov 8, 2026): the wrong-scene check.
+   The bar and the gate judge how strongly a lesson matches, never
+   whether it is about the scene the dad named, so a lesson could
+   clear the bar on a scene's other words while its own scene sat
+   elsewhere. Two filed shapes, both read from the bank's own
+   filing (topics + title), never from a lesson number:
+   (a) A hitting scene answered by a new-baby lesson. "My son hits
+   his baby sister" served Lesson 40 "A Baby Is Coming. Her Jobs
+   Stay." at 10 — a preparing-for-a-new-baby lesson — on the filed
+   topic "baby sister", while Lesson 35 "Hands Are Not for
+   Hitting", which files the hitting words themselves, sat at 6.
+   When the query names a hitting-family action (hit / bite / kick
+   / push, in the forms a parent types) and this lesson files a
+   new-baby topic (new baby, baby coming, new sibling, baby
+   sister / brother, big sister / brother, sibling, pregnant) but
+   files none of the named action, the lesson is about a different
+   scene and passes no gate. A new-baby ask with no hitting word
+   ("a baby is coming and she is clingy", "my daughter will be a
+   big sister soon") never fires this check and keeps its lesson;
+   the hitting lesson files the action, so it is never capped by
+   its own scene.
+   (b) A named fear object the fear lesson never files. "My
+   daughter is scared of dogs" served Lesson 32 "Name the Dark,
+   Then Shrink It" at 5 — a darkness lesson — on the generic filed
+   words "scared" / "fear" alone, the lowest serve in its battery.
+   When the query names the feared thing ("scared of X", "afraid
+   of X") and a lesson that files the fear words names none of X
+   in its own topics or title, that lesson is about a different
+   fear and passes no gate. The lesson's own scenes keep serving:
+   the dark, monsters, and the night are all in its filing. Where
+   no lesson fits the scene, the honest no-match is the answer. */
+function dadSceneMismatch(lesson, query) {
+  var rawWords = dadNorm(query).split(" ").filter(function (w) { return !!w; });
+  var topicNorms = (lesson.topics || []).map(function (t) { return dadNorm(t); });
+  var sceneStems = {};
+  (lesson.topics || []).forEach(function (t) { dadTokens(t).forEach(function (s) { sceneStems[s] = 1; }); });
+  dadTokens(lesson.title).forEach(function (s) { sceneStems[s] = 1; });
+  var aggrRaw = { hit: 1, hits: 1, hitting: 1, bite: 1, bites: 1, biting: 1, kick: 1, kicks: 1, kicking: 1, push: 1, pushes: 1, pushing: 1 };
+  var aggrStems = {};
+  rawWords.forEach(function (w) { if (aggrRaw[w]) aggrStems[dadStem(w)] = 1; });
+  if (Object.keys(aggrStems).length) {
+    var newBaby = { "new baby": 1, "baby coming": 1, "new sibling": 1, "baby sister": 1, "baby brother": 1, "big sister": 1, "big brother": 1, "sibling": 1, "pregnant": 1 };
+    var filesNewBaby = topicNorms.some(function (t) { return !!newBaby[t]; });
+    var filesAggr = Object.keys(aggrStems).some(function (s) { return !!sceneStems[s]; });
+    if (filesNewBaby && !filesAggr) return true;
+  }
+  var fearRaw = { scared: 1, afraid: 1, fear: 1, fears: 1, frightened: 1, terrified: 1 };
+  var filesFear = ["scar", "afraid", "fear"].some(function (s) { return !!sceneStems[s]; });
+  if (filesFear) {
+    for (var i = 0; i + 1 < rawWords.length; i++) {
+      if (!fearRaw[rawWords[i]] || rawWords[i + 1] !== "of") continue;
+      var objStems = [];
+      for (var j = i + 2; j < rawWords.length && objStems.length < 2; j++) {
+        var w = rawWords[j];
+        if (DADIO_STOP[w]) { if (objStems.length) break; continue; }
+        objStems.push(dadStem(w));
+      }
+      if (objStems.length) return !objStems.some(function (s) { return !!sceneStems[s]; });
+      break;
+    }
+  }
+  return false;
+}
 function dadScore(lesson, query) {
   var qn = " " + dadNorm(query) + " ";
   var qPairs = dadTokenPairs(query);
@@ -748,6 +811,12 @@ function dadScore(lesson, query) {
      passes no gate either — the plain-words cap below then tells
      the truth and the matcher answers its honest no-match. */
   if (dadDoseAsk(query)) pass = false;
+  /* SPEC-DADIO-ADV1108-05: a wrong-scene hit (dadSceneMismatch
+     above) passes no gate either — the plain-words cap below then
+     tells the truth and the matcher answers its honest no-match,
+     or the scene's own lesson, filed under the named action or
+     the named fear, takes the serve. */
+  if (dadSceneMismatch(lesson, query)) pass = false;
   if (!pass && score > 3) score = 3;
   return score;
 }
