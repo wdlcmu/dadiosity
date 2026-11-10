@@ -12,6 +12,16 @@
 - No email is sent today. Nothing has launched yet.
 - Your AI can fetch tonight's plan: the homepage links a free MCP server at https://mcp.dadiosity.com/mcp, five read-only tools, every answer quoted word for word from the site's 45 lessons.
 
+## MCP server
+
+- Server address: https://mcp.dadiosity.com/mcp
+- Free and read-only. Every answer is quoted word for word from the site's 45 written lessons.
+- tonight_plan: tonight's whole evening in order, with tonight's written lesson in full.
+- pick_activity: one evening activity matched to the minutes and energy a dad has.
+- get_lesson: the one written lesson that fits the hard part a dad names, quoted in full.
+- search_lessons: the written lessons filed under a topic, with an honest count.
+- weekend_pick: this week's Saturday or Sunday pick from the weekend bench.
+
 ## Key pages
 
 - [Homepage and sample lesson](https://dadiosity.com/): the promise, the signup form, and the sample lesson.
