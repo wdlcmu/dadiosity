@@ -784,7 +784,6 @@ window.FLEET_CFG = {
             <p class="tl-chips"><span class="chip" id="p-anchor-min"></span><span class="chip">Grab: <span id="p-anchor-grab"></span></span></p>
             <div class="t-season" id="t-season" hidden>
               <p class="s-fit">The block is the activity. The lesson is the move inside it.</p>
-              <p class="s-label"><span id="s-title"></span></p>
               <p class="s-text" id="s-puzzle"></p>
               <p class="s-move" id="s-move" hidden><strong>The move:</strong> <span id="s-move-text"></span></p>
               <p><button type="button" class="s-reveal" id="s-reveal" aria-expanded="false" aria-controls="s-move" hidden>Show the move</button></p>
@@ -1627,12 +1626,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   /* Seasoning: tonight's lesson rides inside the anchor block. The
      lesson layer keeps the miss and the full lesson; its puzzle line
-     moves here, so it prints once. */
-  var title = document.getElementById("t-title").textContent;
+     moves here, so it prints once. The lesson title does NOT ride
+     here (SPEC-DADIO-COLDQA1109B-05): it prints once, as the lesson
+     card heading below. Only the puzzle question, which lives
+     nowhere else on screen, is carried in this strip. */
   var puzzleEl = document.getElementById("t-puzzle");
   var puzzleTxt = document.getElementById("t-puzzle-text").textContent;
-  if (title && puzzleTxt) {
-    document.getElementById("s-title").textContent = title;
+  if (puzzleTxt) {
     document.getElementById("s-puzzle").textContent = puzzleTxt;
     /* Guess-then-reveal (SPEC-DAD-QA1105-06): the move text is loaded
        into the hidden answer layer, but it is NOT shown with the
