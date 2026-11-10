@@ -5,7 +5,7 @@
    matcher itself runs on the visitor's device; the panel's chat door
    sends the words to /api/chat, and nothing is saved there
    (SPEC-DAD-COLDQA1106-02: one privacy story, said plainly on both
-   surfaces — /ask sends nothing, this button sends to the AI chat). */
+   surfaces — /ask sends no words, this button sends to the AI chat). */
 (function () {
 "use strict";
 var DADIO_STOP = {};
@@ -1657,7 +1657,7 @@ function dpBuild() {
   bodyEl.className = "dp-body";
   var promise = document.createElement("p");
   promise.className = "dp-promise";
-  promise.textContent = "Chat with Dadiosity's AI. Your words are sent to the chat, which answers only from the 45 written lessons on this site. If there is no written lesson on something, it will say so, in plain words. Nothing you type is saved. (The /ask page is different: it matches on your device and sends nothing.)";
+  promise.textContent = "Chat with Dadiosity's AI. Your words are sent to the chat, which answers only from the 45 written lessons on this site. If there is no written lesson on something, it will say so, in plain words. Nothing you type is saved. (The /ask page is different: it matches on your device, and none of your words are sent or saved there. Only a count that an ask happened is kept.)";
   bodyEl.appendChild(promise);
   var photo = document.createElement("img");
   photo.className = "dp-photo";

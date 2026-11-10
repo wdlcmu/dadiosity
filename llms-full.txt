@@ -7,7 +7,7 @@
 
 ## Homepage (https://dadiosity.com/)
 
-Tonight (top of the homepage, changes each day): tonight's running plan for 6 to 9, the fixed skeleton (dinner, one block, bath as play, the close, your hour) with tonight's anchor block already picked by rotation and the phone line printed in the dinner block. The day's lesson rides inside the anchor block as a seasoning strip (its title and puzzle line), and the full lesson sits directly below the plan on the same card, opening with the miss, then the move and why it works, the full lesson one tap away, and tomorrow's lesson named. On days outside the hand-built week, the lesson fills from the same 45-lesson bank on a daily rotation, puzzle included. Friday to Sunday the card also shows this weekend's two picks, and the week view below shows all seven nights already picked.
+Tonight (top of the homepage, changes each day): tonight's running plan for 6 to 9, the fixed skeleton (dinner, one block, bath as play, the close, your hour) with tonight's anchor block already picked by rotation and the phone line printed in the dinner block. The day's lesson rides inside the anchor block as a seasoning strip (its title and puzzle line), and the full lesson sits directly below the plan on the same card, opening with the miss, then the move and why it works, the full lesson one tap away, and tomorrow's lesson named. On days outside the hand-built week, the lesson fills from the same 45-lesson bank on a daily rotation, puzzle included. Friday to Sunday the card also shows this weekend's two picks. Below the card, a door links to the This Week page, where all seven nights of the week live.
 Dadiosity
 One lesson a day for dads of little kids.
 Being present is the job. We bring the activities.
@@ -42,8 +42,20 @@ Ask here
 No email needed. Nothing you type is saved.
 Questions dads ask
 What can I do with my 3-year-old today?
+Things to do with a 3-year-old at home
+How to play with a toddler
 How to make bedtime easier with a toddler
+How to be a more present dad
 What to do when your toddler won't listen
+What to do when your toddler has a tantrum
+How to get a toddler to bed without a fight
+Things to do with a toddler at the grocery store
+How to play outside with a toddler
+What to say when your toddler hits
+How to make mornings easier with a toddler
+What to do after you yell at your toddler
+How to get a toddler to sit at the table
+How to get a toddler to clean up toys
 Works with your AI
 Your AI can fetch tonight's plan. Connect this free server, then ask it for tonight's plan:
 Dadiosity server address
@@ -68,7 +80,7 @@ This week's lessons
 Seven lessons for this week. One written lesson for each night, picked from the daily rotation. Each card is the full lesson. (The dated Nov 1-9, 2026 week of hellos and goodbyes is kept below as that week's record; the live page shows the current week's lessons.)
 For the people coming and going
 Dadiosity Daily · Lesson 27
-Make a gift for someone
+Make a Gift for Someone
 The idea: Your kid gets a lot of gifts, help, and care each day. Making a thing for someone turns that flow around. Giving lets her feel the joy on the other side.
 Try this tonight: Tonight, help her make one small gift for a real person. A drawn card, a painted stone, a leaf she picked. Ask who it is for, then let her lead the making.
 Tonight's play: Set up a small gift shop of her drawings and crafts. She wraps one pick in cloth or paper for its new owner. You help tie it, then plan the giving.
@@ -76,7 +88,7 @@ Why it works: Making for others grows care she can feel in her hands. She sees h
 One line to keep: Help her make one small gift for a real person, then give it to that person.
 When Grandma arrives
 Dadiosity Daily · Lesson 21
-Make hello a big deal
+Make Hello a Big Deal
 The idea: How you greet your kid sets the note when you meet again. Bags, phone, and small talk can come first by habit. She watches where she lands in that minute.
 Try this tonight: At the next homecoming, greet her first. Put bags down, put the phone away, get low, and give her a hug and her name with joy. Let the rest wait a minute.
 Tonight's play: Make up a hello you both use each time. A high five, a spin, a nose tap, in the same order. Practice it three times tonight till you both know it well.
@@ -84,7 +96,7 @@ Why it works: A big hello tells her she comes first in your day. That warm minut
 One line to keep: Greet her first when you reunite, before bags, phone, or other talk.
 Before the goodbye
 Dadiosity Daily · Lesson 31
-Check her needs before you go
+Check Her Needs Before You Go
 The idea: Most blow ups are not a shock. Hunger, a tired body, a long wait, and a sudden switch stack up. One stack can tip a calm kid into tears.
 Try this tonight: Tonight, before a hard part like a trip out, scan her stack first. Food, rest, bathroom, and what comes next. Fix the one need you can fix, then name the plan in one short line.
 Tonight's play: Pack for a pretend trip with a stuffed bear. Ask what the bear needs before you go. Food, water, a rest, a toy for the wait. Let her pack each thing in a bag.
@@ -92,7 +104,7 @@ Why it works: A need fixed early does not join the stack. A plan she has heard m
 One line to keep: Check food, rest, and bathroom before you go, fix the one you can, then tell her the plan.
 When she is sad someone left
 Dadiosity Daily · Lesson 2
-Name it first
+Name It First
 The idea: When feelings get big, your kid has no words for them yet. If you name the feeling first, she does not have to shout to be known.
 Try this tonight: At dinner or bath time, when she gets upset, name it before you fix it. Say, you are mad. You wanted more. Then wait a beat before you help.
 Tonight's play: Stand at a mirror together. Make a happy face, a sad face, and a mad face. Name each one out loud. Let her pick the next face for you to make.
@@ -100,7 +112,7 @@ Why it works: Words give a feeling a smaller shape. A named feeling is easier to
 One line to keep: Name the feeling before you fix the problem.
 Leaving the pool
 Dadiosity Daily · Lesson 3
-Warn her before it ends
+Warn Her Before It Ends
 The idea: Hard moments often come at a switch. Play stops, dinner starts, or the bath ends. A sudden switch can feel like a loss. A fair warning makes it easier.
 Try this tonight: Tonight, warn her two times before each switch. Say, two more minutes, then we wash hands. Say it once more at one minute. Then follow through, calm and kind.
 Tonight's play: Practice the switch as a game. Send a stuffed bear down a slide made of books. Count down out loud together. Clap when the bear lands and the turn ends.
@@ -108,7 +120,7 @@ Why it works: A warning gives her mind time to move. Time to move means fewer te
 One line to keep: Warn two times before a change, then follow through.
 While Grandma is here
 Dadiosity Daily · Lesson 25
-When you were small
+When You Were Small
 The idea: Your kid sees you as big and sure most days. She may not know you were once small and scared too. A true story from your young days can bring you close.
 Try this tonight: Tonight, tell her one short true story from when you were her age. Keep it small and plain. Name how you felt, what went wrong, and who helped you feel safe again.
 Tonight's play: Act out your small story with two stuffed animals. One plays young you, one plays the helper. Keep it soft and short. Let her pick a happy line for the end.
@@ -116,7 +128,7 @@ Why it works: Hearing dad was small once makes her own fears feel less alone. Sh
 One line to keep: Tell her one short true story from when you were her age, with a feeling in it.
 Dad's first morning back at work
 Dadiosity Daily · Lesson 12
-Start the morning slow
+Start the Morning Slow
 The idea: The first minutes set the tone for the home. A rushed start can make a small kid tense before the day has begun. A slow start gives her time to wake and join you.
 Try this tonight: Plan tonight for a calm start in the morning. Lay out clothes and cups before bed. When she wakes, sit with her for five minutes. Hold her, talk soft, and ask for nothing yet.
 Tonight's play: Tonight, act out the morning with two stuffed bears. Wake them slow, hug them, dress them, feed them. Let her be the dad bear who keeps the pace kind and calm.
@@ -151,7 +163,7 @@ More family tools: Pick My Costume · The Present Picker
 
 Dadiosity
 Dealing with something tonight?
-Ask here. Say tonight's hard part in your own words. We match your words to one of the 45 written lessons, right on this page. Nothing you type is sent or saved. No email needed.
+Ask here. Say tonight's hard part in your own words. You get the one of the 45 written lessons that fits what you wrote, matched right on this page, on your device. None of your words are sent or saved. We only count that an ask happened. No email needed.
 Tonight's hard part, in your words
 Find my lesson
 Or tap an example:
@@ -161,7 +173,7 @@ She won't listen to me
 I yelled at her and I feel awful
 How do I play with her?
 How this works
-Your words stay here. The match runs on this page, on your device. Nothing is sent or saved.
+Your words stay here. This page matches on your device. None of your words are sent or saved. We only count that an ask happened.
 Real lessons only. Each answer is one of the 45 written lessons, word for word. Nothing is made up.
 No match, said plain. If no lesson fits your words, this page says so. It does not guess.
 Read the sample lesson
@@ -275,7 +287,7 @@ The page in two moves
 2. Keep the same three bedtime steps in the same order. (Lesson 6)
 Right now: let her lead
 Dadiosity Daily · Lesson 22
-Follow her lead
+Follow Her Lead in Play
 The idea: Most play has a grown up plan under it. You pick the game, set the rules, and fix what drifts. When she leads, you get to see how her mind works.
 Try this tonight: Tonight, for ten minutes, follow her play idea just as she gives it. Do not add rules, fix the plot, or swap in a new game. Ask what happens next, then do that.
 Tonight's play: Build a town from blocks and soft toys. She picks who lives there and where roads go. You move the cars where she sends them and say the lines she gives you.
@@ -290,7 +302,7 @@ A plain plan for the rest of today
 - Bedtime: The same three steps, in the same order. The lesson below shows how.
 End the day: same steps at bedtime
 Dadiosity Daily · Lesson 6
-Keep the same three steps
+Same Steps at Bedtime
 The idea: Bedtime goes better when the end of the day feels known. Same steps, in the same order, tell her body what comes next. New tricks each night do the opposite.
 Try this tonight: Pick three steps tonight and keep the order fixed. Bath, book, then song works well. Say each step as you start it. Do not add a fourth step when she asks for more.
 Tonight's play: Put a stuffed bear to bed before her turn comes. A bath in a toy tub, one short book, one short song. Use the same order you will use for her.
@@ -374,28 +386,28 @@ The page in four moves
 3. Ask her to teach you one small thing, then learn it her way. (Lesson 19)
 4. Let her finish her whole story before you reply, with no jump in. (Lesson 15)
 Dadiosity Daily · Lesson 22
-Follow her lead
+Follow Her Lead in Play
 The idea: Most play has a grown up plan under it. You pick the game, set the rules, and fix what drifts. When she leads, you get to see how her mind works.
 Try this tonight: Tonight, for ten minutes, follow her play idea just as she gives it. Do not add rules, fix the plot, or swap in a new game. Ask what happens next, then do that.
 Tonight's play: Build a town from blocks and soft toys. She picks who lives there and where roads go. You move the cars where she sends them and say the lines she gives you.
 Why it works: Led play tells her her ideas can hold a room. She thinks in steps and tries them out loud. You learn what she loves by staying inside her plan.
 One line to keep: Follow her play idea for ten minutes without leading or fixing it.
 Dadiosity Daily · Lesson 16
-Hands back, let her try
+Hands Back, Let Her Try
 The idea: Your kid wants to do hard things on her own. A tight lid, a shoe, a zip. When you take it from her too soon, she learns to quit and wait for help.
 Try this tonight: Tonight, when she works on a hard thing, keep your hands back for a full slow count. Watch close. Cheer the tries, not just the win. Help only if she asks.
 Tonight's play: Put a few safe lids and jars on the floor. Let her open and close each one at her own pace. You hold the jar still. She does the turning.
 Why it works: A hard thing she does on her own sticks with her for a long time. She feels strong in her own hands. Waiting shows trust she can feel and copy.
 One line to keep: Keep your hands back and let her try a hard thing herself before you help.
 Dadiosity Daily · Lesson 19
-Let her teach you
+Let Her Teach You
 The idea: Most of the day, you show and she copies. That is fine, but it is one way. When she gets to teach you, she stands tall in a new way for you both.
 Try this tonight: Tonight, ask her to teach you one small thing she knows well. A dance step, a song with claps, a way to hold a crayon. Try it her way, and let her fix you.
 Tonight's play: Swap seats for school play at home. She is the teacher, you are the kid at the desk. Raise your hand, try hard, and let her praise your good work.
 Why it works: Teaching makes her sort what she knows into clear steps. Pride grows when dad learns from her. You show her learning is for all ages, not just kids.
 One line to keep: Ask her to teach you one small thing, then learn it her way.
 Dadiosity Daily · Lesson 15
-Let her finish first
+Let Her Finish First
 The idea: Your kid tells things in a slow way. She stops, starts, and adds bits out of order. If you jump in to finish for her, she may stop trying to tell you.
 Try this tonight: Tonight, when she tells you a story, let her get to the end. Keep your eyes on her and nod. Hold your words back, even when you know what comes next.
 Tonight's play: Let her tell you the plot of a book you both know. Sit back and hear the whole tale. Ask one thing at the end about a part she liked best.
@@ -437,21 +449,21 @@ The page in three moves
 Before the routine starts: warn her
 Hard moments often come at a switch, and bedtime is the biggest switch of the day. Warn her two times before it starts. Say, two more minutes, then we wash hands. Say it once more at one minute. Then follow through, calm and kind. A warning gives her mind time to move, and she trusts the switch when it is not a surprise.
 Dadiosity Daily · Lesson 6
-Keep the same three steps
+Same Steps at Bedtime
 The idea: Bedtime goes better when the end of the day feels known. Same steps, in the same order, tell her body what comes next. New tricks each night do the opposite.
 Try this tonight: Pick three steps tonight and keep the order fixed. Bath, book, then song works well. Say each step as you start it. Do not add a fourth step when she asks for more.
 Tonight's play: Put a stuffed bear to bed before her turn comes. A bath in a toy tub, one short book, one short song. Use the same order you will use for her.
 Why it works: A known order feels safe at night. Safe kids settle with less fight in them. She can rest because she knows the road home to sleep.
 One line to keep: Keep the same three bedtime steps in the same order.
 Dadiosity Daily · Lesson 7
-End on one good thing
+End on One Good Thing
 The idea: The last words of the day tend to stick. If the day ends on a hard note, it can color the whole day. One good moment, named out loud, can hold the day well.
 Try this tonight: At bedtime tonight, name one good moment from the day. Keep it small and true. Say yours first, then ask for hers. Take any answer she gives, even a short one.
 Tonight's play: Act out the good moment with two stuffed animals. Keep it short and a bit silly. Let her pick which animal plays her part in it. End the show with a cheer.
 Why it works: Naming the good trains the mind to go and find it. Kids sleep well after a warm last thought. You will carry that same good moment into your night too.
 One line to keep: Name one true good moment as the last thing at bedtime.
 Dadiosity Daily · Lesson 28
-Pick one thing for tomorrow
+Pick One Thing for Tomorrow
 The idea: A day can end with tired thoughts if you let it. What comes next can feel big and vague to a kid. One good thing, named, gives tomorrow a clear shape.
 Try this tonight: Tonight at bedtime, ask her to pick one small thing to look forward to tomorrow. Pancakes, a park walk, a song in the car. Say it back plain, then let the night rest there.
 Tonight's play: Draw tomorrow on a scrap of paper together. One sun, one star pick, one scene of her good thing. Stick it by her bed so morning starts with that plan.
@@ -493,21 +505,21 @@ The page in three moves
 2. Keep your phone in another room for the whole meal. (Lesson 26)
 3. Stop for one thing she finds on a walk and look at it with her for a minute. (Lesson 14)
 Dadiosity Daily · Lesson 21
-Make hello a big deal
+Make Hello a Big Deal
 The idea: How you greet your kid sets the note when you meet again. Bags, phone, and small talk can come first by habit. She watches where she lands in that minute.
 Try this tonight: At the next homecoming, greet her first. Put bags down, put the phone away, get low, and give her a hug and her name with joy. Let the rest wait a minute.
 Tonight's play: Make up a hello you both use each time. A high five, a spin, a nose tap, in the same order. Practice it three times tonight till you both know it well.
 Why it works: A big hello tells her she comes first in your day. That warm minute can lift the whole night. She will run to a dad who is glad to see her.
 One line to keep: Greet her first when you reunite, before bags, phone, or other talk.
 Dadiosity Daily · Lesson 26
-Phones off the table
+Phones Off the Table
 The idea: A phone on the table pulls your eyes, when it stays dark. Your kid can feel that pull in the middle of a meal. She competes with a thing she cannot beat.
 Try this tonight: Tonight, put your phone in a room far from the table before dinner starts. Leave it there for the meal. Look at her when she talks, and let calls wait till plates clear.
 Tonight's play: After dinner, play a look close game with a tray of things. She studies the tray, you hide one thing, and she names what is gone. Swap roles and play two rounds.
 Why it works: Full eyes at a meal tell her she is worth your whole mind. Talk grows when no screen cuts in. She learns meals are for people at the table.
 One line to keep: Keep your phone in another room for the whole meal.
 Dadiosity Daily · Lesson 14
-Stop for what she finds
+Stop for What She Finds
 The idea: On a walk, your kid sees a world you walk past. A leaf, a bug, a stone. When you rush past her finds, she learns her wonder is in the way.
 Try this tonight: Tonight, on a short walk, stop for what she finds. Crouch down and look with her for a minute. Ask one thing about it. Then let her lead the look before you walk on.
 Tonight's play: Tonight at home, hide three soft toys in one room. Hunt for them slow, one by one. When she finds one, stop and cheer the find like it is gold.
@@ -550,21 +562,21 @@ The page in three moves
 2. Check her body for hunger, thirst, tiredness, or a bathroom need before you judge her mood. (Lesson 24)
 3. Drop your own voice to soft and slow before you ask her to quiet down. (Lesson 18)
 Dadiosity Daily · Lesson 9
-Ask once, then pause
+Pause After You Ask
 The idea: Little kids need time to hear an ask and act on it. Their minds move at a kind pace, not a grown-up pace. When you repeat, the words pile up and get lost.
 Try this tonight: Tonight, ask one time, then pause. Count slow to ten in your head. Keep your face calm and your hands still. If she has not moved, say the same words once more, just as plain.
 Tonight's play: Play a freeze game with music or claps. Move, then freeze when the sound stops. Take turns starting and stopping the sound. Laugh when you freeze mid step.
 Why it works: Quiet time lets her mind catch up to your words. She feels less rushed, and you feel less mad. One calm ask beats five loud ones, most nights.
 One line to keep: Ask once, then pause while you count slow to ten before you say it again.
 Dadiosity Daily · Lesson 24
-Check the body first
+Check the Body First
 The idea: A melt down is not always a mood. A small body can be hungry, thirsty, tired, or in need of a bathroom break. Those needs can sound like anger or tears.
 Try this tonight: Tonight, when she falls apart, check her body before you judge her mood. Offer water, a bite, a bathroom trip, or a rest. Keep your voice kind while you check each one.
 Tonight's play: Play a body check game with a stuffed bear. Pretend the bear is cranky, then guess what it needs. Give it water, food, or a nap, and cheer when it feels well.
 Why it works: A met need can end a storm in a plain way. She learns to read her body signs over time. You skip a talk when a snack was the real fix.
 One line to keep: Check her body for hunger, thirst, tiredness, or a bathroom need before you judge her mood.
 Dadiosity Daily · Lesson 18
-Bring your voice down first
+Bring Your Voice Down First
 The idea: When the room gets loud, your kid gets loud right back. She matches the sound she hears. A big voice from you makes her big voice grow even bigger.
 Try this tonight: Tonight, when noise climbs, drop your voice before you ask her to drop hers. Speak soft and slow, and keep your words short. Let quiet be what you hand her.
 Tonight's play: Play a soft voice game. Whisper a word for her to guess, then let her whisper one for you. Go back and forth, hushed and giggling, till words run out.
@@ -609,21 +621,21 @@ The page in three moves
 2. Breathe out slow with her for three rounds before you use words. (Lesson 23)
 3. Say no once, short and kind, then stay close while the feelings pass. (Lesson 11)
 Dadiosity Daily · Lesson 2
-Name the feeling first
+Name It First
 The idea: When feelings get big, your kid has no words for them yet. If you name the feeling first, she does not have to shout to be known.
 Try this tonight: At dinner or bath time, when she gets upset, name it before you fix it. Say, you are mad. You wanted more. Then wait a beat before you help.
 Tonight's play: Stand at a mirror together. Make a happy face, a sad face, and a mad face. Name each one out loud. Let her pick the next face for you to make.
 Why it works: Words give a feeling a smaller shape. A named feeling is easier to hold. She learns the words by hearing them at the moment she needs them most.
 One line to keep: Name the feeling before you fix the problem.
 Dadiosity Daily · Lesson 23
-Breathe out slow with her
+Breathe Out Slow With Her
 The idea: When feelings rise fast, words can land too soon. Her chest is tight, her face is hot, and talk feels like noise. Breath gives you a first step that needs no talk.
 Try this tonight: Tonight, when she gets upset, get low and breathe out slow with her. Blow out long, like cooling soup. Count each out breath on your fingers. Do three rounds before you use words.
 Tonight's play: Blow a light scarf or tissue across the floor with long breaths. Take turns moving it one step at a time. Laugh at the hops, then slow each blow down.
 Why it works: A long out breath helps a body let go. Doing it with you makes it safe to copy. She learns a way to calm that lives in her own body.
 One line to keep: Breathe out slow with her for three rounds before you use words.
 Dadiosity Daily · Lesson 11
-Say no once, and stay close
+Hold the Line, Stay Close
 The idea: A limit is not a fight. You can say no and be warm. Walking off or long talks can make a small no feel big and cold. Calm and close keeps it small.
 Try this tonight: Tonight, if you say no, say it once, short and kind. No more sweets tonight. Then stay near her. Sit, breathe, and let the sad pass. Do not add threats or a talk.
 Tonight's play: Build a tower and let it fall. Build it back the same way, block by block. Show her a fall is not the end of the fun or the game.
@@ -668,21 +680,21 @@ The page in three moves
 2. Offer two good choices you can live with, then honor the pick she makes. (Lesson 8)
 3. Tell her one short true story from when you were her age, with a feeling in it. (Lesson 25)
 Dadiosity Daily · Lesson 3
-Warn her before it ends
+Warn Her Before It Ends
 The idea: Hard moments often come at a switch. Play stops, dinner starts, or the bath ends. A sudden switch can feel like a loss. A fair warning makes it easier.
 Try this tonight: Tonight, warn her two times before each switch. Say, two more minutes, then we wash hands. Say it once more at one minute. Then follow through, calm and kind.
 Tonight's play: Practice the switch as a game. Send a stuffed bear down a slide made of books. Count down out loud together. Clap when the bear lands and the turn ends.
 Why it works: A warning gives her mind time to move. Time to move means fewer tears at the edge. She trusts the switch when it is not a surprise.
 One line to keep: Warn two times before a change, then follow through.
 Dadiosity Daily · Lesson 8
-Give two good choices
+Give Two Good Choices
 The idea: Little kids want a say in their day. When you give an order, she hears no room to move. Two good choices give her a say and keep you in charge.
 Try this tonight: Tonight, swap one order for two choices you can live with. Say, red cup or blue cup. Say, wash hands now or carry the soap to the sink. Then let her pick and honor the pick.
 Tonight's play: Line up two hats or two scarves. Let her pick one for you and one for her. Wear the pick with pride. Swap roles and pick for her stuffed bear.
 Why it works: A choice is power she does not have to fight for. She practices picking, and you keep the edges safe. Small picks now build calm picks later.
 One line to keep: Offer two good choices you can live with, then honor the pick she makes.
 Dadiosity Daily · Lesson 25
-Tell a story from when you were small
+When You Were Small
 The idea: Your kid sees you as big and sure most days. She may not know you were once small and scared too. A true story from your young days can bring you close.
 Try this tonight: Tonight, tell her one short true story from when you were her age. Keep it small and plain. Name how you felt, what went wrong, and who helped you feel safe again.
 Tonight's play: Act out your small story with two stuffed animals. One plays young you, one plays the helper. Keep it soft and short. Let her pick a happy line for the end.
@@ -727,21 +739,21 @@ The page in three moves
 2. Narrate small moments in short, plain lines. (Lesson 4)
 3. Put one small new bite beside a food she trusts, with no push to finish it. (Lesson 29)
 Dadiosity Daily · Lesson 10
-Give her a real job
+Give Her a Real Job
 The idea: Little kids want to belong, not be helped. A real job tells her she counts in this home. Fake jobs fool no one. Small true jobs build pride fast.
 Try this tonight: Tonight, give her one real job she can finish. Carry the napkins to the table. Put the spoons by each plate. Wipe one small spill with her cloth. Thank her for the work, by name.
 Tonight's play: Set up a post office with paper and a box. She stamps each card and drops it in the box. You write one card to her bear and thank her for the mail.
 Why it works: Work she can see done makes her feel able. Able kids try more and whine less for control. You are not just feeding her. You are raising a helper.
 One line to keep: Give her one real job she can finish, one that truly helps the home.
 Dadiosity Daily · Lesson 4
-Say what you see
+Say What You See
 The idea: Your kid learns words from your voice all day long. You do not need a special lesson time for that. Plain talk during small moments does the work.
 Try this tonight: At bath time tonight, say what you see in short lines. Warm water. Blue cup. Wet toes. Pause after each line so she can try a word back to you.
 Tonight's play: Stack blocks together and talk through each one. Red block on top. Big block falls down. Laugh, build it again, and keep the words just as plain as that.
 Why it works: Kids copy words they hear at the moment the words fit. Short lines are easy to grab and try. Your calm voice turns plain time into word time.
 One line to keep: Narrate small moments in short, plain lines.
 Dadiosity Daily · Lesson 29
-One new bite beside a safe food
+One New Bite Beside a Safe Food
 The idea: New foods can feel like a risk. If the whole plate is new, she may eat none of it. One small new bite beside food she trusts feels safe.
 Try this tonight: Tonight, put one small bite of a new food beside a food she likes. Name it plain, then say no more about it. Let her touch it, smell it, or leave it. Praise a try, not a clean plate.
 Tonight's play: Make a tasting plate for a stuffed bear. One food it loves, one new food to sniff. Let her serve the bear first, then set hers like it.
@@ -786,21 +798,21 @@ The page in three moves
 2. When she is stuck, turn her eyes and hands to a new thing instead of repeating the no. (Lesson 30)
 3. Help her make one small gift for a real person, then give it to that person. (Lesson 27)
 Dadiosity Daily · Lesson 14
-Stop for what she finds
+Stop for What She Finds
 The idea: On a walk, your kid sees a world you walk past. A leaf, a bug, a stone. When you rush past her finds, she learns her wonder is in the way.
 Try this tonight: Tonight, on a short walk, stop for what she finds. Crouch down and look with her for a minute. Ask one thing about it. Then let her lead the look before you walk on.
 Tonight's play: Tonight at home, hide three soft toys in one room. Hunt for them slow, one by one. When she finds one, stop and cheer the find like it is gold.
 Why it works: Time you give to her wonder tells her she matters more than the clock. She learns to look close at the world. You get to see it through her eyes.
 One line to keep: Stop for one thing she finds on a walk and look at it with her for a minute.
 Dadiosity Daily · Lesson 30
-Play find it
+Turn Her Eyes to a New Thing
 The idea: When a kid is stuck on one want, more words can keep her stuck. Her eyes lead her mind. A new thing to see or hold can break the loop.
 Try this tonight: Tonight, when she is stuck and tears rise, do not repeat the no. Point to a new thing and name it with wonder. A red leaf. A loud truck. Put a safe small thing in her hands.
 Tonight's play: Play a find it game at home. Call out a color or a shape and hunt for it together. Cheer each find, then call the next one fast.
 Why it works: A new sight gives her mind a new job. Hands that hold a thing have less work for a fight. The no still holds, but her mind has moved on.
 One line to keep: When she is stuck, turn her eyes and hands to a new thing instead of repeating the no.
 Dadiosity Daily · Lesson 27
-Make a gift for someone
+Make a Gift for Someone
 The idea: Your kid gets a lot of gifts, help, and care each day. Making a thing for someone turns that flow around. Giving lets her feel the joy on the other side.
 Try this tonight: Tonight, help her make one small gift for a real person. A drawn card, a painted stone, a leaf she picked. Ask who it is for, then let her lead the making.
 Tonight's play: Set up a small gift shop of her drawings and crafts. She wraps one pick in cloth or paper for its new owner. You help tie it, then plan the giving.
@@ -845,21 +857,21 @@ The page in three moves
 2. Say no once, short and kind, then stay close while the feelings pass. (Lesson 11)
 3. Name one good thing she does, in detail, right when she does it. (Lesson 17)
 Dadiosity Daily · Lesson 1
-Get down low first
+Get Down Low
 The idea: Your kid hears you best when you are close. Standing tall makes your voice feel far away. Getting low makes it near and calm. Small kids read your face more than your words.
 Try this tonight: Tonight, pick one moment at home, like greeting time or dinner time. Get down on one knee or sit on the floor. Come to her eye level. Say her name, wait for her eyes, then speak.
 Tonight's play: Sit on the floor with a soft ball. Roll it to her and wait. When she rolls it back, cheer like it is a big win. Let the game stay slow and silly.
 Why it works: A close face feels safe, and safe kids listen better. Eye level also slows you down. That calm is the first lesson she copies from you.
 One line to keep: Get to eye level before you speak.
 Dadiosity Daily · Lesson 11
-Say it once, and stay close
+Hold the Line, Stay Close
 The idea: A limit is not a fight. You can say no and be warm. Walking off or long talks can make a small no feel big and cold. Calm and close keeps it small.
 Try this tonight: Tonight, if you say no, say it once, short and kind. No more sweets tonight. Then stay near her. Sit, breathe, and let the sad pass. Do not add threats or a talk.
 Tonight's play: Build a tower and let it fall. Build it back the same way, block by block. Show her a fall is not the end of the fun or the game.
 Why it works: She learns the line will hold, and love holds too. Both truths feel safe. A dad who stays close is a dad she can trust with hard news.
 One line to keep: Say no once, short and kind, then stay close while the feelings pass.
 Dadiosity Daily · Lesson 17
-Catch gentle hands out loud
+Catch the Good Out Loud
 The idea: Your kid hears a lot of no and stop in a day. Good things she does can pass with no words at all. What you name out loud is what she will repeat.
 Try this tonight: Tonight, watch for one good thing she does and name it at once. Say what she did, in plain detail. You put your cup in the sink. That helped us.
 Tonight's play: Play a kind spy game at home. Each of you hunts for a good deed to name out loud. She finds one of yours, you find one of hers, and you cheer each find.
@@ -904,21 +916,21 @@ The page in three moves
 2. Check food, rest, and bathroom before you go, fix the one you can, then tell her the plan. (Lesson 31)
 3. Offer two good choices you can live with, then honor the pick she makes. (Lesson 8)
 Dadiosity Daily · Lesson 12
-Start the morning slow
+Start the Morning Slow
 The idea: The first minutes set the tone for the home. A rushed start can make a small kid tense before the day has begun. A slow start gives her time to wake and join you.
 Try this tonight: Plan tonight for a calm start in the morning. Lay out clothes and cups before bed. When she wakes, sit with her for five minutes. Hold her, talk soft, and ask for nothing yet.
 Tonight's play: Tonight, act out the morning with two stuffed bears. Wake them slow, hug them, dress them, feed them. Let her be the dad bear who keeps the pace kind and calm.
 Why it works: A calm first five minutes can save a hard hour. She starts the day feeling held, not pushed. You start it like a dad, not a drill.
 One line to keep: Sit with her for the first five minutes of the day and ask for nothing yet.
 Dadiosity Daily · Lesson 31
-Check her needs before you go
+Check Her Needs Before You Go
 The idea: Most blow ups are not a shock. Hunger, a tired body, a long wait, and a sudden switch stack up. One stack can tip a calm kid into tears.
 Try this tonight: Tonight, before a hard part like a trip out, scan her stack first. Food, rest, bathroom, and what comes next. Fix the one need you can fix, then name the plan in one short line.
 Tonight's play: Pack for a pretend trip with a stuffed bear. Ask what the bear needs before you go. Food, water, a rest, a toy for the wait. Let her pack each thing in a bag.
 Why it works: A need fixed early does not join the stack. A plan she has heard makes the hard part feel known. You stop some tears before they start.
 One line to keep: Check food, rest, and bathroom before you go, fix the one you can, then tell her the plan.
 Dadiosity Daily · Lesson 8
-Give two good choices
+Give Two Good Choices
 The idea: Little kids want a say in their day. When you give an order, she hears no room to move. Two good choices give her a say and keep you in charge.
 Try this tonight: Tonight, swap one order for two choices you can live with. Say, red cup or blue cup. Say, wash hands now or carry the soap to the sink. Then let her pick and honor the pick.
 Tonight's play: Line up two hats or two scarves. Let her pick one for you and one for her. Wear the pick with pride. Swap roles and pick for her stuffed bear.
@@ -966,21 +978,21 @@ The page in three moves
 2. Breathe out slow with her for three rounds before you use words. (Lesson 23)
 3. Get to eye level before you speak. (Lesson 1)
 Dadiosity Daily · Lesson 5
-Fix it fast
+Fix It Fast
 The idea: You will snap some days. Every dad does. What lasts is not the snap on its own. What lasts is how fast you come back and make it right.
 Try this tonight: If you raise your voice tonight, stop as soon as you can. Take one slow breath. Get low, say you are sorry, and name what you did. Then hug or sit close.
 Tonight's play: Pretend to bump a stuffed bear by mistake. Say sorry to the bear together. Give it a hug and a bandage made of cloth. Let her lead the care.
 Why it works: A quick fix shows her that love comes back after a hard moment. She learns that a bad moment can still end well. That lesson shapes how she fixes things too.
 One line to keep: After you snap, stop, say sorry, and reconnect fast.
 Dadiosity Daily · Lesson 23
-Breathe out slow with her
+Breathe Out Slow With Her
 The idea: When feelings rise fast, words can land too soon. Her chest is tight, her face is hot, and talk feels like noise. Breath gives you a first step that needs no talk.
 Try this tonight: Tonight, when she gets upset, get low and breathe out slow with her. Blow out long, like cooling soup. Count each out breath on your fingers. Do three rounds before you use words.
 Tonight's play: Blow a light scarf or tissue across the floor with long breaths. Take turns moving it one step at a time. Laugh at the hops, then slow each blow down.
 Why it works: A long out breath helps a body let go. Doing it with you makes it safe to copy. She learns a way to calm that lives in her own body.
 One line to keep: Breathe out slow with her for three rounds before you use words.
 Dadiosity Daily · Lesson 1
-Get down low
+Get Down Low
 The idea: Your kid hears you best when you are close. Standing tall makes your voice feel far away. Getting low makes it near and calm. Small kids read your face more than your words.
 Try this tonight: Tonight, pick one moment at home, like greeting time or dinner time. Get down on one knee or sit on the floor. Come to her eye level. Say her name, wait for her eyes, then speak.
 Tonight's play: Sit on the floor with a soft ball. Roll it to her and wait. When she rolls it back, cheer like it is a big win. Let the game stay slow and silly.
@@ -1028,21 +1040,21 @@ The page in three moves
 2. Keep your phone in another room for the whole meal. (Lesson 26)
 3. Put one small new bite beside a food she trusts, with no push to finish it. (Lesson 29)
 Dadiosity Daily · Lesson 20
-Shake it out before you sit
+Shake It Out Before You Sit
 The idea: A small body holds a lot of buzz by dinner time. Sitting still is hard when that buzz has no way out. Asking for calm while her body hums sets you both up to fail.
 Try this tonight: Tonight, before dinner, take two minutes to move with her. Jump, spin, march, shake each arm and leg out. End slow, with three deep breaths, then walk to the table.
 Tonight's play: Put on one fast song and dance like the floor is hot. Freeze when it stops, fall down laughing, then get up and go again till the song ends.
 Why it works: Big moves burn off the buzz that makes sitting hard. Her body settles when it has done its work. You get a calm meal start. She gets to wiggle first.
 One line to keep: Move and shake with her for two minutes before you ask her to sit.
 Dadiosity Daily · Lesson 26
-Phones off the table
+Phones Off the Table
 The idea: A phone on the table pulls your eyes, when it stays dark. Your kid can feel that pull in the middle of a meal. She competes with a thing she cannot beat.
 Try this tonight: Tonight, put your phone in a room far from the table before dinner starts. Leave it there for the meal. Look at her when she talks, and let calls wait till plates clear.
 Tonight's play: After dinner, play a look close game with a tray of things. She studies the tray, you hide one thing, and she names what is gone. Swap roles and play two rounds.
 Why it works: Full eyes at a meal tell her she is worth your whole mind. Talk grows when no screen cuts in. She learns meals are for people at the table.
 One line to keep: Keep your phone in another room for the whole meal.
 Dadiosity Daily · Lesson 29
-One new bite beside a safe food
+One New Bite Beside a Safe Food
 The idea: New foods can feel like a risk. If the whole plate is new, she may eat none of it. One small new bite beside food she trusts feels safe.
 Try this tonight: Tonight, put one small bite of a new food beside a food she likes. Name it plain, then say no more about it. Let her touch it, smell it, or leave it. Praise a try, not a clean plate.
 Tonight's play: Make a tasting plate for a stuffed bear. One food it loves, one new food to sniff. Let her serve the bear first, then set hers like it.
@@ -1090,21 +1102,21 @@ The page in three moves
 2. Give her one real job she can finish, one that truly helps the home. (Lesson 10)
 3. Name one good thing she does, in detail, right when she does it. (Lesson 17)
 Dadiosity Daily · Lesson 13
-Tidy to one song
+Tidy to One Song
 The idea: A big mess can feel too big for a small kid. She may quit before she starts. One short song cuts the job down to a size she can hold and finish.
 Try this tonight: Tonight, pick one song you like. Put toys in one basket till the song ends. Stop when the song stops, even if a few toys stay out. Cheer for what got done, not what is left.
 Tonight's play: Race toys back to their home box before the song ends. Take turns tossing one in from a short step away. End with a high five lap around.
 Why it works: A clear end makes work feel fair. She can see the job shrink as she works. Short wins teach her that starting is the brave and doable part.
 One line to keep: Tidy toys into one basket for the length of one song, then stop.
 Dadiosity Daily · Lesson 10
-Give her a real job
+Give Her a Real Job
 The idea: Little kids want to belong, not be helped. A real job tells her she counts in this home. Fake jobs fool no one. Small true jobs build pride fast.
 Try this tonight: Tonight, give her one real job she can finish. Carry the napkins to the table. Put the spoons by each plate. Wipe one small spill with her cloth. Thank her for the work, by name.
 Tonight's play: Set up a post office with paper and a box. She stamps each card and drops it in the box. You write one card to her bear and thank her for the mail.
 Why it works: Work she can see done makes her feel able. Able kids try more and whine less for control. You are not just feeding her. You are raising a helper.
 One line to keep: Give her one real job she can finish, one that truly helps the home.
 Dadiosity Daily · Lesson 17
-Catch the good out loud
+Catch the Good Out Loud
 The idea: Your kid hears a lot of no and stop in a day. Good things she does can pass with no words at all. What you name out loud is what she will repeat.
 Try this tonight: Tonight, watch for one good thing she does and name it at once. Say what she did, in plain detail. You put your cup in the sink. That helped us.
 Tonight's play: Play a kind spy game at home. Each of you hunts for a good deed to name out loud. She finds one of yours, you find one of hers, and you cheer each find.

@@ -6,7 +6,7 @@
 
 - Each lesson has five parts: the idea, try this tonight, tonight's play, why it works, and one line to keep.
 - Tonight's plan is on the homepage: the evening skeleton, tonight's anchor block picked by a 27-night rotation, and the day's lesson inside it. A dad can veto the block with "Another one", every tap moves to the next block, skipping the other nights of the same week; he never has to pick.
-- Saturday and Sunday each get one weekend pick, already chosen by rotation: an outing or a home project, with its grab list. The week view on the homepage shows all seven nights already picked.
+- Saturday and Sunday each get one weekend pick, already chosen by rotation: an outing or a home project, with its grab list. The week's seven nights live on the This Week page, linked from the homepage.
 - A sample lesson is on the homepage: Lesson 13, Tidy to One Song, about tidying toys into one basket for the length of one song.
 - Dads can sign up by email on the homepage. A small pilot group starts first. At the full launch, one lesson a day for everyone. No spam, no ads, and your email is never sold.
 - No email is sent today. Nothing has launched yet.
@@ -26,7 +26,7 @@
 
 - [Homepage and sample lesson](https://dadiosity.com/): the promise, the signup form, and the sample lesson.
 - [This week at home](https://dadiosity.com/this-week): seven written lessons for this week, one full lesson for each night.
-- [Ask Dadiosity](https://dadiosity.com/ask): say tonight's hard part in your own words and get one of the 45 written lessons, matched on the page. Nothing typed there is sent or saved, and no email is needed.
+- [Ask Dadiosity](https://dadiosity.com/ask): say tonight's hard part in your own words and get one of the 45 written lessons, matched on the page. No words typed there are sent or saved, only a count that an ask happened, and no email is needed.
 - [What can I do with my 3-year-old today?](https://dadiosity.com/what-can-i-do-with-my-3-year-old-today): a plain plan for today, with full lessons on letting her lead play and on bedtime steps.
 - [Things to do with a 3-year-old at home](https://dadiosity.com/things-to-do-with-a-3-year-old-at-home): twelve simple at-home plays using what you already have.
 - [How to play with a toddler](https://dadiosity.com/how-to-play-with-a-toddler): four full lessons: follow her lead, hands back, let her teach you, let her finish first.
