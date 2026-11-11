@@ -1212,8 +1212,7 @@ var DP_CSS = [
   "box-shadow:0 4px 18px rgba(26,29,33,.30);cursor:pointer}",
   "#dp-open:active{transform:scale(.98)}",
   "#dp-open{transition:transform .25s ease,opacity .25s ease}",
-  "#dp-open.dp-away{transform:translateY(170%);opacity:0;pointer-events:none}",
-  "#dp-open.dp-hidden{display:none}",
+  "#dp-open.dp-away{opacity:.18}",
   "#dp-scrim{position:fixed;inset:0;z-index:80;background:rgba(26,29,33,.45)}",
   "#dp-sheet[hidden],#dp-scrim[hidden]{display:none}",
   "#dp-sheet{position:fixed;left:0;right:0;bottom:0;z-index:90;background:#ffffff;color:#1a1d21;",
@@ -1743,26 +1742,18 @@ function dpBuild() {
      panel never yields. Everything outside this block is unchanged. */
   var FYG_SEL = "a[href],button,input,select,textarea,summary,[role=\"button\"],[role=\"link\"],[role=\"tab\"],[role=\"menuitem\"],[tabindex]:not([tabindex=\"-1\"]),[data-fyg-watch]";
   var fygTargets = [], fygYielded = false, fygTick = false, fygResting = null;
-  var fygHideTimer = null;
+  /* SPEC-FLEET-ASKPILL-01 (Nov 10, 2026): yielding is a FADE, not a
+     disappearance (port of the Santa SPEC-SS-ASKPILL-01 fix). The old
+     behaviour slid the pill off-screen and then display:none'd it, so
+     the site's one AI entry point vanished for long stretches. The pill
+     now stays in place at 18% opacity while yielded: still visible,
+     still tappable, content readable through it. */
   function fygSetYield(on) {
     if (on === fygYielded) return;
     fygYielded = on;
-    if (fygHideTimer) { clearTimeout(fygHideTimer); fygHideTimer = null; }
     if (on) {
       open.classList.add("dp-away");
-      /* Fleet sweep 2026-11-04 (PMR SPEC-05 pattern): after the slide-out
-         finishes, remove the pill from layout. Parked below the fold it
-         still had a 52px rect that overlapped tap targets scrolling near
-         the bottom edge under the fleet's rect-based settled sweep
-         (44 covered targets at 390px pre-fix). With display:none the
-         rect is zero and the settled pill can cover nothing. */
-      fygHideTimer = setTimeout(function () {
-        fygHideTimer = null;
-        if (fygYielded) open.classList.add("dp-hidden");
-      }, 300);
     } else {
-      open.classList.remove("dp-hidden");
-      void open.offsetWidth; /* reflow so the slide back in still animates */
       open.classList.remove("dp-away");
     }
   }
@@ -1777,9 +1768,10 @@ function dpBuild() {
     if (!isNaN(left) && cs.left !== "auto") box.left = left;
     else if (!isNaN(right) && cs.right !== "auto") box.left = vw - right - w;
     else box.left = vw - w;
+    var vvh = (window.visualViewport && window.visualViewport.height) || vh;
     if (!isNaN(top) && cs.top !== "auto") box.top = top;
-    else if (!isNaN(bottom) && cs.bottom !== "auto") box.top = vh - bottom - h;
-    else box.top = vh - h;
+    else if (!isNaN(bottom) && cs.bottom !== "auto") box.top = vvh - bottom - h;
+    else box.top = vvh - h;
     box.right = box.left + w;
     box.bottom = box.top + h;
     fygResting = box;
