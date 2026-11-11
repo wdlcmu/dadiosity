@@ -1212,7 +1212,7 @@ var DP_CSS = [
   "box-shadow:0 4px 18px rgba(26,29,33,.30);cursor:pointer}",
   "#dp-open:active{transform:scale(.98)}",
   "#dp-open{transition:transform .25s ease,opacity .25s ease}",
-  "#dp-open.dp-away{opacity:.18}",
+  "#dp-open.dp-away{opacity:.18;pointer-events:none}",
   "#dp-scrim{position:fixed;inset:0;z-index:80;background:rgba(26,29,33,.45)}",
   "#dp-sheet[hidden],#dp-scrim[hidden]{display:none}",
   "#dp-sheet{position:fixed;left:0;right:0;bottom:0;z-index:90;background:#ffffff;color:#1a1d21;",
