@@ -389,6 +389,21 @@ localStorage.setItem("fleet_ft2",JSON.stringify(ft));
   }
   .tonight .t-lesson { margin-top: 2.25rem; }
   .tonight .t-lesson-head { font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); margin-bottom: 0.625rem; }
+  .tonight .t-skill { font-size: 0.9375rem; font-weight: 700; color: var(--accent); margin-bottom: 0.5rem; }
+  .tonight .t-skill[hidden] { display: none; }
+  /* Age picker (Nov 11, 2026): two taps, year then months, under the
+     lesson preview. White outline buttons, the picked one filled. */
+  .tonight .agepick { margin-top: 1rem; border-top: 1px solid var(--line); padding-top: 0.875rem; }
+  .tonight .agepick[hidden] { display: none; }
+  .tonight .agepick-label { font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); margin-bottom: 0.5rem; }
+  .tonight .agepick-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem; }
+  .tonight .agepick-row[hidden] { display: none; }
+  .tonight .agepick-row button { flex: 1 1 30%; min-height: 48px; background: #fff; color: var(--accent); border: 2px solid var(--accent); border-radius: 0.75rem; font-size: 1rem; font-weight: 700; padding: 0.5rem 0.25rem; cursor: pointer; }
+  .tonight .agepick-row button:hover { background: var(--tint); }
+  .tonight .agepick-row button[aria-pressed="true"] { background: var(--accent); color: #fff; }
+  .tonight .age-note { color: var(--body); margin-top: 0.25rem; }
+  .tonight .age-note strong { color: var(--ink); }
+  .tonight button.agepick-reset { flex: none; background: none; border: 0; color: var(--accent); font-weight: 700; font-size: 1rem; min-height: 44px; padding: 10px 4px; cursor: pointer; text-decoration: underline; }
   /* Desktop treatment (readability fix pass, Nov 3, 2026): past 64rem
      the page stops being one centered phone column. The tonight
      section opens to two columns, the plan on the left as the primary
@@ -821,6 +836,7 @@ window.FLEET_CFG = {
     <p class="t-lesson-head">Tonight's lesson</p>
     <img class="t-photo" id="t-photo" width="1200" height="800" alt="" fetchpriority="high" hidden>
     <p class="t-moment" id="t-moment">Lesson 44 of 45</p>
+    <p class="t-skill" id="t-skill" hidden></p>
     <div class="t-miss" id="t-miss" data-fyg-watch hidden>
       <p class="m-label">The miss</p>
       <p class="m-text" id="t-miss-text"></p>
@@ -832,6 +848,13 @@ window.FLEET_CFG = {
     <h2 class="t-title" id="t-title" data-fyg-watch>The Table Has a Beginning and an End</h2>
     <p class="t-move" id="t-move" data-fyg-watch>You own the food, the time, and the place; she owns whether and how much; done means done.</p>
     <p class="t-why" id="t-why" data-fyg-watch>Her job is to decide if and how much she eats. Your job is the food, the time, and the place. Clear jobs end most table fights.</p>
+    <div class="agepick" id="age-pick" hidden>
+      <p class="agepick-label">Your child's age</p>
+      <div class="agepick-row" id="age-years" role="group" aria-label="Pick the year"></div>
+      <div class="agepick-row" id="age-months" role="group" aria-label="Pick the months" hidden></div>
+      <p class="age-note" id="age-note" aria-live="polite" hidden></p>
+      <p id="age-reset-row" hidden><button type="button" class="agepick-reset" id="age-reset">Back to today's lesson</button></p>
+    </div>
     <div class="t-full" id="t-full" data-fyg-watch hidden>
       <p><strong>The idea:</strong> <span id="t-idea">A toddler meal is short, and that is fine. The chair war starts when the meal has no clear start and no clear end.</span></p>
       <p><strong>Try this tonight:</strong> <span id="t-movefull">Start the meal together, at the table, food already on it. When she says she is done, believe her the second time. The food stays, she may go, the meal is over. No bites counted, no deals made.</span></p>
@@ -1513,6 +1536,258 @@ document.addEventListener("DOMContentLoaded", function () {
   img.src = pick[0];
   img.alt = pick[1];
   img.hidden = false;
+});
+</script>
+<script>
+/* Age picker (Nov 11, 2026; Lovevery-pattern novel find, approved by
+   Billy): two taps, year then months, swap tonight's lesson to a lesson
+   for that age from the same bank (lessons.js), each labelled with one
+   named skill. Honest banding: the bank tags every lesson with an age
+   range in whole years only, so the month halves claim no month-level
+   precision. Each half takes a different lesson from the same year's
+   pool, on the same daily rotation the fallback card uses. Every pool
+   is non-empty (age 1: 4 lessons, age 2: 35, age 3: 45, age 4: 42,
+   age 5: 17), so no band ever borrows another band's lesson. The pick
+   saves on this device only (localStorage). The default view is
+   untouched until a dad picks; "Back to today's lesson" clears the
+   pick and reloads. Skill names derive from each lesson's own bank
+   `moment` tag (the mapping is in SKILL below). */
+document.addEventListener("DOMContentLoaded", function () {
+  var bank = window.DADIO_LESSONS || [];
+  var wrap = document.getElementById("age-pick");
+  var card = document.getElementById("tonight");
+  if (!bank.length || !wrap || !card || card.hidden) return;
+  var yearsRow = document.getElementById("age-years");
+  var monthsRow = document.getElementById("age-months");
+  var note = document.getElementById("age-note");
+  var resetRow = document.getElementById("age-reset-row");
+  var skillEl = document.getElementById("t-skill");
+  var KEY = "dadiosity_age_band_v1";
+  var SKILL = {
+    "a new baby coming": "Welcoming a new baby",
+    "bath time": "Bath time play",
+    "bedtime": "Bedtime routine",
+    "being outside": "Exploring outside",
+    "big feelings": "Naming big feelings",
+    "brushing teeth": "Brushing teeth",
+    "car rides": "Riding in the car",
+    "cleanup": "Tidying up",
+    "ending screen time": "Ending screen time",
+    "energy before sitting": "Moving before sitting",
+    "helping": "Helping at home",
+    "hitting": "Gentle hands",
+    "holding a limit": "Holding a limit",
+    "independence": "Trying it herself",
+    "kindness": "Kindness",
+    "language and talk": "Words and talking",
+    "leaving the house": "Leaving the house",
+    "listening": "Listening",
+    "making it right": "Making it right",
+    "mealtime": "Mealtime",
+    "mornings": "Calm mornings",
+    "night fears": "Night fears",
+    "play": "Learning through play",
+    "praise": "Confidence",
+    "presence at meals": "Presence at meals",
+    "redirecting": "Shifting attention",
+    "repair after you snap": "Repair after a snap",
+    "reunions and hellos": "Saying hello",
+    "separation and goodbyes": "Saying goodbye",
+    "sharing": "Taking turns",
+    "stories at bedtime": "Stories at bedtime",
+    "tantrum prevention": "Preventing tantrums",
+    "tantrums": "Working through tantrums",
+    "transitions": "Handling changes",
+    "waiting": "Waiting",
+    "whining": "Hearing the want",
+    "your own calm": "Staying calm"
+  };
+  /* Same moment-to-photo table as tonight's card photo script above,
+     so an age-picked lesson carries the photo its moment calls for. */
+  var PHOTOS = {
+    bedtime: ["/assets/theme-bedtime.jpg", "A dad reads to his toddler in a chair at bedtime, the lamp low."],
+    meal: ["/assets/table-meal.jpg", "A dad shares a meal with his toddler at the table."],
+    play: ["/assets/play-blocks.jpg", "A dad and his toddler play with blocks on the floor."],
+    tidy: ["/assets/theme-tidy.jpg", "A dad and his toddler put toys into one basket together."],
+    outside: ["/assets/theme-outside.jpg", "A dad walks with his toddler in the park, hand in hand."],
+    feelings: ["/assets/theme-feelings.jpg", "A dad kneels to his toddler's eye level and holds her hands."],
+    morning: ["/assets/theme-morning.jpg", "A dad helps his toddler with her shoes by the front door."]
+  };
+  var BY_MOMENT = {
+    "bedtime": "bedtime", "stories at bedtime": "bedtime", "night fears": "bedtime",
+    "bath time": "bedtime", "brushing teeth": "bedtime",
+    "mealtime": "meal", "presence at meals": "meal",
+    "play": "play", "helping": "play", "kindness": "play",
+    "energy before sitting": "play", "language and talk": "play",
+    "independence": "play", "praise": "play", "sharing": "play",
+    "waiting": "play", "ending screen time": "play",
+    "cleanup": "tidy",
+    "being outside": "outside", "transitions": "outside", "car rides": "outside",
+    "listening": "feelings", "big feelings": "feelings", "tantrums": "feelings",
+    "tantrum prevention": "feelings", "whining": "feelings",
+    "your own calm": "feelings", "repair after you snap": "feelings",
+    "making it right": "feelings", "holding a limit": "feelings",
+    "hitting": "feelings", "redirecting": "feelings",
+    "a new baby coming": "feelings",
+    "mornings": "morning", "separation and goodbyes": "morning",
+    "leaving the house": "morning", "reunions and hellos": "morning"
+  };
+  function cap(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
+  function byN(n) {
+    for (var i = 0; i < bank.length; i++) if (bank[i].n === n) return bank[i];
+    return null;
+  }
+  function dayOfYear(d) {
+    return Math.floor((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - Date.UTC(d.getFullYear(), 0, 0)) / 86400000);
+  }
+  function poolFor(year) {
+    var pool = [];
+    for (var i = 0; i < bank.length; i++) {
+      if (bank[i].age && bank[i].age[0] <= year && year <= bank[i].age[1]) pool.push(bank[i]);
+    }
+    pool.sort(function (a, b) { return a.n - b.n; });
+    return pool;
+  }
+  function bandLabel(year, half) {
+    return year + (year === 1 ? " year" : " years") + ", " + (half === 0 ? "0 to 5 months" : "6 to 11 months");
+  }
+  function pickLesson(year, half) {
+    var pool = poolFor(year);
+    if (!pool.length) return null;
+    var bandIndex = (year - 1) * 2 + half;
+    return pool[(dayOfYear(new Date()) * 32 + bandIndex) % pool.length];
+  }
+  function setSkill(L) {
+    if (!skillEl) return;
+    var name = L && SKILL[L.moment];
+    if (name) { skillEl.textContent = "Building: " + name; skillEl.hidden = false; }
+    else { skillEl.textContent = ""; skillEl.hidden = true; }
+  }
+  function applyPhoto(L) {
+    var img = document.getElementById("t-photo");
+    if (!img || !L) return;
+    var key = BY_MOMENT[L.moment];
+    if (!key) {
+      var hay = (L.title || "").toLowerCase();
+      if (/bed|night|sleep|dark|bath|teeth/.test(hay)) key = "bedtime";
+      else if (/tidy|clean/.test(hay)) key = "tidy";
+      else if (/eat|meal|dinner|food|bite|table/.test(hay)) key = "meal";
+      else if (/shoe|morning|goodbye|hello|door|leav/.test(hay)) key = "morning";
+      else if (/outside|park|walk|pool|car/.test(hay)) key = "outside";
+      else if (/play|game|blocks|teach/.test(hay)) key = "play";
+      else key = "feelings";
+    }
+    var pick = PHOTOS[key] || PHOTOS.feelings;
+    img.src = pick[0];
+    img.alt = pick[1];
+    img.hidden = false;
+  }
+  function setPressed(row, attr, val) {
+    var kids = row.children;
+    for (var i = 0; i < kids.length; i++) {
+      kids[i].setAttribute("aria-pressed", kids[i].getAttribute(attr) === String(val) ? "true" : "false");
+    }
+  }
+  var selYear = null;
+  function applyAge(year, half) {
+    var L = pickLesson(year, half);
+    if (!L) return false;
+    window.DADIO_TODAY_N = L.n;
+    document.getElementById("t-moment").textContent = "Lesson " + L.n + " of " + bank.length;
+    setSkill(L);
+    document.getElementById("t-title").textContent = L.title;
+    document.getElementById("t-move").textContent = cap(L.core);
+    document.getElementById("t-why").textContent = L.why;
+    document.getElementById("t-idea").textContent = L.idea;
+    document.getElementById("t-movefull").textContent = L.move;
+    document.getElementById("t-play").textContent = L.play;
+    document.getElementById("t-keep").textContent = cap(L.core);
+    var puzzle = document.getElementById("t-puzzle");
+    if (L.puzzle) {
+      document.getElementById("t-puzzle-text").textContent = L.puzzle;
+      puzzle.hidden = false;
+    } else { puzzle.hidden = true; }
+    var miss = document.getElementById("t-miss");
+    if (miss) miss.hidden = true;
+    var tomorrow = document.getElementById("t-tomorrow");
+    if (tomorrow) tomorrow.hidden = true;
+    var full = document.getElementById("t-full");
+    if (full) full.hidden = true;
+    var link = document.getElementById("t-link");
+    link.href = "/this-week#l" + L.n;
+    link.textContent = "Read the full lesson";
+    link.setAttribute("aria-expanded", "false");
+    applyPhoto(L);
+    note.innerHTML = "";
+    var lead = document.createElement("strong");
+    lead.textContent = "For " + bandLabel(year, half) + ": ";
+    note.appendChild(lead);
+    note.appendChild(document.createTextNode(L.title + ". Saved on this device."));
+    note.hidden = false;
+    resetRow.hidden = false;
+    setPressed(yearsRow, "data-year", year);
+    setPressed(monthsRow, "data-half", half);
+    return true;
+  }
+  function buildMonths(year) {
+    monthsRow.innerHTML = "";
+    var labels = ["0 to 5 months", "6 to 11 months"];
+    for (var h = 0; h < 2; h++) {
+      (function (half) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.textContent = labels[half];
+        b.setAttribute("data-half", String(half));
+        b.setAttribute("aria-pressed", "false");
+        b.setAttribute("aria-label", year + (year === 1 ? " year" : " years") + ", " + labels[half]);
+        b.addEventListener("click", function () {
+          if (selYear === null) return;
+          if (applyAge(selYear, half)) {
+            try { localStorage.setItem(KEY, JSON.stringify({ year: selYear, half: half })); } catch (e) {}
+            try {
+              if (typeof fleetTrack === "function") {
+                fleetTrack("age_pick", { tool: "dad-lessons", band: selYear + "y-" + (half === 0 ? "0-5m" : "6-11m") });
+              }
+            } catch (e) {}
+          }
+        });
+        monthsRow.appendChild(b);
+      })(h);
+    }
+    monthsRow.hidden = false;
+  }
+  for (var y = 1; y <= 5; y++) {
+    (function (year) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.textContent = year + (year === 1 ? " year" : " years");
+      b.setAttribute("data-year", String(year));
+      b.setAttribute("aria-pressed", "false");
+      b.addEventListener("click", function () {
+        selYear = year;
+        setPressed(yearsRow, "data-year", year);
+        buildMonths(year);
+      });
+      yearsRow.appendChild(b);
+    })(y);
+  }
+  document.getElementById("age-reset").addEventListener("click", function () {
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    window.location.reload();
+  });
+  /* Default view keeps its own skill label, from the lesson served. */
+  var served = byN(window.DADIO_TODAY_N);
+  if (served) setSkill(served);
+  /* A returning dad lands on his saved band, with no tap needed. */
+  var saved = null;
+  try { saved = JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) {}
+  if (saved && saved.year >= 1 && saved.year <= 5 && (saved.half === 0 || saved.half === 1)) {
+    selYear = saved.year;
+    setPressed(yearsRow, "data-year", selYear);
+    buildMonths(selYear);
+    applyAge(selYear, saved.half);
+  }
+  wrap.hidden = false;
 });
 </script>
 <script src="/ask-panel.js"></script>
