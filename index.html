@@ -932,6 +932,30 @@ window.FLEET_CFG = {
       tPara.hidden = false;
       return true;
     };
+    /* SPEC-DADIO-COLDQA1112-F4: one behaviour for #t-link everywhere —
+       the inline toggle. This is the ONE shared place that sets href,
+       label and aria-expanded and binds the click handler (guarded, so
+       it binds at most once). Every date path and applyAge() call this
+       instead of setting the link up themselves. */
+    window.DADIO_SET_FULL_LINK = function () {
+      var link = document.getElementById("t-link");
+      if (!link) return;
+      link.href = "#t-full";
+      link.textContent = "Read the full lesson";
+      link.setAttribute("aria-expanded", "false");
+      if (!link._dadioF4Bound) {
+        link._dadioF4Bound = true;
+        link.addEventListener("click", function (e) {
+          e.preventDefault();
+          var full = document.getElementById("t-full");
+          if (!full) return;
+          var open = full.hidden;
+          full.hidden = !open;
+          link.textContent = open ? "Hide the full lesson" : "Read the full lesson";
+          link.setAttribute("aria-expanded", open ? "true" : "false");
+        });
+      }
+    };
     if (!today || !card) return;
     var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -948,8 +972,24 @@ window.FLEET_CFG = {
       document.getElementById("t-puzzle-text").textContent = today.puzzle;
       document.getElementById("t-puzzle").hidden = false;
     }
-    document.getElementById("t-link").href = "/this-week#l" + today.n;
+    window.DADIO_SET_FULL_LINK();
     window.DADIO_TODAY_N = today.n;
+    /* F4: the inline toggle needs this date's own full-lesson text.
+       The week map carries no idea/move/play, so fill #t-full from
+       the bank (same lesson number) once lessons.js has loaded.
+       A saved age pick runs after this and overwrites these fields
+       with the picked lesson's text. */
+    document.addEventListener("DOMContentLoaded", function () {
+      var bank = window.DADIO_LESSONS || [];
+      for (var i = 0; i < bank.length; i++) {
+        if (bank[i].n === today.n) {
+          document.getElementById("t-idea").textContent = bank[i].idea;
+          document.getElementById("t-movefull").textContent = bank[i].move;
+          document.getElementById("t-play").textContent = bank[i].play;
+          break;
+        }
+      }
+    });
     if (!window.DADIO_FILL_TOMORROW(now, today.n)) {
       document.addEventListener("DOMContentLoaded", function () {
         window.DADIO_FILL_TOMORROW(now, today.n);
@@ -1013,17 +1053,9 @@ window.FLEET_CFG = {
       document.getElementById("t-puzzle-text").textContent = L.puzzle;
       document.getElementById("t-puzzle").hidden = false;
     }
-    var link = document.getElementById("t-link");
-    link.href = "#t-full";
-    link.setAttribute("aria-expanded", "false");
-    link.addEventListener("click", function (e) {
-      e.preventDefault();
-      var full = document.getElementById("t-full");
-      var open = full.hidden;
-      full.hidden = !open;
-      link.textContent = open ? "Hide the full lesson" : "Read the full lesson";
-      link.setAttribute("aria-expanded", open ? "true" : "false");
-    });
+    /* F4: shared setup in the dated-card script above — one place
+       sets href, label, aria-expanded and binds the toggle handler. */
+    if (window.DADIO_SET_FULL_LINK) window.DADIO_SET_FULL_LINK();
     /* SPEC-DADIO-COLDQA1109-02: same shared resolver as the dated
        card above (week map first, daily rotation after it). */
     if (window.DADIO_FILL_TOMORROW) window.DADIO_FILL_TOMORROW(now, L.n);
@@ -1715,10 +1747,10 @@ document.addEventListener("DOMContentLoaded", function () {
     if (tomorrow) tomorrow.hidden = true;
     var full = document.getElementById("t-full");
     if (full) full.hidden = true;
-    var link = document.getElementById("t-link");
-    link.href = "/this-week#l" + L.n;
-    link.textContent = "Read the full lesson";
-    link.setAttribute("aria-expanded", "false");
+    /* F4: shared setup — href, label and aria-expanded must match
+       the inline-toggle behaviour on every date path, including
+       after an age pick on a fallback day. */
+    if (window.DADIO_SET_FULL_LINK) window.DADIO_SET_FULL_LINK();
     applyPhoto(L);
     note.innerHTML = "";
     var lead = document.createElement("strong");
