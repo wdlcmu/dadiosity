@@ -396,6 +396,7 @@ localStorage.setItem("fleet_ft2",JSON.stringify(ft));
   .tonight .agepick { margin-top: 1rem; border-top: 1px solid var(--line); padding-top: 0.875rem; }
   .tonight .agepick[hidden] { display: none; }
   .tonight .agepick-label { font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); margin-bottom: 0.5rem; }
+  .tonight .agepick-honest { color: var(--body); font-size: 0.9375rem; margin-bottom: 0.5rem; }
   .tonight .agepick-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem; }
   .tonight .agepick-row[hidden] { display: none; }
   .tonight .agepick-row button { flex: 1 1 30%; min-height: 48px; background: #fff; color: var(--accent); border: 2px solid var(--accent); border-radius: 0.75rem; font-size: 1rem; font-weight: 700; padding: 0.5rem 0.25rem; cursor: pointer; }
@@ -850,6 +851,7 @@ window.FLEET_CFG = {
     <p class="t-why" id="t-why" data-fyg-watch>Her job is to decide if and how much she eats. Your job is the food, the time, and the place. Clear jobs end most table fights.</p>
     <div class="agepick" id="age-pick" hidden>
       <p class="agepick-label">Your child's age</p>
+      <p class="agepick-honest">Lessons are picked by year. The two month picks just give you a different lesson for that year.</p>
       <div class="agepick-row" id="age-years" role="group" aria-label="Pick the year"></div>
       <div class="agepick-row" id="age-months" role="group" aria-label="Pick the months" hidden></div>
       <p class="age-note" id="age-note" aria-live="polite" hidden></p>
