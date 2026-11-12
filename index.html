@@ -791,7 +791,7 @@ window.FLEET_CFG = {
       <p class="agepick-label">Your child's age</p>
       <p class="agepick-honest">Lessons are picked by year. The two month picks just give you a different lesson for that year.</p>
       <div class="agepick-row" id="age-years" role="group" aria-label="Pick the year"></div>
-      <div class="agepick-row" id="age-months" role="group" aria-label="Pick the months" hidden></div>
+      <div class="agepick-row" id="age-months" role="group" aria-label="Pick the months" aria-live="polite" hidden></div>
       <p class="age-note" id="age-note" aria-live="polite" hidden></p>
       <p id="age-reset-row" hidden><button type="button" class="agepick-reset" id="age-reset">Back to today's lesson</button></p>
     </div>
@@ -1086,6 +1086,7 @@ window.FLEET_CFG = {
     <p><strong>One line to keep:</strong> You own the food, the time, and the place; she owns whether and how much; done means done.</p>
     <p><strong>This weekend:</strong> Blanket fort morning on Saturday, Nov 14. Library story morning on Sunday, Nov 15.</p>
     <p>Scripts are off, so this page cannot change with the day. This is the plan and lesson picked for Tuesday, Nov 10, 2026. They still work tonight.</p>
+    <p>With scripts on, the live site also lets you pick tonight's lesson by your child's age.</p>
   </section>
   </noscript>
   <section class="wknd" id="t-weekend" hidden aria-label="This weekend, already picked">
@@ -1590,11 +1591,40 @@ document.addEventListener("DOMContentLoaded", function () {
    untouched until a dad picks; "Back to today's lesson" clears the
    pick and reloads. Skill names derive from each lesson's own bank
    `moment` tag (the mapping is in SKILL below). */
-document.addEventListener("DOMContentLoaded", function () {
+/* F7 (SPEC-DADIO-COLDQA1112-F7): the picker must not vanish
+   silently. The init below runs on DOMContentLoaded; if its gate
+   fails (bank empty or #tonight still hidden) it retries exactly
+   once on window.load before giving up. If the bank truly failed,
+   the picker stays hidden (no broken or empty picker, no
+   user-facing error copy) and the failure is logged through the
+   existing fleet path (fleetTrack, defined above) plus the
+   console. A guard stops a successful init from ever running
+   twice. */
+var dadioAgePickerDone = false;
+var dadioAgePickerRetried = false;
+function dadioAgePickerLogFailure(reason) {
+  try {
+    if (typeof fleetTrack === "function") {
+      fleetTrack("age_picker_unavailable", { tool: "dad-lessons", reason: reason });
+    }
+  } catch (e) {}
+  try { console.error("[dadiosity] age picker unavailable: " + reason); } catch (e) {}
+}
+function initDadioAgePicker() {
+  if (dadioAgePickerDone) return;
   var bank = window.DADIO_LESSONS || [];
   var wrap = document.getElementById("age-pick");
   var card = document.getElementById("tonight");
-  if (!bank.length || !wrap || !card || card.hidden) return;
+  if (!bank.length || !wrap || !card || card.hidden) {
+    var reason = !bank.length ? "bank_empty" : (!wrap ? "picker_missing" : "tonight_hidden");
+    if (!dadioAgePickerRetried) {
+      dadioAgePickerRetried = true;
+      if (document.readyState === "complete") { dadioAgePickerLogFailure(reason); }
+      else { window.addEventListener("load", initDadioAgePicker); }
+    } else { dadioAgePickerLogFailure(reason); }
+    return;
+  }
+  dadioAgePickerDone = true;
   var yearsRow = document.getElementById("age-years");
   var monthsRow = document.getElementById("age-months");
   var note = document.getElementById("age-note");
@@ -1769,7 +1799,7 @@ document.addEventListener("DOMContentLoaded", function () {
     setPressed(monthsRow, "data-half", half);
     return true;
   }
-  function buildMonths(year) {
+  function buildMonths(year, moveFocus) {
     monthsRow.innerHTML = "";
     var labels = ["0 to 5 months", "6 to 11 months"];
     for (var h = 0; h < 2; h++) {
@@ -1795,6 +1825,14 @@ document.addEventListener("DOMContentLoaded", function () {
       })(h);
     }
     monthsRow.hidden = false;
+    /* F7: the months row is an aria-live="polite" region (in the
+       markup), so its appearance is announced; on a year tap we
+       also move focus to its first button. The saved-band restore
+       path passes no focus flag, so a returning dad is never
+       focus-yanked on load. */
+    if (moveFocus && monthsRow.children.length) {
+      try { monthsRow.children[0].focus(); } catch (e) {}
+    }
   }
   for (var y = 1; y <= 5; y++) {
     (function (year) {
@@ -1806,7 +1844,7 @@ document.addEventListener("DOMContentLoaded", function () {
       b.addEventListener("click", function () {
         selYear = year;
         setPressed(yearsRow, "data-year", year);
-        buildMonths(year);
+        buildMonths(year, true);
       });
       yearsRow.appendChild(b);
     })(y);
@@ -1828,7 +1866,8 @@ document.addEventListener("DOMContentLoaded", function () {
     applyAge(selYear, saved.half);
   }
   wrap.hidden = false;
-});
+}
+document.addEventListener("DOMContentLoaded", initDadioAgePicker);
 </script>
 <script src="/ask-panel.js"></script>
 <script>
