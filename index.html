@@ -422,10 +422,13 @@ localStorage.setItem("fleet_ft2",JSON.stringify(ft));
     /* One full-lesson CTA on desktop screen one (Addendum 1368,
        SPEC-COLDQA1368-01): in the two-column layout the lesson layer
        sits in the right column on the same screen, so the in-card
-       "The full lesson" scroll link is a duplicate of the right
+       "Tonight's lesson" scroll link is a duplicate of the right
        column's "Read the full lesson" button — hide it here. On
        phone the columns stack and the in-card link is the puzzle's
-       same-screen closure, so it stays. */
+       same-screen closure, so it stays. (Link retitled by
+       SPEC-DADIO-COLDQA1112-F5: it scrolls to the lesson layer and
+       never opened the full lesson; #t-link is the one full-lesson
+       entry point.) */
     .tonight .t-season .s-full-row { display: none; }
     .week { max-width: 56rem; }
     .week ul { display: grid; grid-template-columns: 1fr 1fr; column-gap: 2.5rem; }
@@ -433,8 +436,8 @@ localStorage.setItem("fleet_ft2",JSON.stringify(ft));
   /* Mobile stack tightening (Nov 3, 2026, SPEC-KEEPER1103-D3): at
      390px the puzzle opener started at the fold (y~808 of 844) and its
      closure link sat below it. Spacing above the opener tightens on
-     small screens only, so the question and "The full lesson" both
-     land on screen one. Desktop layout is untouched. */
+     small screens only, so the question and its "Tonight's lesson"
+     scroll link both land on screen one. Desktop layout is untouched. */
   @media (max-width: 40rem) {
     main { padding-top: 0.75rem; }
     /* Weekend phone order (SPEC-DADIO-VERIFY1437-02): on Sat/Sun
@@ -814,7 +817,7 @@ window.FLEET_CFG = {
               <p class="s-text" id="s-puzzle">She is up and down from the chair six times a meal. What two lines is the meal missing that would give her body the map?</p>
               <p class="s-move" id="s-move" hidden><strong>The move:</strong> <span id="s-move-text">You own the food, the time, and the place; she owns whether and how much; done means done.</span></p>
               <p><button type="button" class="s-reveal" id="s-reveal" aria-expanded="false" aria-controls="s-move" hidden>Show the move</button></p>
-              <p class="s-full-row"><a href="#t-lesson-layer" id="s-full">The full lesson</a></p>
+              <p class="s-full-row"><a href="#t-lesson-layer" id="s-full">Tonight's lesson ↓</a></p>
             </div>
             <p class="t-veto-row"><button type="button" class="t-veto" id="t-veto">Another one</button></p>
           </div>
@@ -835,7 +838,7 @@ window.FLEET_CFG = {
           <img class="tn-photo" src="/assets/theme-hour.jpg" width="1200" height="800" alt="A dad rests on the couch at night, feet up, watching a show." loading="lazy" decoding="async">
           <div class="tn-body">
             <p class="tl-line" id="p-hour">Your hour. One episode, chosen at dinner. Ends at 9.</p>
-            <p class="tn-lesson-row"><a class="t-link" id="p-hour-lesson" href="#t-lesson-layer">The full lesson</a></p>
+            <p class="tn-lesson-row"><a class="t-link" id="p-hour-lesson" href="#t-lesson-layer">Tonight's lesson ↓</a></p>
           </div>
         </article>
       </div>
