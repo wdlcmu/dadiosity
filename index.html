@@ -391,9 +391,11 @@ localStorage.setItem("fleet_ft2",JSON.stringify(ft));
   .tonight .t-lesson-head { font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); margin-bottom: 0.625rem; }
   .tonight .t-skill { font-size: 0.9375rem; font-weight: 700; color: var(--accent); margin-bottom: 0.5rem; }
   .tonight .t-skill[hidden] { display: none; }
-  /* Age picker (Nov 11, 2026): two taps, year then months, under the
-     lesson preview. White outline buttons, the picked one filled. */
-  .tonight .agepick { margin-top: 1rem; border-top: 1px solid var(--line); padding-top: 0.875rem; }
+  /* Age picker (Nov 11, 2026; moved to the top of the tonight section
+     Nov 12, 2026, SPEC-DADIO-COLDQA1112-F1, so it sits on screen one):
+     two taps, year then months. White outline buttons, the picked
+     one filled. */
+  .tonight .agepick { margin-top: 0; margin-bottom: 1.5rem; border-top: 1px solid var(--line); padding-top: 0.875rem; }
   .tonight .agepick[hidden] { display: none; }
   .tonight .agepick-label { font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); margin-bottom: 0.5rem; }
   .tonight .agepick-honest { color: var(--body); font-size: 0.9375rem; margin-bottom: 0.5rem; }
@@ -414,6 +416,7 @@ localStorage.setItem("fleet_ft2",JSON.stringify(ft));
     main { max-width: 72rem; }
     .tonight { max-width: 64rem; display: grid; grid-template-columns: 1.15fr 0.85fr; column-gap: 3rem; }
     .tonight .t-label { grid-column: 1 / -1; }
+    .tonight .agepick { grid-column: 1 / -1; }
     .tonight .t-plan { grid-column: 1; }
     .tonight .t-lesson { grid-column: 2; margin-top: 0; border-left: 1px solid var(--line); padding-left: 2rem; }
     /* One full-lesson CTA on desktop screen one (Addendum 1368,
@@ -781,6 +784,14 @@ window.FLEET_CFG = {
   </section>
   <section class="tonight" id="tonight" hidden aria-label="Try this tonight">
     <p class="t-label" id="t-day">Try this tonight · Tuesday, Nov 10</p>
+    <div class="agepick" id="age-pick" hidden>
+      <p class="agepick-label">Your child's age</p>
+      <p class="agepick-honest">Lessons are picked by year. The two month picks just give you a different lesson for that year.</p>
+      <div class="agepick-row" id="age-years" role="group" aria-label="Pick the year"></div>
+      <div class="agepick-row" id="age-months" role="group" aria-label="Pick the months" hidden></div>
+      <p class="age-note" id="age-note" aria-live="polite" hidden></p>
+      <p id="age-reset-row" hidden><button type="button" class="agepick-reset" id="age-reset">Back to today's lesson</button></p>
+    </div>
     <div class="t-plan" id="t-plan" hidden>
       <p class="p-head">Tonight, 6 to 9</p>
       <div class="tn-track" id="tn-track" role="region" aria-label="Tonight's plan: swipe through the blocks" tabindex="0">
@@ -849,14 +860,6 @@ window.FLEET_CFG = {
     <h2 class="t-title" id="t-title" data-fyg-watch>The Table Has a Beginning and an End</h2>
     <p class="t-move" id="t-move" data-fyg-watch>You own the food, the time, and the place; she owns whether and how much; done means done.</p>
     <p class="t-why" id="t-why" data-fyg-watch>Her job is to decide if and how much she eats. Your job is the food, the time, and the place. Clear jobs end most table fights.</p>
-    <div class="agepick" id="age-pick" hidden>
-      <p class="agepick-label">Your child's age</p>
-      <p class="agepick-honest">Lessons are picked by year. The two month picks just give you a different lesson for that year.</p>
-      <div class="agepick-row" id="age-years" role="group" aria-label="Pick the year"></div>
-      <div class="agepick-row" id="age-months" role="group" aria-label="Pick the months" hidden></div>
-      <p class="age-note" id="age-note" aria-live="polite" hidden></p>
-      <p id="age-reset-row" hidden><button type="button" class="agepick-reset" id="age-reset">Back to today's lesson</button></p>
-    </div>
     <div class="t-full" id="t-full" data-fyg-watch hidden>
       <p><strong>The idea:</strong> <span id="t-idea">A toddler meal is short, and that is fine. The chair war starts when the meal has no clear start and no clear end.</span></p>
       <p><strong>Try this tonight:</strong> <span id="t-movefull">Start the meal together, at the table, food already on it. When she says she is done, believe her the second time. The food stays, she may go, the meal is over. No bites counted, no deals made.</span></p>
