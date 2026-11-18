@@ -1212,7 +1212,7 @@ var DP_CSS = [
   "box-shadow:0 4px 18px rgba(26,29,33,.30);cursor:pointer}",
   "#dp-open:active{transform:scale(.98)}",
   "#dp-open{transition:transform .25s ease,opacity .25s ease}",
-  "#dp-open.dp-away{opacity:.18;pointer-events:none}",
+  "#dp-open.dp-away{opacity:0;pointer-events:none}",
   "#dp-scrim{position:fixed;inset:0;z-index:80;background:rgba(26,29,33,.45)}",
   "#dp-sheet[hidden],#dp-scrim[hidden]{display:none}",
   "#dp-sheet{position:fixed;left:0;right:0;bottom:0;z-index:90;background:#ffffff;color:#1a1d21;",
@@ -1740,7 +1740,7 @@ function dpBuild() {
      bug). A 6px hysteresis band on the return check keeps the state
      sticky at boundary scrolls. A focused pill never yields; an open
      panel never yields. Everything outside this block is unchanged. */
-  var FYG_SEL = "a[href],button,input,select,textarea,summary,[role=\"button\"],[role=\"link\"],[role=\"tab\"],[role=\"menuitem\"],[tabindex]:not([tabindex=\"-1\"]),[data-fyg-watch]";
+  var FYG_SEL = "a[href],button,input,select,textarea,summary,[role=\"button\"],[role=\"link\"],[role=\"tab\"],[role=\"menuitem\"],[tabindex]:not([tabindex=\"-1\"]),[data-fyg-watch],h1,h2,h3,p,li";
   var fygTargets = [], fygYielded = false, fygTick = false, fygResting = null;
   /* SPEC-FLEET-ASKPILL-01 (Nov 10, 2026): yielding is a FADE, not a
      disappearance (port of the Santa SPEC-SS-ASKPILL-01 fix). The old
@@ -1748,6 +1748,13 @@ function dpBuild() {
      the site's one AI entry point vanished for long stretches. The pill
      now stays in place at 18% opacity while yielded: still visible,
      still tappable, content readable through it. */
+  /* SPEC-SS-PILLCOVER-01 fleet sweep (Nov 18, 2026) SUPERSEDES the fade
+     above: the owner screenshotted the Santa ghost pill's text colliding
+     with sample-card text — a translucent pill still covers what sits
+     beneath it. The away state is now fully invisible (opacity 0 in
+     DP_CSS) and the watched set includes plain text (h1, h2, h3, p, li),
+     so the pill steps aside for text as well as controls and returns
+     whenever its zone is clear. */
   function fygSetYield(on) {
     if (on === fygYielded) return;
     fygYielded = on;
