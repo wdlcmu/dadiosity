@@ -222,7 +222,7 @@ One notes a share arrival.
 One notes that you joined.
 None holds your email address.
 Your email is never sent to PostHog.
-Words typed on the ask page are never sent or saved.
+Words typed on the Ask page are matched on your device. They are never sent or saved. Words typed into the Ask Dadiosity chat on other pages go to the AI that answers. Nothing is saved there either.
 It does not record your screen.
 Leaving and removal
 There is no leave link yet.
