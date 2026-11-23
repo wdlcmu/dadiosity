@@ -1605,6 +1605,7 @@ function dadAsk() {
       : "Put her down somewhere safe, like her crib or bed, and step into another room for a few minutes. Breathe. That pause is the safe move. If you feel close to hurting her, call or text 988 right now, or call a trusted person. A person will talk with you, free, day and night.";
     kbox.appendChild(kp1); kbox.appendChild(kp2);
     answer.appendChild(kbox);
+    try { kbox.scrollIntoView({ block: "nearest" }); } catch (e) {}
     try { fleetTrack("ask_fallback", { tool: "dad-ask", missing: "crisis-" + crisisKind }); } catch (e) {}
     return;
   }
@@ -1622,6 +1623,7 @@ function dadAsk() {
       : "That is a health question, and Dadiosity's written lessons are not medical advice. A pediatrician, an urgent care line, or 911 for an emergency is the right call for that one.";
     mbox.appendChild(mp1); mbox.appendChild(mp2);
     answer.appendChild(mbox);
+    try { mbox.scrollIntoView({ block: "nearest" }); } catch (e) {}
     try { fleetTrack("ask_fallback", { tool: "dad-ask", missing: medicalKind === "poison" ? "poison" : "medical" }); } catch (e) {}
     return;
   }
@@ -1636,6 +1638,7 @@ function dadAsk() {
     cp2.textContent = "Each one is short: one idea, a real moment to try tonight, a short play idea, why it works, and one line to keep. Try a few plain words for the hard part, or tap an example above.";
     cbox.appendChild(cp1); cbox.appendChild(cp2);
     answer.appendChild(cbox);
+    try { cbox.scrollIntoView({ block: "nearest" }); } catch (e) {}
     try { fleetTrack("ask_answered", { tool: "dad-ask", via: "count" }); } catch (e) {}
     return;
   }
@@ -1650,6 +1653,7 @@ function dadAsk() {
     sp2.textContent = "No written lesson covers running off, bolting, or staying safe near cars, streets, or parking lots. The 45 lessons cover bedtime, play, food, feelings, mornings, fears, sharing, screens, and hard moments. Try a few plain words for another hard part, or tap an example above.";
     sbox.appendChild(sp1); sbox.appendChild(sp2);
     answer.appendChild(sbox);
+    try { sbox.scrollIntoView({ block: "nearest" }); } catch (e) {}
     try { fleetTrack("ask_fallback", { tool: "dad-ask", missing: "safety-runoff" }); } catch (e) {}
     return;
   }
@@ -1666,6 +1670,7 @@ function dadAsk() {
     p2.textContent = "The 45 lessons cover bedtime, play, food, feelings, mornings, fears, sharing, screens, and hard moments. Try a few plain words for the hard part, or tap an example above.";
     box.appendChild(p1); box.appendChild(p2);
     answer.appendChild(box);
+    try { box.scrollIntoView({ block: "nearest" }); } catch (e) {}
     try { fleetTrack("ask_fallback", { tool: "dad-ask", missing: "match" }); } catch (e) {}
     return;
   }
