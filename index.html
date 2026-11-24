@@ -388,6 +388,10 @@ localStorage.setItem("fleet_ft2",JSON.stringify(ft));
     .tonight .tn-card { flex-basis: 84%; }
   }
   .tonight .t-lesson { margin-top: 2.25rem; }
+  /* Text cut (Nov 24, 2026): the full lesson layer opens only from the
+     plan block's "Tonight's lesson" jump, so it stays hidden on load. */
+  .tonight .t-lesson[hidden] { display: none; }
+  .sample .card[hidden] { display: none; }
   .tonight .t-lesson-head { font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); margin-bottom: 0.625rem; }
   .tonight .t-skill { font-size: 0.9375rem; font-weight: 700; color: var(--accent); margin-bottom: 0.5rem; }
   .tonight .t-skill[hidden] { display: none; }
@@ -419,17 +423,10 @@ localStorage.setItem("fleet_ft2",JSON.stringify(ft));
     .tonight .agepick { grid-column: 1 / -1; }
     .tonight .t-plan { grid-column: 1; }
     .tonight .t-lesson { grid-column: 2; margin-top: 0; border-left: 1px solid var(--line); padding-left: 2rem; }
-    /* One full-lesson CTA on desktop screen one (Addendum 1368,
-       SPEC-COLDQA1368-01): in the two-column layout the lesson layer
-       sits in the right column on the same screen, so the in-card
-       "Tonight's lesson" scroll link is a duplicate of the right
-       column's "Read the full lesson" button — hide it here. On
-       phone the columns stack and the in-card link is the puzzle's
-       same-screen closure, so it stays. (Link retitled by
-       SPEC-DADIO-COLDQA1112-F5: it scrolls to the lesson layer and
-       never opened the full lesson; #t-link is the one full-lesson
-       entry point.) */
-    .tonight .t-season .s-full-row { display: none; }
+    /* Text cut (Nov 24, 2026) supersedes Addendum 1368's desktop
+       hiding of the in-card jump: the lesson layer no longer sits in
+       this column on load, so the in-card "Tonight's lesson" jump is
+       the one entry to it on desktop too and stays visible here. */
     .week { max-width: 56rem; }
     .week ul { display: grid; grid-template-columns: 1fr 1fr; column-gap: 2.5rem; }
   }
@@ -817,7 +814,7 @@ window.FLEET_CFG = {
               <p class="s-text" id="s-puzzle">She is up and down from the chair six times a meal. What two lines is the meal missing that would give her body the map?</p>
               <p class="s-move" id="s-move" hidden><strong>The move:</strong> <span id="s-move-text">You own the food, the time, and the place; she owns whether and how much; done means done.</span></p>
               <p><button type="button" class="s-reveal" id="s-reveal" aria-expanded="false" aria-controls="s-move" hidden>Show the move</button></p>
-              <p class="s-full-row"><a href="#t-lesson-layer" id="s-full">Tonight's lesson ↓</a></p>
+              <p class="s-full-row"><a href="#t-lesson-layer" id="s-full" aria-expanded="false" aria-controls="t-lesson-layer">Tonight's lesson ↓</a></p>
             </div>
             <p class="t-veto-row"><button type="button" class="t-veto" id="t-veto">Another one</button></p>
           </div>
@@ -838,7 +835,6 @@ window.FLEET_CFG = {
           <img class="tn-photo" src="/assets/theme-hour.jpg" width="1200" height="800" alt="A dad rests on the couch at night, feet up, watching a show." loading="lazy" decoding="async">
           <div class="tn-body">
             <p class="tl-line" id="p-hour">Your hour. One episode, chosen at dinner. Ends at 9.</p>
-            <p class="tn-lesson-row"><a class="t-link" id="p-hour-lesson" href="#t-lesson-layer">Tonight's lesson ↓</a></p>
           </div>
         </article>
       </div>
@@ -847,7 +843,7 @@ window.FLEET_CFG = {
         <p class="tn-count" id="tn-count" aria-live="polite">1 of 5</p>
       </div>
     </div>
-    <div class="t-lesson" id="t-lesson-layer">
+    <div class="t-lesson" id="t-lesson-layer" hidden>
     <p class="t-lesson-head">Tonight's lesson</p>
     <img class="t-photo" id="t-photo" width="1200" height="800" alt="" fetchpriority="high" hidden>
     <p class="t-moment" id="t-moment">Lesson 44 of 45</p>
@@ -1150,7 +1146,8 @@ window.FLEET_CFG = {
       </div>
       <p id="sharemsg2" role="status" aria-live="polite"></p>
     </div>
-    <article class="card" data-fyg-watch>
+    <p><button type="button" id="sample-toggle" aria-expanded="false" aria-controls="sample-card">Read the sample lesson</button></p>
+    <article class="card" id="sample-card" data-fyg-watch hidden>
       <img class="card-photo" src="/assets/theme-tidy.jpg" width="1200" height="800" loading="lazy" alt="A dad and his toddler put toys into one basket together.">
       <p class="card-head">Lesson 13 of 45</p>
       <h3>Tidy to One Song</h3>
@@ -1160,10 +1157,6 @@ window.FLEET_CFG = {
       <p><strong>Why it works:</strong> A clear end makes work feel fair. She can see the job shrink as she works. Short wins teach her that starting is the brave and doable part.</p>
       <p><strong>One line to keep:</strong> Tidy toys into one basket for the length of one song, then stop.</p>
     </article>
-    <div class="share">
-      <button type="button" id="sharebtn">Share this lesson</button>
-      <p id="sharemsg" role="status" aria-live="polite"></p>
-    </div>
   </section>
   <section class="askdoor" aria-label="Ask for a lesson that fits tonight">
     <h2>Dealing with something tonight?</h2>
@@ -1310,6 +1303,35 @@ window.FLEET_CFG = {
       msg.className = 'msg err';
     }).finally(function () { sending = false; btn.disabled = false; });
   });
+</script>
+<script>
+  /* Text cut (Nov 24, 2026): the sample lesson card stays collapsed
+     behind its read link, and the full tonight lesson layer opens
+     when a link points straight at it. */
+  (function () {
+    var card = document.getElementById('sample-card');
+    var btn = document.getElementById('sample-toggle');
+    function openSample() {
+      if (card) card.hidden = false;
+      if (btn) btn.setAttribute('aria-expanded', 'true');
+    }
+    if (btn && card) {
+      btn.addEventListener('click', function () {
+        var open = card.hidden;
+        card.hidden = !open;
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    }
+    function openFromHash() {
+      if (window.location.hash === '#sample') openSample();
+      if (window.location.hash === '#t-lesson-layer') {
+        var layer = document.getElementById('t-lesson-layer');
+        if (layer) layer.hidden = false;
+      }
+    }
+    window.addEventListener('hashchange', openFromHash);
+    openFromHash();
+  })();
 </script>
 <script>
   var shareBtn = document.getElementById('sharebtn');
@@ -2021,9 +2043,16 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("t-season").hidden = false;
   }
   if (puzzleEl) puzzleEl.hidden = true;
+  /* Text cut (Nov 24, 2026): the full lesson layer is hidden on load;
+     this jump is its one entry, so the tap opens it, then scrolls. */
   document.getElementById("s-full").addEventListener("click", function (e) {
     var layer = document.getElementById("t-lesson-layer");
-    if (layer && layer.scrollIntoView) { e.preventDefault(); layer.scrollIntoView({ block: "start" }); }
+    if (layer) {
+      e.preventDefault();
+      layer.hidden = false;
+      this.setAttribute("aria-expanded", "true");
+      if (layer.scrollIntoView) layer.scrollIntoView({ block: "start" });
+    }
   });
   document.getElementById("t-plan").hidden = false;
 
